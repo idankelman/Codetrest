@@ -65,12 +65,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //let temp = Pin_Root.child('Pin_'+ID);
     //temp.on('value',snap=>  Par.innerHTML = snap.val().Description);
-    let Itterate = Pin_Root;
 
 
-
-
-    Itterate.on('value',function(snap) {
+    Pin_Root.on('value',function(snap) {
         Pins = [];
         snap.forEach(function(item) {
             var itemVal = item.val();
