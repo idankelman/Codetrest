@@ -13,10 +13,17 @@
 
 let Button_in;  
 let Button_upload;
+let Button_delete;
+let Button_Sub;
+
+
 let Text_in;
+let Text_delete;
 let PinGrid_Main;
 
+let identifier;
 
+let digits = 10; // the number of digits for the ID generator
 let ID=0;
 
 
@@ -35,6 +42,8 @@ let CurrPhoto;
 let Files = [];
 let Pins = [];
 
+let Page="Home"
+
 
 
 //======================================================================
@@ -42,31 +51,26 @@ let Pins = [];
 //======================================================================
 
 document.addEventListener("DOMContentLoaded", function () {
-
-    Button_in = document.getElementById("Btn_in");
-    Text_in = document.getElementById("Txt_in");
-    Par = document.getElementById("Text");
-    Button_upload =document.getElementById("Btn_up");
-    PinGrid_Main = document.getElementById("PinGrid1");
-  
-  
-   // Button_in.addEventListener("click", foo);
-    Button_upload.addEventListener("click",uploadPhoto);
-
-
-
-    Pin_Root = firebase.database().ref('pins/');
-    User_Root = firebase.database().ref('users/');
     
-
-    Image_Root = firebase.storage().ref('Images/');
-    
+    identifier = document.getElementById("identify");
+    if(identifier.innerHTML=="Home")
+        {
+            console.log(Page);
+            console.log('home page');
+            CreateHomePage();
+            updatePins();
+        }
+    else if(identifier.innerHTML=="Login Page")
+        {
+            
+        }
+   
 
 
     //let temp = Pin_Root.child('Pin_'+ID);
     //temp.on('value',snap=>  Par.innerHTML = snap.val().Description);
 
-    updatePins();
+
     
     
 
@@ -122,4 +126,37 @@ function updatePins()
         addPin();
     });
 
+}
+
+function CreateHomePage()
+{
+    Button_in = document.getElementById("Btn_in");
+    Button_delete = document.getElementById("Btn_delete");
+    Button_Sub = document.getElementById("Btn_Sub");
+
+    Text_in = document.getElementById("Txt_in");
+    Text_delete = document.getElementById("Txt_delete");
+    Par = document.getElementById("Text");
+    Button_upload =document.getElementById("Btn_up");
+    PinGrid_Main = document.getElementById("PinGrid1");
+  
+  
+   // Button_in.addEventListener("click", foo);
+    Button_upload.addEventListener("click",uploadPhoto);
+    Button_delete.addEventListener("click",deletePin);
+    Button_Sub.addEventListener("click",updatePage);
+
+
+
+    Pin_Root = firebase.database().ref('pins/');
+    User_Root = firebase.database().ref('users/');
+
+
+    Image_Root = firebase.storage().ref('Images/');
+    
+}
+
+function updatePage()
+{
+    Page = "SubPage";
 }
