@@ -66,17 +66,9 @@ document.addEventListener("DOMContentLoaded", function () {
     //let temp = Pin_Root.child('Pin_'+ID);
     //temp.on('value',snap=>  Par.innerHTML = snap.val().Description);
 
-
-    Pin_Root.on('value',function(snap) {
-        Pins = [];
-        snap.forEach(function(item) {
-            var itemVal = item.val();
-            Pins.push(itemVal);
-        });
-        ID = Pins.length;
-        addPin();
-    });
-
+    updatePins();
+    
+    
 
     //Create Base Main Website
     //$("header").hide();
@@ -117,3 +109,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+function updatePins()
+{
+    
+    Pin_Root.on('value',function(snap) {
+        Pins = [];
+        snap.forEach(function(item) {
+            var itemVal = item.val();
+            Pins.push(itemVal);
+        });
+        ID = Pins.length;
+        addPin();
+    });
+
+}
