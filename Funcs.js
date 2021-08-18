@@ -20,12 +20,21 @@ function addPin() {
 
         let Pin_id = Pins[i].Id;
         let url = Pins[i].URL;
-        PinGrid_Main.innerHTML += `<figure id= "${Pin_id}">
-        <img src="${url}" alt="A windmill" />
-        <figcaption><a href="#">${i}</a></figcaption>
+        let desp = Pins[i].Description;
+        PinGrid_Main.innerHTML += 
+        `<figure id= "${Pin_id}">
+        <div class = "image">
+        <img class ="image__img" src="${url}" alt="A windmill" />
+            <div class = "image__overlay">
+                <div class="image__title">${desp}</div>
+                <p class = "image_description"></p>
+            </div>
+        </div>
         </figure>`
     }
 
+
+   
 }
 
 
