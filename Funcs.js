@@ -27,7 +27,7 @@ function addPin() {
         <img class ="image__img" src="${url}" alt="A windmill" />
             <div class = "image__overlay">
                 <div class="image__title">${desp}</div>
-                <p class = "image_description"></p>
+                <p class = "image_description">Pin_${Pin_id}</p>
             </div>
         </div>
         </figure>`
@@ -53,9 +53,30 @@ function addPin() {
 
 
 
+
+
+
+
 //======================================================================
 //                      Update Functions  :  
 //======================================================================
+
+
+
+
+
+
+
+
+//======================================================================
+//                      Delete Functions  :  
+//======================================================================
+function deletePin()
+{
+    let id_Delete = Text_delete.value;
+    Pin_Root.child('Pin_'+id_Delete).remove();
+    Image_Root.child('Pin_'+id_Delete).delete();
+}
 
 
 
@@ -84,6 +105,7 @@ function uploadPhoto() {
     let change = true;
     temp.onchange = e => {
             Files = e.target.files;
+            ID = parseInt(Math.random()*Math.pow(10,digits));
             let metadata = { contentType: Files[0].type }
             let uploadTask = Image_Root.child('Pin_' + ID).put(Files[0], metadata);
             let ImageUrl;
@@ -119,13 +141,12 @@ function uploadPhoto() {
 
 function SavePin(ImageUrl) {
     let txt = Text_in.value;
-    //console.log(txt);
     Pin_Root.child('Pin_' + ID).set({
         Description: txt,
         Id: ID,
         URL: ImageUrl
     });
-    ID++;
+
 
 }
 
