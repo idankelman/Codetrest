@@ -74,22 +74,34 @@ function uploadPhoto() {
     temp.type = 'file';
     let change = true;
     temp.onchange = e => {
-        if (change) {
             Files = e.target.files;
             let metadata = { contentType: Files[0].type }
             let uploadTask = Image_Root.child('Pin_' + ID).put(Files[0], metadata);
             let ImageUrl;
-            uploadTask.on('state_changed', function (snapshot) {
-                uploadTask.snapshot.ref.getDownloadURL().then(function (url) {
+            
+            
+
+            uploadTask.on('state_changed',
+             
+            function progress (snapshot) {
+               let precentage = (snapshot.bytesTransferred / snapshot.totalBytes)*100;
+               console.log(precentage);
+            },
+            function error (err){
+                console.log("error accured");
+            },
+
+            function complete()
+            {
+                    uploadTask.snapshot.ref.getDownloadURL().then(function (url) {
                     ImageUrl = url;
                     SavePin(ImageUrl);
                 });
+            }
+            );
 
-            });
-            change = false;
         }
-
-    }
+       
     temp.click();
 
 }
