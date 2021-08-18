@@ -1,0 +1,147 @@
+<html>
+	<head>
+		<title>CODETREST</title>
+
+
+        <script src="Server.js"></script>
+        <link rel="stylesheet" href="style.css">
+        
+
+		<style type="text/css">
+			pre {
+				background-color: "#282C34";
+				padding: 15px;
+			}
+			
+			#theCanvas {
+				width: 800px;
+				height: 1200px;
+				margin: auto;
+				border: 5px solid "#282C34";
+				display: block;
+			}
+
+			
+			#centered{
+				float: left;
+   	 			position: relative;
+    			left: 36.9%;
+
+			}
+
+			h1{
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+				color: aliceblue;
+			}
+
+			h3{
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+				color: aliceblue;
+			}
+
+		</style>
+		
+	</head>
+
+	<body bgcolor= "#202124">
+        
+        <script src="Funcs.js"></script>
+
+
+        <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-storage.js"></script>
+
+
+ 
+
+        <script id ="MainScript">
+        let firebaseConfig = {
+            apiKey: "AIzaSyDLw-YrodyFrrIizufwd0xOTDU7P-Rk6oU",
+            authDomain: "codetrest.firebaseapp.com",
+            databaseURL: "https://codetrest-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "codetrest",
+            storageBucket: "codetrest.appspot.com",
+            messagingSenderId: "467044244836",
+            appId: "1:467044244836:web:059b92c74526cbdc6b2e71",
+            measurementId: "G-BKPJVMD16E"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+            
+        </script>
+
+        <header>
+
+            <h1>hello this is the main page</h1>
+            <nav>
+                <ul class = 'nav'>
+                    <li><a href= "Sub.html">SUB</a></li>
+                </ul>
+            </nav>
+
+
+        </header>
+
+
+
+
+        <button id = "Btn_in">press</button>
+        <button id = "Btn_up">upload</button>
+        <input id = "Txt_in"></input>
+
+        <div id = "Text" >      </div>
+
+		<div class="container" id= "PinGrid1">
+            <figure id= "Pin_0">
+              <img src="https://assets.codepen.io/12005/windmill.jpg" alt="A windmill" />
+              <figcaption><a href="#">1</a></figcaption>
+            </figure>
+            <figure>
+              <img src="https://assets.codepen.io/12005/suspension-bridge.jpg" alt="The Clifton Suspension Bridge" />
+              <figcaption><a href="#">2</a></figcaption>
+            </figure>
+            <figure>
+              <img src="https://assets.codepen.io/12005/sunset.jpg" alt="Sunset and boats" />
+              <figcaption><a href="#">3</a></figcaption>
+            </figure>
+            <figure>
+              <img src="https://assets.codepen.io/12005/snowy.jpg" alt="a river in the snow" />
+              <figcaption><a href="#">4</a></figcaption>
+            </figure>
+            <figure>
+              <img src="https://assets.codepen.io/12005/bristol-balloons1.jpg" alt="a single checked balloon" />
+              <figcaption><a href="#">5</a></figcaption>
+            </figure>
+            <figure>
+              <img src="https://assets.codepen.io/12005/dog-balloon.jpg" alt="a hot air balloon shaped like a dog" />
+              <figcaption><a href="#">6</a></figcaption>
+            </figure>
+            <figure>
+              <img src="https://assets.codepen.io/12005/abq-balloons.jpg" alt="View from a hot air balloon of other balloons" />
+              <figcaption><a href="#">7</a></figcaption>
+            </figure>
+            <figure>
+              <img src="https://assets.codepen.io/12005/disney-balloon.jpg" alt="a balloon fairground ride" />
+              <figcaption><a href="#">8</a></figcaption>
+            </figure>
+            <figure>
+              <img src="https://assets.codepen.io/12005/bristol-harbor.jpg" alt="sunrise over a harbor" />
+              <figcaption><a href="#">9</a></figcaption>
+            </figure>
+            <figure>
+              <img src="https://assets.codepen.io/12005/bristol-balloons2.jpg" alt="three hot air balloons in a blue sky" />
+              <figcaption><a href="#">10</a></figcaption>
+            </figure>
+            <figure>
+            <img src="https://assets.codepen.io/12005/toronto.jpg" alt="the Toronto light up sign at night" />
+              <figcaption><a href="#">11</a></figcaption>
+            </figure>
+          </div>
+
+
+	</body>
+</html>
