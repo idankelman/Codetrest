@@ -49,7 +49,24 @@ function addPin() {
 //======================================================================
 //                      Check Functions :  
 //======================================================================
-
+function signInUser()
+{
+    var email = "test@example.com";
+    var password = "hunter2";
+    //var email = Email_txt.value;
+    //var password = Password_txt.value;
+    firebase.auth().signInWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    // Signed in
+    var user = userCredential.user;
+    window.location="index.html";
+    // ...
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+  });
+}
 
 
 
@@ -95,7 +112,29 @@ function getData(Id) {
 //======================================================================
 //                      Save functions   :  
 //======================================================================
-
+function signUpUser(){
+    //=========================TODO===========================
+    //Add validation to textboxes
+    //var email = "test7@example.com";
+  //var password = "hunter2";
+  var email = User_sign_up_email.value;
+  var password = User_sign_up_pass.value;
+  
+  // [START auth_signup_password]
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((user) => {
+      // Signed in 
+      console.log(user)
+      // ...
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log('error');
+      // ..
+    });
+        //alert('please match the passwords');
+}
 function uploadPhoto() {
 
 
