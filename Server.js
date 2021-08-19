@@ -19,6 +19,8 @@ let Button_Sub;
 
 let Text_in;
 let Text_delete;
+let Email_txt;
+let Password_txt;
 let PinGrid_Main;
 
 let identifier;
@@ -61,9 +63,11 @@ document.addEventListener("DOMContentLoaded", function () {
             updatePins();
         }
     else if(identifier.innerHTML=="Login Page")
-        {
-            
-        }
+    {
+        Email_txt=document.getElementById("inputEmail");
+        Password_txt=document.getElementById("inputPassword");
+
+    }
    
 
 
@@ -110,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //======================================================================
 //                  input Declerations : 
 //======================================================================
+  
 
 
 
@@ -132,7 +137,7 @@ function CreateHomePage()
 {
     Button_in = document.getElementById("Btn_in");
     Button_delete = document.getElementById("Btn_delete");
-    Button_Sub = document.getElementById("Btn_Sub");
+    Button_Sub = document.getElementById("Button_Login");
 
     Text_in = document.getElementById("Txt_in");
     Text_delete = document.getElementById("Txt_delete");
@@ -159,4 +164,13 @@ function CreateHomePage()
 function updatePage()
 {
     Page = "SubPage";
+    firebase.auth().onAuthStateChanged(function(user){
+        if(user){ // user is signed in
+
+        }
+        else // user isn't signed in, launch login page
+        {
+            window.location='Sub.html';
+        }
+    });
 }
