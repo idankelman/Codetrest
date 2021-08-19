@@ -15,13 +15,23 @@ let Button_in;
 let Button_upload;
 let Button_delete;
 let Button_Sub;
-
+let Button_Logout;
+let Button_sign_up; // goes to the sign up page
+let Button_signUp; // submits the form to firebase
+let Button_sign_in; // logs user in
+let Button_Sign_in_Google;
 
 let Text_in;
 let Text_delete;
 let Email_txt;
 let Password_txt;
 let PinGrid_Main;
+let User_sign_up_name;
+let User_sign_up_email;
+let User_sign_up_pass;
+let User_sign_up_repeat;
+let User_sign_in_email;
+let User_sign_in_password;
 
 let identifier;
 
@@ -66,9 +76,31 @@ document.addEventListener("DOMContentLoaded", function () {
     {
         Email_txt=document.getElementById("inputEmail");
         Password_txt=document.getElementById("inputPassword");
+        Button_sign_up=document.getElementById("Btn_sign_up");
+        Button_sign_in = document.getElementById("Btn_sign_in");
+        Button_Sign_in_Google=document.getElementById("Sign_in_Google");
+
+        Button_sign_up.addEventListener("click", goToSignUp);
+        Button_Sign_in_Google.addEventListener("click", signInUserWithGoogle);
 
     }
-   
+    else if(identifier.innerHTML=="Sign Up Page")
+    {
+        User_sign_up_name =document.getElementById("user-name");
+        User_sign_up_email =document.getElementById("user-email");
+        User_sign_up_pass =document.getElementById("user-pass");
+        User_sign_up_repeat =document.getElementById("user-repeatpass");
+
+        Button_signUp=document.getElementById("Sign Up");
+        Button_signUp.addEventListener("click", signUpUser);
+
+        $('#user-pass, #user-repeatpass').on('keyup', function () {
+            if ($('#user-pass').val() == $('#user-repeatpass').val()) {
+              $('#message').html('Matching').css('color', 'green');
+            } else 
+              $('#message').html('Not Matching').css('color', 'red');
+          });
+    }
 
 
     //let temp = Pin_Root.child('Pin_'+ID);
@@ -132,12 +164,16 @@ function updatePins()
     });
 
 }
-
+function goToSignUp()
+{
+    window.location="SignUp.html";
+}
 function CreateHomePage()
 {
     Button_in = document.getElementById("Btn_in");
     Button_delete = document.getElementById("Btn_delete");
     Button_Sub = document.getElementById("Button_Login");
+    Button_Logout=document.getElementById("Button_Logout");
 
     Text_in = document.getElementById("Txt_in");
     Text_delete = document.getElementById("Txt_delete");
@@ -150,7 +186,7 @@ function CreateHomePage()
     Button_upload.addEventListener("click",uploadPhoto);
     Button_delete.addEventListener("click",deletePin);
     Button_Sub.addEventListener("click",updatePage);
-
+    Button_Logout.addEventListener("click", userLogout);
 
 
     Pin_Root = firebase.database().ref('pins/');
@@ -166,7 +202,7 @@ function updatePage()
     Page = "SubPage";
     firebase.auth().onAuthStateChanged(function(user){
         if(user){ // user is signed in
-
+            window.location="index.html";
         }
         else // user isn't signed in, launch login page
         {
