@@ -15,9 +15,11 @@ let Button_in;
 let Button_upload;
 let Button_delete;
 let Button_Sub;
+let Button_Logout;
 let Button_sign_up; // goes to the sign up page
 let Button_signUp; // submits the form to firebase
 let Button_sign_in; // logs user in
+let Button_Sign_in_Google;
 
 let Text_in;
 let Text_delete;
@@ -76,9 +78,10 @@ document.addEventListener("DOMContentLoaded", function () {
         Password_txt=document.getElementById("inputPassword");
         Button_sign_up=document.getElementById("Btn_sign_up");
         Button_sign_in = document.getElementById("Btn_sign_in");
+        Button_Sign_in_Google=document.getElementById("Sign_in_Google");
 
         Button_sign_up.addEventListener("click", goToSignUp);
-        Button_sign_in.addEventListener("click", signInUser);
+        Button_Sign_in_Google.addEventListener("click", signInUserWithGoogle);
 
     }
     else if(identifier.innerHTML=="Sign Up Page")
@@ -170,6 +173,7 @@ function CreateHomePage()
     Button_in = document.getElementById("Btn_in");
     Button_delete = document.getElementById("Btn_delete");
     Button_Sub = document.getElementById("Button_Login");
+    Button_Logout=document.getElementById("Button_Logout");
 
     Text_in = document.getElementById("Txt_in");
     Text_delete = document.getElementById("Txt_delete");
@@ -182,7 +186,7 @@ function CreateHomePage()
     Button_upload.addEventListener("click",uploadPhoto);
     Button_delete.addEventListener("click",deletePin);
     Button_Sub.addEventListener("click",updatePage);
-
+    Button_Logout.addEventListener("click", userLogout);
 
 
     Pin_Root = firebase.database().ref('pins/');
