@@ -40,9 +40,9 @@ let ID=0;
 
 
 let Pin_Root;
-let User_Root;
-let Image_Root; 
 
+let Image_Root; 
+let User_Root;
 
 
 let reader;
@@ -63,7 +63,11 @@ let Page="Home"
 //======================================================================
 
 document.addEventListener("DOMContentLoaded", function () {
+    Pin_Root = firebase.database().ref('users/pins');
+    User_Root = firebase.database().ref('users/');
     
+
+    Image_Root = firebase.storage().ref('Images/');
     identifier = document.getElementById("identify");
     if(identifier.innerHTML=="Home")
         {
@@ -189,11 +193,7 @@ function CreateHomePage()
     Button_Logout.addEventListener("click", userLogout);
 
 
-    Pin_Root = firebase.database().ref('pins/');
-    User_Root = firebase.database().ref('users/');
-
-
-    Image_Root = firebase.storage().ref('Images/');
+    
     
 }
 
