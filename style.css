@@ -305,9 +305,6 @@ body {
 
   .search-box:hover>.search-txt{
     color: black;
-      width: 80%;
-      padding: 0 6px;
-      max-width: 90%;
   }
 
   .search-box:hover>.search-btn{
@@ -358,6 +355,7 @@ body {
       
 
   }
+<<<<<<< HEAD
 
   .search-txt::placeholder{
         border: none;
@@ -368,8 +366,6 @@ body {
         line-height: 40px;
         opacity: 0.8; /* Firefox */
 }
-  
-  
   
 /* sign in FORM */
 #logreg-forms{
