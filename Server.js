@@ -43,9 +43,9 @@ let ID=0;
 
 
 let Pin_Root;
-let User_Root;
-let Image_Root; 
 
+let Image_Root; 
+let User_Root;
 
 
 let reader;
@@ -73,7 +73,11 @@ let Page="Home"
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    Pin_Root = firebase.database().ref('users/pins');
+    User_Root = firebase.database().ref('users/');
     
+
+    Image_Root = firebase.storage().ref('Images/');
     identifier = document.getElementById("identify");
 
     if(identifier.innerHTML=="Home")
@@ -84,12 +88,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
     else if(identifier.innerHTML=="Login Page")
     {
-            CreateLoginPage();
+
+        Email_txt=document.getElementById("inputEmail");
+        Password_txt=document.getElementById("inputPassword");
+        Button_sign_up=document.getElementById("Btn_sign_up");
+        Button_sign_in = document.getElementById("Btn_sign_in");
+        Button_Sign_in_Google=document.getElementById("Sign_in_Google");
+
+        Button_sign_up.addEventListener("click", goToSignUp);
+        Button_Sign_in_Google.addEventListener("click", signInUserWithGoogle);
+        Button_sign_in.addEventListener("click", signInUser);
+
 
     }
     else if(identifier.innerHTML=="Sign Up Page")
     {
             CreateSignUpPage();
+    }
+    else if(identifier.innerHTML=="User Screen")
+    {
+        let userInfo = document.getElementById("user info");
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                console.log(user.displayName);
+                let name = user.displayName;
+                if(name===undefined || name === null)
+                    name = user.email.substring(0, user.email.indexOf('@'));
+                console.log(name);
+                userInfo.innerHTML=`hello my name is ${name} `
+            } else {
+                alert('Error: no user is logged in');
+            }
+          });
+        
     }
 
 
@@ -141,3 +172,59 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+function updatePins()
+{
+    
+    Pin_Root.on('value',function(snap) {
+        Pins = [];
+        snap.forEach(function(item) {
+            var itemVal = item.val();
+            Pins.push(itemVal);
+        });
+        ID = Pins.length;
+        addPin();
+    });
+
+}
+function goToSignUp()
+{
+    window.location="SignUp.html";
+}
+function CreateHomePage()
+{
+    Button_in = document.getElementById("Btn_in");
+    Button_delete = document.getElementById("Btn_delete");
+    Button_Sub = document.getElementById("Button_Login");
+    Button_Logout=document.getElementById("Button_Logout");
+
+    Text_in = document.getElementById("Txt_in");
+    Text_delete = document.getElementById("Txt_delete");
+    Par = document.getElementById("Text");
+    Button_upload =document.getElementById("Btn_up");
+    PinGrid_Main = document.getElementById("PinGrid1");
+  
+  
+   // Button_in.addEventListener("click", foo);
+    Button_upload.addEventListener("click",uploadPhoto);
+    Button_delete.addEventListener("click",deletePin);
+    Button_Sub.addEventListener("click",updatePage);
+    Button_Logout.addEventListener("click", userLogout);
+
+
+    
+    
+}
+
+function updatePage()
+{
+    Page = "SubPage";
+    firebase.auth().onAuthStateChanged(function(user){
+        if(user){ // user is signed in
+            window.location="UserScreen.html";
+        }
+        else // user isn't signed in, launch login page
+        {
+            window.location='Sub.html';
+        }
+    });
+}
