@@ -23,6 +23,9 @@ let Button_sign_up; // goes to the sign up page
 let Button_signUp; // submits the form to firebase
 let Button_sign_in; // logs user in
 let Button_Sign_in_Google;
+let Button_add_pin;
+let Button_Upload_photo;
+let Button_submit_pin;
 
 let Text_in;
 let Text_delete;
@@ -35,11 +38,15 @@ let User_sign_up_pass;
 let User_sign_up_repeat;
 let User_sign_in_email;
 let User_sign_in_password;
-
+let Pin_title;
+let Pin_Desc;
 let identifier;
 
 let digits = 10; // the number of digits for the ID generator
 let ID=0;
+let UserEmail;
+let UserComma;
+let UserName;
 
 
 let Pin_Root;
@@ -56,7 +63,7 @@ let CurrPhoto;
 
 let Files = [];
 let Pins = [];
-
+let Images=[];
 let Page="Home"
 
 
@@ -84,6 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             CreateHomePage();
             updatePins();
+            
         }
 
     else if(identifier.innerHTML=="Login Page")
@@ -112,6 +120,9 @@ document.addEventListener("DOMContentLoaded", function () {
             if (user) {
                 console.log(user.displayName);
                 let name = user.displayName;
+                UserName=name;
+                UserEmail = user.email;
+                UserComma=UserEmail.replace(".", ",");
                 if(name===undefined || name === null)
                     name = user.email.substring(0, user.email.indexOf('@'));
                 console.log(name);
@@ -120,7 +131,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert('Error: no user is logged in');
             }
           });
-        
+        Button_add_pin=document.getElementById("add_pin");
+    
+
+        Button_add_pin.addEventListener("click", goToAddPin);
+    }
+    else if(identifier.innerHTML=="Add Pin Page")
+    {
+       Pin_title=document.getElementById("Pin_title");
+       Pin_Desc = document.getElementById("Pin_Desc");
+       
+       Button_Upload_photo=document.getElementById("Btn_upload");
+       Button_submit_pin = document.getElementById("submit_pin");
+
+       Button_Upload_photo.addEventListener("click", selectTheImage);
+       Button_submit_pin.addEventListener("click", submitPin);
     }
 
 
@@ -167,22 +192,31 @@ document.addEventListener("DOMContentLoaded", function () {
 //======================================================================
 //                  input Declerations : 
 //======================================================================
-  
+
+function goToAddPin()
+{
+    window.location="AddUserPin.html";
+}  
 
 
 
 
 function updatePins()
 {
-    
-    Pin_Root.on('value',function(snap) {
+  
+    User_Root.once('value',function(users) { // all users
         Pins = [];
-        snap.forEach(function(item) {
-            var itemVal = item.val();
-            Pins.push(itemVal);
+        
+        users.forEach(function(user) { // for each user
+            user.once('value', function(pin){
+                
+                var pinVal = pin.val();
+                Pins.push(pinVal);
+            })
+            
         });
-        ID = Pins.length;
-        addPin();
+        
+        //addPin();
     });
 
 }
@@ -210,7 +244,7 @@ function CreateHomePage()
     Button_Sub.addEventListener("click",updatePage);
     Button_Logout.addEventListener("click", userLogout);
 
-
+    
     
     
 }
