@@ -89,13 +89,19 @@ function addPin() {
         let desp = Pins[i].Description;
         PinGrid_Main.innerHTML += 
         `<figure id= "${Pin_id}">
-        <div class = "image">
-        <img class ="image__img" src="${url}" alt="A windmill" />
-            <div class = "image__overlay">
-                <div class="image__title">${desp}</div>
+            <div class = "image">
+            <img class ="image__img" src="${url}" alt="A windmill" />
+                <div class = "image__overlay">
                 <p class = "image_description">Pin_${Pin_id}</p>
+                    
+                
+                <h1>hello</h1>
+                 </div>
+            
+          
             </div>
-        </div>
+            
+            <div class="image__title">${desp}</div>
         </figure>`
     }
 

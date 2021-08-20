@@ -38,6 +38,7 @@ body {
     max-width: 100%;
     display: block;
     border-radius: 4%;
+    
   }
   
   figure {
@@ -46,11 +47,13 @@ body {
     grid-template-rows: 1fr auto;
     margin-bottom: 10px;
     break-inside: avoid;
+    
   }
   
   figure > img {
     grid-row: 1 / -1;
     grid-column: 1;
+    
   }
   
   figure a {
@@ -64,13 +67,13 @@ body {
     background-color: rgba(255,255,255,.5);
     padding: .2em .5em;
     justify-self: start;
+
   }
   
   .container {
-    column-count: 6;
+    column-count: 9;
     column-gap: 5px;
-    
-    
+     
   }
 
 
@@ -82,6 +85,7 @@ body {
 .image__img {
     display: block;
     width: 100%;
+    
 }
 
 .image__overlay {
@@ -126,16 +130,18 @@ body {
 
 .image__title {
     
-    font-size: 2em;
+    margin: 5px;
+    font-size: 25px;
     font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+   
     font-family: font !important;
 }
 
 .image__description {
     font-size: 1.25em;
     margin-top: 0.25em;
-   
-    
     font-family: font !important;
 }
 
@@ -247,6 +253,7 @@ body {
     font-family: font !important;
     color: #edf0f1;
     text-decoration: none;
+    margin: 0 15px;
     margin-right: 40px;
     padding: 20px 20px;
     background-color: rgb(224, 108, 117);
