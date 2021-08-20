@@ -50,8 +50,9 @@ function addPin() {
 //                      Check Functions :  
 //======================================================================
 function userLogout(){
+    
     firebase.auth().signOut().then(() => {
-        alert('Sucssesfly logged out');
+       
         // Sign-out successful.
       }).catch((error) => {
         alert('Error on logging out');
@@ -60,20 +61,21 @@ function userLogout(){
 }
 function signInUser()
 {
-    var email = "test@example.com";
-    var password = "hunter2";
-    //var email = Email_txt.value;
-    //var password = Password_txt.value;
+    //var email = "test@example.com";
+    //var password = "hunter2";
+    var email = Email_txt.value;
+    var password = Password_txt.value;
     firebase.auth().signInWithEmailAndPassword(email, password)
   .then((userCredential) => {
     // Signed in
     var user = userCredential.user;
-    window.location="index.html";
+    window.location="UserScreen.html";
     // ...
   })
   .catch((error) => {
     var errorCode = error.code;
     var errorMessage = error.message;
+    alert(errorMessage);
   });
 }
 function signInUserWithGoogle()
@@ -159,22 +161,38 @@ function signUpUser(){
     //Add validation to textboxes
     //var email = "test13@example.com";
     //var password = "jsdoij2ofFSdf!";
-  
+  var nickName = User_sign_up_name.value;
   var email = User_sign_up_email.value;
   var password = User_sign_up_pass.value;
-  
+  var repeat = User_sign_up_repeat.value;
   // [START auth_signup_password]
-  firebase.auth().createUserWithEmailAndPassword(email, password).then(function(user){
-    console.log('everything went fine');
-    console.log('user object:' + user);
-    //you can save the user data here.
-    }).catch(function(error) {
-    console.log('there was an error');
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(errorCode + ' - ' + errorMessage);
-    });
-        //alert('please match the passwords');
+  if(password == repeat)
+  {
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(function(user){
+        console.log('everything went fine');
+        console.log('user object:' + user);
+
+        
+        //you can save the user data here.
+        
+            // if we reached here then the user doesnt exists
+            
+            
+            User_Root.child(nickName).set({
+                email: email
+            })
+            window.location="UserScreen.html";
+        })
+
+        .catch(function(error) {
+        console.log('there was an error');
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(errorCode + ' - ' + errorMessage);
+        });
+    }
+    else
+        alert('please match the passwords');
 }
 function uploadPhoto() {
 

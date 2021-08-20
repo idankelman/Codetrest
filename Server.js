@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         Button_sign_up.addEventListener("click", goToSignUp);
         Button_Sign_in_Google.addEventListener("click", signInUserWithGoogle);
-
+        Button_sign_in.addEventListener("click", signInUser);
     }
     else if(identifier.innerHTML=="Sign Up Page")
     {
@@ -104,6 +104,23 @@ document.addEventListener("DOMContentLoaded", function () {
             } else 
               $('#message').html('Not Matching').css('color', 'red');
           });
+    }
+    else if(identifier.innerHTML=="User Screen")
+    {
+        let userInfo = document.getElementById("user info");
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                console.log(user.displayName);
+                let name = user.displayName;
+                if(name===undefined || name === null)
+                    name = user.email.substring(0, user.email.indexOf('@'));
+                console.log(name);
+                userInfo.innerHTML=`hello my name is ${name} `
+            } else {
+                alert('Error: no user is logged in');
+            }
+          });
+        
     }
 
 
@@ -202,7 +219,7 @@ function updatePage()
     Page = "SubPage";
     firebase.auth().onAuthStateChanged(function(user){
         if(user){ // user is signed in
-            window.location="index.html";
+            window.location="UserScreen.html";
         }
         else // user isn't signed in, launch login page
         {
