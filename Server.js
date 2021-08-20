@@ -11,6 +11,9 @@
 //                  Variable Declerations : 
 //======================================================================
 
+let Loader_Anim;
+
+
 let Button_in;  
 let Button_upload;
 let Button_delete;
@@ -58,9 +61,16 @@ let Page="Home"
 
 
 
+
+
 //======================================================================
 //                  preload+setup Declerations : 
 //======================================================================
+
+
+
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
     Pin_Root = firebase.database().ref('users/pins');
@@ -69,15 +79,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     Image_Root = firebase.storage().ref('Images/');
     identifier = document.getElementById("identify");
+
     if(identifier.innerHTML=="Home")
         {
-            console.log(Page);
-            console.log('home page');
             CreateHomePage();
             updatePins();
         }
+
     else if(identifier.innerHTML=="Login Page")
     {
+
         Email_txt=document.getElementById("inputEmail");
         Password_txt=document.getElementById("inputPassword");
         Button_sign_up=document.getElementById("Btn_sign_up");
@@ -87,23 +98,12 @@ document.addEventListener("DOMContentLoaded", function () {
         Button_sign_up.addEventListener("click", goToSignUp);
         Button_Sign_in_Google.addEventListener("click", signInUserWithGoogle);
         Button_sign_in.addEventListener("click", signInUser);
+
+
     }
     else if(identifier.innerHTML=="Sign Up Page")
     {
-        User_sign_up_name =document.getElementById("user-name");
-        User_sign_up_email =document.getElementById("user-email");
-        User_sign_up_pass =document.getElementById("user-pass");
-        User_sign_up_repeat =document.getElementById("user-repeatpass");
-
-        Button_signUp=document.getElementById("Sign Up");
-        Button_signUp.addEventListener("click", signUpUser);
-
-        $('#user-pass, #user-repeatpass').on('keyup', function () {
-            if ($('#user-pass').val() == $('#user-repeatpass').val()) {
-              $('#message').html('Matching').css('color', 'green');
-            } else 
-              $('#message').html('Not Matching').css('color', 'red');
-          });
+            CreateSignUpPage();
     }
     else if(identifier.innerHTML=="User Screen")
     {
@@ -168,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //                  input Declerations : 
 //======================================================================
   
+
 
 
 

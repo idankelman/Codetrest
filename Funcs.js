@@ -13,6 +13,72 @@
 //======================================================================
 
 
+
+function CreateHomePage()
+{
+    Button_in = document.getElementById("Btn_in");
+    Button_delete = document.getElementById("Btn_delete");
+    Button_Sub = document.getElementById("Button_Login");
+    Button_Logout=document.getElementById("Button_Logout");
+
+    Text_in = document.getElementById("Txt_in");
+    Text_delete = document.getElementById("Txt_delete");
+    Par = document.getElementById("Text");
+    Button_upload =document.getElementById("Btn_up");
+    PinGrid_Main = document.getElementById("PinGrid1");
+    Loader_Anim = document.getElementById("loading_Anim");
+  
+  
+   // Button_in.addEventListener("click", foo);
+    Button_upload.addEventListener("click",uploadPhoto);
+    Button_delete.addEventListener("click",deletePin);
+    Button_Sub.addEventListener("click",updatePage);
+    Button_Logout.addEventListener("click", userLogout);
+
+
+    Pin_Root = firebase.database().ref('pins/');
+    User_Root = firebase.database().ref('users/');
+
+
+    Image_Root = firebase.storage().ref('Images/');
+    
+}
+
+
+function CreateLoginPage()
+{
+    Email_txt=document.getElementById("inputEmail");
+    Password_txt=document.getElementById("inputPassword");
+    Button_sign_up=document.getElementById("Btn_sign_up");
+    Button_sign_in = document.getElementById("Btn_sign_in");
+    Button_Sign_in_Google=document.getElementById("Sign_in_Google");
+
+    Button_sign_up.addEventListener("click", goToSignUp);
+    Button_Sign_in_Google.addEventListener("click", signInUserWithGoogle);
+}
+
+
+
+function CreateSignUpPage()
+{
+    User_sign_up_name =document.getElementById("user-name");
+    User_sign_up_email =document.getElementById("user-email");
+    User_sign_up_pass =document.getElementById("user-pass");
+    User_sign_up_repeat =document.getElementById("user-repeatpass");
+
+    Button_signUp=document.getElementById("Sign Up");
+    Button_signUp.addEventListener("click", signUpUser);
+
+    $('#user-pass, #user-repeatpass').on('keyup', function () {
+        if ($('#user-pass').val() == $('#user-repeatpass').val()) {
+          $('#message').html('Matching').css('color', 'green');
+        } else 
+          $('#message').html('Not Matching').css('color', 'red');
+      });
+}
+
+
+
 function addPin() {
 
     PinGrid_Main.innerHTML = '';
@@ -34,6 +100,8 @@ function addPin() {
     }
 
 
+
+
    
 }
 
@@ -42,6 +110,10 @@ function addPin() {
 //                      Show Functions :   
 //======================================================================
 
+function goToSignUp()
+{
+    window.location="SignUp.html";
+}
 
 
 
@@ -49,6 +121,11 @@ function addPin() {
 //======================================================================
 //                      Check Functions :  
 //======================================================================
+
+
+
+
+
 function userLogout(){
     
     firebase.auth().signOut().then(() => {
@@ -124,14 +201,51 @@ function signInUserWithGoogle()
 
 
 
+function updatePins()
+{
+    
+    Pin_Root.on('value',function(snap) {
+        Pins = [];
+        snap.forEach(function(item) {
+            var itemVal = item.val();
+            Pins.push(itemVal);
+        });
+        ID = Pins.length;
+        addPin();
+    });
+    //StopLoading();
+
+}
 
 
+function StopLoading()
+{
+    Loader_Anim.style.display= "none";
+}
+
+
+function updatePage()
+{
+    Page = "SubPage";
+    firebase.auth().onAuthStateChanged(function(user){
+        if(user){ // user is signed in
+            window.location="index.html";
+        }
+        else // user isn't signed in, launch login page
+        {
+            window.location='Sub.html';
+        }
+    });
+}
 
 
 
 //======================================================================
 //                      Delete Functions  :  
 //======================================================================
+
+
+
 function deletePin()
 {
     let id_Delete = Text_delete.value;
@@ -156,6 +270,11 @@ function getData(Id) {
 //======================================================================
 //                      Save functions   :  
 //======================================================================
+
+
+
+
+
 function signUpUser(){
     //=========================TODO===========================
     //Add validation to textboxes
@@ -194,6 +313,10 @@ function signUpUser(){
     else
         alert('please match the passwords');
 }
+
+
+
+
 function uploadPhoto() {
 
 
@@ -247,4 +370,3 @@ function SavePin(ImageUrl) {
 
 
 }
-
