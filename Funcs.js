@@ -93,9 +93,9 @@ function addPin() {
         <div class = "image">
         <img class ="image__img" src="${url}" alt="A windmill" />
             <div class = "image__overlay">
-                <div class="image__title">${title}</div>
-                <div class="image__title">${desp}</div>
-                <p class = "image_description">Pin_${Pin_id}</p>
+                <div class="image__title">Title: ${title}</div>
+                
+                <p class = "image_description">Description: ${desp}</p>
             </div>
         </div>
         </figure>`
@@ -147,23 +147,26 @@ function signInUser()
     firebase.auth().signInWithEmailAndPassword(email, password)
   .then((result) => {
     // Signed in
-    
+   let done = 0;
     User_Root.on('value',function(snap) {
         snap.forEach(function(item) {
             if(item.val().email==result.user.email) // email already exists, go to user screen
             {
+                done=1;
                 window.location="UserScreen.html";
                 return;
             }
         });
         // if we reached here then the user doesnt exists
         console.log(result.user.displayName);
-       
-        
-        User_Root.child(emailForChild).set({
+        if(done==0)
+        {
+            emailForChild=result.user.email.replace(".", ",");
+            User_Root.child(emailForChild).set({
             email: result.user.email
-        })
+            })
         window.location="UserScreen.html";
+        }
     });
     
     // ...
@@ -323,7 +326,7 @@ function updatePage()
     Page = "SubPage";
     firebase.auth().onAuthStateChanged(function(user){
         if(user){ // user is signed in
-            window.location="index.html";
+            window.location="UserScreen.html";
         }
         else // user isn't signed in, launch login page
         {
