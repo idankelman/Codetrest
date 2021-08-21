@@ -100,10 +100,10 @@ function addPin() {
 
 
 
-                <div class="image__title">${desp}</div>
+                <div class="image__title">${title}</div>
 
                 <!--
-
+                
                 <p class = "image_description">Pin_${Pin_id}</p>
 
                 !-->
