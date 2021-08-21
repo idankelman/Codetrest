@@ -86,6 +86,7 @@ function addPin() {
 
         let Pin_id = Pins[i].Id;
         let url = Pins[i].URL;
+        let title = Pins[i].Title;
         let desp = Pins[i].Description;
 
 
@@ -96,6 +97,7 @@ function addPin() {
         <div class = "image">
         <img class ="image__img" src="${url}" alt="A windmill" />
             <div class = "image__overlay">
+
 
 
                 <div class="image__title">${desp}</div>
@@ -119,6 +121,7 @@ function addPin() {
                 </a>
 
                 
+
             </div>
 
 
@@ -180,10 +183,30 @@ function signInUser()
     var email = Email_txt.value;
     var password = Password_txt.value;
     firebase.auth().signInWithEmailAndPassword(email, password)
-  .then((userCredential) => {
+  .then((result) => {
     // Signed in
-    var user = userCredential.user;
-    window.location="UserScreen.html";
+   let done = 0;
+    User_Root.on('value',function(snap) {
+        snap.forEach(function(item) {
+            if(item.val().email==result.user.email) // email already exists, go to user screen
+            {
+                done=1;
+                window.location="UserScreen.html";
+                return;
+            }
+        });
+        // if we reached here then the user doesnt exists
+        console.log(result.user.displayName);
+        if(done==0)
+        {
+            emailForChild=result.user.email.replace(".", ",");
+            User_Root.child(emailForChild).set({
+            email: result.user.email
+            })
+        window.location="UserScreen.html";
+        }
+    });
+    
     // ...
   })
   .catch((error) => {
@@ -198,27 +221,30 @@ function signInUser()
 function signInUserWithGoogle()
 {
     var provider = new firebase.auth.GoogleAuthProvider();
-    
+    let dont = 0;
   firebase.auth().signInWithPopup(provider)
         .then((result) => {
     // Success.
-             
+            emailForChild=result.user.email.replace(".", ",");
             User_Root.on('value',function(snap) {
                 snap.forEach(function(item) {
                     if(item.val().email==result.user.email) // email already exists, go to user screen
                     {
+                        dont =1;
                         window.location="UserScreen.html";
                         return;
                     }
                 });
                 // if we reached here then the user doesnt exists
                 console.log(result.user.displayName);
-                userName = result.user.displayName;
-                
-                User_Root.child(userName).set({
+               
+                if(dont==0)
+                {
+                User_Root.child(emailForChild).set({
                     email: result.user.email
                 })
                 window.location="UserScreen.html";
+                }
             });
             
             
@@ -238,21 +264,93 @@ function signInUserWithGoogle()
 //======================================================================
 //                      Update Functions  :  
 //======================================================================
+function getUserEmail()
+{
+    
+}
+function submitPin(){
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            //console.log(user.displayName);
+            //console.log(user.email);
+            ID = parseInt(Math.random()*Math.pow(10,digits));
+            UserComma = user.email.replace(".", ",");
+            let metadata = { contentType: Images[0].type }
+            let uploadTask = Image_Root.child('Pin_'+ID).put(Images[0], metadata);
+            let ImageUrl;
+                    
+                    
 
+            uploadTask.on('state_changed',
+                    
+            function progress (snapshot) {
+                let precentage = (snapshot.bytesTransferred / snapshot.totalBytes)*100;
+                console.log(precentage);
+            },
+            function error (err){
+                console.log("error accured");
+            },
+
+            function complete()
+            {
+                
+                uploadTask.snapshot.ref.getDownloadURL().then(function (url) {
+                ImageUrl = url;
+                
+                SavePin(ImageUrl, UserComma);
+               
+                });
+
+            });
+             
+        } else {
+            alert('Error: no user is logged in');
+        }
+      });
+    
+    
+}
+
+function selectTheImage(){
+    var input = document.createElement('input');
+    input.type='file';
+    
+    input.onchange= function(e)
+    {
+        Images = e.target.files;
+        reader=new FileReader();
+        reader.onload = function(){
+            document.getElementById("my_img").src = reader.result;
+        }
+        reader.readAsDataURL(Images[0]);
+    }
+    input.click();
+
+}
 
 
 function updatePins()
 {
     
-    Pin_Root.on('value',function(snap) {
+   
+    User_Root.on("value", (snapshot) => { // all users
         Pins = [];
-        snap.forEach(function(item) {
-            var itemVal = item.val();
-            Pins.push(itemVal);
-        });
-        ID = Pins.length;
-        addPin();
-    });
+        snapshot.forEach((childSnapshot)=> { // one user
+          childSnapshot.forEach((childrenSnapshot)=>{ // one pin
+            if(typeof childrenSnapshot.val() === 'string' || childrenSnapshot.val() instanceof String)
+            {
+                console.log(childrenSnapshot.val());
+                
+            }
+            else
+            {
+                var pinVal = childrenSnapshot.val();
+                Pins.push(pinVal);
+            }
+          });
+      })
+      addPin();
+    }); 
     //StopLoading();
 
 }
@@ -269,7 +367,7 @@ function updatePage()
     Page = "SubPage";
     firebase.auth().onAuthStateChanged(function(user){
         if(user){ // user is signed in
-            window.location="index.html";
+            window.location="UserScreen.html";
         }
         else // user isn't signed in, launch login page
         {
@@ -342,14 +440,14 @@ function signUpUser(){
     firebase.auth().createUserWithEmailAndPassword(email, password).then(function(user){
         console.log('everything went fine');
         console.log('user object:' + user);
-
+        emailForChild=email.replace(".", ",");
         
         //you can save the user data here.
         
             // if we reached here then the user doesnt exists
             
             
-            User_Root.child(nickName).set({
+            User_Root.child(emailForChild).set({
                 email: email
             })
             window.location="UserScreen.html";
@@ -412,10 +510,15 @@ function uploadPhoto() {
 
 
 
-function SavePin(ImageUrl) {
-    let txt = Text_in.value;
-    Pin_Root.child('Pin_' + ID).set({
-        Description: txt,
+function SavePin(ImageUrl, UserComma) {
+    let Description = Pin_Desc.value;
+    let Title = Pin_title.value;
+    window.location = "UserScreen.html";
+    
+    let user = firebase.database().ref('users/'+UserComma+'/');
+    user.child('Pin_'+ID).set({
+        Title: Title,
+        Description: Description,
         Id: ID,
         URL: ImageUrl
     });
