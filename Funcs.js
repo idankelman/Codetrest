@@ -88,15 +88,50 @@ function addPin() {
         let url = Pins[i].URL;
         let title = Pins[i].Title;
         let desp = Pins[i].Description;
+
+
+
+
         PinGrid_Main.innerHTML += 
         `<figure id= "${Pin_id}">
         <div class = "image">
         <img class ="image__img" src="${url}" alt="A windmill" />
             <div class = "image__overlay">
-                <div class="image__title">Title: ${title}</div>
+
+
+
+                <div class="image__title">${desp}</div>
+
+                <!--
+
+                <p class = "image_description">Pin_${Pin_id}</p>
+
+                !-->
+
+                <a class="cta3" id = "btn_add" onclick="StopLoading()">
+                <i class="fas fa-plus"></i>
+                </a>  
+
+                <a class="cta3" href="Sub.html">
+                <i class="fas fa-code"></i>
+                </a>  
+
+                <a class="cta3" id = "btn_like" onclick="updateLikes(${Pin_id})" >
+                <i class="fas fa-heart"></i>
+                </a>
+
                 
-                <p class = "image_description">Description: ${desp}</p>
+
             </div>
+
+
+           
+
+
+                
+                
+          
+              
         </div>
         </figure>`
     }
@@ -138,6 +173,9 @@ function userLogout(){
       });
       
 }
+
+
+
 function signInUser()
 {
     //var email = "test@example.com";
@@ -177,6 +215,9 @@ function signInUser()
     alert(errorMessage);
   });
 }
+
+
+
 function signInUserWithGoogle()
 {
     var provider = new firebase.auth.GoogleAuthProvider();
@@ -333,6 +374,18 @@ function updatePage()
             window.location='Sub.html';
         }
     });
+}
+
+
+function updateLikes(ID)
+{
+    for(let i =0;i<Pins.length;i++)
+        if(Pins[i].Id==ID)
+        {
+            console.log("updating pin:" + ID);
+            //TODO : need to update also in the firebase. 
+        }
+    
 }
 
 
