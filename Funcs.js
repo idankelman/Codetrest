@@ -114,7 +114,7 @@ function addPin() {
                 <i class="fas fa-code"></i>
                 </a>  
 
-                <a class="cta3" id = "btn_like" >
+                <a class="cta3" id = "btn_like" onclick="updateLikes(${Pin_id})" >
                 <i class="fas fa-heart"></i>
                 </a>
 
@@ -170,6 +170,9 @@ function userLogout(){
       });
       
 }
+
+
+
 function signInUser()
 {
     //var email = "test@example.com";
@@ -189,6 +192,9 @@ function signInUser()
     alert(errorMessage);
   });
 }
+
+
+
 function signInUserWithGoogle()
 {
     var provider = new firebase.auth.GoogleAuthProvider();
@@ -270,6 +276,18 @@ function updatePage()
             window.location='Sub.html';
         }
     });
+}
+
+
+function updateLikes(ID)
+{
+    for(let i =0;i<Pins.length;i++)
+        if(Pins[i].Id==ID)
+        {
+            console.log("updating pin:" + ID);
+            //TODO : need to update also in the firebase. 
+        }
+    
 }
 
 
