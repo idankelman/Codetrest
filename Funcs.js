@@ -87,14 +87,48 @@ function addPin() {
         let Pin_id = Pins[i].Id;
         let url = Pins[i].URL;
         let desp = Pins[i].Description;
+
+
+
+
         PinGrid_Main.innerHTML += 
         `<figure id= "${Pin_id}">
         <div class = "image">
         <img class ="image__img" src="${url}" alt="A windmill" />
             <div class = "image__overlay">
+
+
                 <div class="image__title">${desp}</div>
+
+                <!--
+
                 <p class = "image_description">Pin_${Pin_id}</p>
+
+                !-->
+
+                <a class="cta3" id = "btn_add" onclick="StopLoading()">
+                <i class="fas fa-plus"></i>
+                </a>  
+
+                <a class="cta3" href="Sub.html">
+                <i class="fas fa-code"></i>
+                </a>  
+
+                <a class="cta3" id = "btn_like" >
+                <i class="fas fa-heart"></i>
+                </a>
+
+                
             </div>
+
+
+           
+
+
+                
+                
+          
+              
         </div>
         </figure>`
     }
