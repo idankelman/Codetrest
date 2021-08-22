@@ -213,7 +213,7 @@ body {
    
 	/*width: 236px;
 	height: 472px;*/
-  
+
 	border-radius: 16px;
 	position: relative;
 
@@ -254,7 +254,7 @@ body {
 	left: 50%;
 	transform: translate(-50%, -50%);
 
-	z-index: 9999;
+	z-index: 5;
 	background-color: rgba(0, 0, 0, 0.4);
 	opacity: 0;
 	transition-duration: 0.3s;
