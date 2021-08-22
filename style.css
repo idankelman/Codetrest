@@ -34,10 +34,12 @@ body {
 ====================================================================================== */
 
 
+
   img {
     max-width: 100%;
-    display: block;
+    display: inline-block;
     border-radius: 4%;
+    
   }
   
   figure {
@@ -84,6 +86,8 @@ body {
 .image__img {
     display: block;
     width: 100%;
+    max-width: 100%;
+    min-width: 100%;
 }
 
 .image__overlay {
@@ -177,6 +181,99 @@ body {
 
 
 
+/* Masonry on large screens */
+@media only screen and (min-width: 1024px) {
+    .container {
+      column-count: 4;
+    }
+  }
+  
+  /* Masonry on medium-sized screens */
+  @media only screen and (max-width: 1023px) and (min-width: 768px) {
+    .container {
+      column-count: 3;
+    }
+  }
+  
+  /* Masonry on small screens */
+  @media only screen and (max-width: 767px) and (min-width: 540px) {
+    .container {
+      column-count: 2;
+    }
+  }
+
+
+  
+/* ===================================================================================
+                                    Pins V#2
+====================================================================================== */
+
+
+  :root {
+    --card_width: 250px;
+    --row_increment: 10px;
+    --card_border_radius: 16px;
+    --card_small: 26;
+    --card_med: 33;
+    --card_large: 45;
+}
+
+
+.pin_container {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, var(--card_width));
+    grid-auto-rows: var(--row_increment);
+    justify-content: center;
+
+    background-color: black;
+}
+
+.card {
+    padding: 0;
+    margin: 15px 10px;
+    border-radius: var(--card_border_radius);
+    background-color: red;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+}
+
+.card_small{
+    grid-row-end: span var(--card_small);
+}
+
+.card_medium{
+    grid-row-end: span var(--card_med);
+}
+
+.card_large{
+    grid-row-end: span var(--card_large);
+}
+
+.card__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 50 ;
+    border-radius: 4%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s;
+    font-family: font !important;
+}
 
 
 /* ===================================================================================
@@ -210,11 +307,14 @@ body {
   .sticky-header-wrapper{
       
     margin-top: 100px;
+    
 
   }
 
   .sticky-header{
    
+ 
+  
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -281,7 +381,7 @@ body {
     font-family: font !important;
     color: #edf0f1;
     text-decoration: none;
-    margin-right: 40px;
+    margin: 0 5px;
     padding: 20px 20px;
     background-color: rgb(224, 108, 117);
     border: none;
@@ -300,8 +400,8 @@ body {
     color: #edf0f1;
     text-decoration: none;
     margin-right: 80%;
-    margin:  10px;
-    padding: 20px 20px;
+    margin:  2px;
+    padding: 15px 15px;
     background-color:#edf0f1 ;
     color: rgb(40, 44, 52);
     border: none;
@@ -334,8 +434,8 @@ body {
   .cta3:hover{
     background-color:white ;
     color: rgb(0, 0, 0);
-    padding: 30px 30px;
-    transform: translateY(10px);
+    padding: 15px 15px;
+    transform: translateY(5px);
   }
   
   /* Mobile Nav */
@@ -426,10 +526,10 @@ body {
     height: 50px;
     line-height: 40px;
     font-family: font !important;
-    width: 10000000px;
+    width: 10000px;
     transition: 0.4s;
     padding: 0px;
-    max-width: 91%;
+    max-width: 90%;
     line-height: 3.2rem;
    
   }

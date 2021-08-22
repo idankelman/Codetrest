@@ -77,7 +77,7 @@ function CreateSignUpPage()
       });
 }
 
-
+/*
 
 function addPin() {
 
@@ -140,6 +140,56 @@ function addPin() {
 
 
    
+}
+
+*/
+
+
+function addPin()
+{
+
+    //PinGrid_Main.innerHTML = '';
+    for (let i = 0; i < Pins.length; i++) {
+
+        let Pin_id = Pins[i].Id;
+        let url = Pins[i].URL;
+        let title = Pins[i].Title;
+        let desp = Pins[i].Description;
+
+
+
+
+        PinGrid_Main.innerHTML += 
+        
+            `<div class="card" id= "${Pin_id}">
+                    <div class = "image">
+                        <img class ="image__img" src= "${url}"/>
+                            <div class = "image__overlay">
+
+
+                                <a class="cta3" id = "btn_add" onclick="StopLoading()">
+                                    <i class="fas fa-plus"></i>
+                                    </a>  
+                    
+                                    <a class="cta3" href="Sub.html">
+                                    <i class="fas fa-code"></i>
+                                    </a>  
+                    
+                                    <a class="cta3" id = "btn_like" >
+                                    <i class="fas fa-heart"></i>
+                                    </a>
+
+
+                            </div>
+                    </div>
+                </div>  
+        </div>
+        </figure>`
+    }
+
+
+
+
 }
 
 
