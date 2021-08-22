@@ -78,8 +78,9 @@ function CreateSignUpPage()
 }
 
 
+//old add pin function
 
-function addPin() {
+function addPin2() {
 
     PinGrid_Main.innerHTML = '';
     for (let i = 0; i < Pins.length; i++) {
@@ -135,11 +136,59 @@ function addPin() {
         </div>
         </figure>`
     }
+ 
+}
+
+
+function addPin()
+{
+
+    PinGrid_Main.innerHTML = '';
+    for (let i = 0; i < Pins.length; i++) {
+
+        let Pin_id = Pins[i].Id;
+        let url = Pins[i].URL;
+        let title = Pins[i].Title;
+        let desp = Pins[i].Description;
 
 
 
 
-   
+        PinGrid_Main.innerHTML += `
+            <div class="card" id = "${Pin_id}">
+            <div class="pin_title"></div>
+
+            <div class="pin_modal">
+                <div class="modal_head">
+                    <div class="save_card">Save</div>
+                </div>
+
+                <div class="modal_foot">
+                    <div class="destination">
+                        <div class="pint_mock_icon_container">
+                            <img src="./images/upper-right-arrow.png" alt="destination" class="pint_mock_icon">
+                        </div>
+                        <span>Eatery</span>
+                    </div>
+
+                    <div class="pint_mock_icon_container">
+                        <img src="./images/send.png" alt="send" class="pint_mock_icon">
+                    </div>
+
+                    <div class="pint_mock_icon_container">
+                        <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pin_image">
+                <img src="${url}" alt="pin_image">
+            </div>
+
+
+        </div>
+                `
+    }
 }
 
 
