@@ -1,255 +1,83 @@
-<html>
-	<head>
-      
-		<title>CODETREST</title>
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/normalize.css">
+    <link rel="stylesheet" href="./styles/pin_styles.css">
+    <link rel="stylesheet" href="./styles/modal_styles.css">
+    <link rel="stylesheet" href="./styles/final_board.css">
+</head>
 
-        <script src="Server.js"></script>
-        <link rel="stylesheet" href="style.css">
-        
-
-		<style type="text/css">
-			pre {
-				background-color: "#282C34";
-				padding: 15px;
-			}
-			
-			#theCanvas {
-				width: 800px;
-				height: 1200px;
-				margin: auto;
-				border: 5px solid "#282C34";
-				display: block;
-			}
-
-			
-			#centered{
-				float: left;
-   	 			position: relative;
-    			left: 36.9%;
-
-			}
-
-			h1{
-				font-family: font !important;
-				color: #E06C75;
-			}
-
-			h3{
-				font-family: font !important;
-				color: #E06C75;
-			}
-
-		</style>
-		
-	</head>
-
-	<body bgcolor= "#282C34">
-        
-        <script src="Funcs.js"></script>
-
-
-        <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-database.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-analytics.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-storage.js"></script>
-
-
-        <script defer src='https://use.fontawesome.com/releases/v5.10.0/js/all.js'></script>
- 
-
-        <script id ="MainScript">
-        let firebaseConfig = {
-            apiKey: "AIzaSyDLw-YrodyFrrIizufwd0xOTDU7P-Rk6oU",
-            authDomain: "codetrest.firebaseapp.com",
-            databaseURL: "https://codetrest-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "codetrest",
-            storageBucket: "codetrest.appspot.com",
-            messagingSenderId: "467044244836",
-            appId: "1:467044244836:web:059b92c74526cbdc6b2e71",
-            measurementId: "G-BKPJVMD16E"
-            };
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            firebase.analytics();
-            
-        </script>
-
-        <header>
-            
-            <!--
-            <a class="cta2" href="#">C </a>
-           
-            <nav>
-                <ul class="nav__links">
-                    <li><a href="Sub.html">Sub</a></li>
-                    <li><a href="#">Projects</a></li>
-                    <li><a href="#">About</a></li>
-                </ul>
-            </nav>
-
-
-
-
-            ----
-
-
-            <a class="cta2" href="Sub.html">
-                <i class="fas fa-project-diagram"></i>
-            </a>
-
-            <div class = "search-box">
-                <input class = "search-txt" type = "text" name = "" placeholder="Type to search">
-                <a class = "search-btn" href = "#">
-                <i class="fas fa-search"></i> 
-    
-                </a>
-            </div>
-
-            <a class="cta" href="Sub.html">Contact</a>
-            !-->
-            
-           
-
-      
-            
-           
-            
-
-        </header>
-
-        
-
-
-        <div class = "sticky-header-wrapper">
-      
-            <div class = "sticky-header">
-
-            <button id ="Button_Login" class="cta2">
-                <i class="fas fa-project-diagram"></i>
-            </button>
-
-            <div class = "search-box">
-                <input class = "search-txt" type = "text" name = "" placeholder="Type to search">
-                <a class = "search-btn" href = "#">
-                <i class="fas fa-search"></i> 
-    
-                </a>
-            </div>
-
-            <a class="cta" href="Sub.html">Contact</a>
-
-            <a class="cta2"  href="UserScreen.html">
-                <i class="fas fa-user"></i>
-            </a>   
-         
-
-
-             </div>
-
+<body>
+    <div class="navigation_bar">
+        <div class="pint_mock_icon_container add_pin">
+            <img src="./images/add.png" alt="add_pin" class="pint_mock_icon">
         </div>
-                
-        
-        <button id="Button_Logout">Logout</button>        
-        
-        <br>
-        <br>
+    </div>
 
-        <div id="identify">Home</div>
+    <div class="pin_container"></div>
 
+    <div class="add_pin_modal">
+        <div class="add_pin_container">
+            <div class="side" id="left_side">
+                <div class="section1">
+                    <div class="pint_mock_icon_container">
+                        <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
+                    </div>
+                </div>
 
-
-        <button id = "Btn_in">press</button>
-        <button id = "Btn_up">upload</button>
-        <input id = "Txt_in"></input>
-        <input id="Txt_delete" placeholder="id to remove"></input>
-        <div id = "Text" >      </div>
-        <button id = "Btn_delete">delete pin</button>
-
-        <div class = "loader" id = "loading_Anim">
-           <span></span>
-           <span></span>
-           <span></span>
-        </div>
-
-
-        <div class="pin_container" id = "PinGrid1">
-
-
-            <div class="card">
-                <div class = "image">
-                    <img src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg"/>
-                        <div class = "image__overlay">
+                <div class="section2">
+                    <label for="upload_img" id="upload_img_label">
+                        <div class="upload_img_container">
+                            <div id="dotted_border">
+                                <div class="pint_mock_icon_container">
+                                    <img src="./images/up-arrow.png" alt="upload_img" class="pint_mock_icon">
+                                </div>
+                                <div>Click to upload</div>
+                                <div>Recommendation: Use high-quality .jpg files less than 20MB</div>
+                            </div>
                         </div>
+                        <input type="file" name="upload_img" id="upload_img">
+                    </label>
+
+                    <div class="modals_pin">
+                        <div class="pin_image">
+                            <!-- <img src="" alt="pin_image"> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section3">
+                    <div class="save_from_site">Save From Site</div>
                 </div>
             </div>
 
+            <div class="side" id="right_side">
+                <div class="section1">
+                    <div class="select_size">
+                        <select name="pin_size" id="pin_size">
+                            <option value="" disabled selected>Select</option>
+                            <option value="small">small</option>
+                            <option value="medium">medium</option>
+                            <option value="large">large</option>
+                        </select>
+                        <div class="save_pin">Save</div>
+                    </div>
+                </div>
 
-            <div class="card">
-                <div class = "image">
-                    <img class ="image__img" src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg"/>
-                        <div class = "image__overlay">
-                        </div>
+                <div class="section2">
+                    <input placeholder="Add your title" type="text" class="new_pin_input" id="pin_title">
+                    <input placeholder="Tell everyone what your Pin is about" type="text" class="new_pin_input" id="pin_description">
+                    <input placeholder="Add a destination link" type="text" class="new_pin_input" id="pin_destination">
                 </div>
             </div>
-
-            <div class="card">
-                <div class = "image">
-                    <img class ="image__img" src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg"/>
-                        <div class = "image__overlay">
-
-
-                            <a class="cta3" id = "btn_add" onclick="StopLoading()">
-                                <i class="fas fa-plus"></i>
-                                </a>  
-                
-                                <a class="cta3" href="Sub.html">
-                                <i class="fas fa-code"></i>
-                                </a>  
-                
-                                <a class="cta3" id = "btn_like" >
-                                <i class="fas fa-heart"></i>
-                                </a>
-
-
-                        </div>
-                </div>
-            </div>
-
-
-            <div class="card card_medium"></div>
-            <div class="card card_large"></div>
-            <div class="card card_small"></div>
-            <div class="card card_medium"></div>
-            <div class="card card_large"></div>
-            <div class="card card_small"></div>
-            <div class="card card_medium"></div>
-            <div class="card card_large"></div>
-            <div class="card card_small"></div>
-            <div class="card card_medium"></div>
-            <div class="card card_large"></div>
-            <div class="card card_small"></div>
-            <div class="card card_medium"></div>
-            <div class="card card_large"></div>
-            <div class="card card_small"></div>
-            <div class="card card_medium"></div>
-            <div class="card card_large"></div>
         </div>
+    </div>
 
+    <script src="./scripts/final_board.js"></script>
+</body>
 
-        <br>
-
-        <!--
-
-		<div class="container" id= "PinGrid1" >
-
-            <figure id= "Pin_0" >
-            </figure>
-        </div>
-
-        -->
-     
-
-	</body>
 </html>
