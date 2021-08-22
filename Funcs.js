@@ -168,7 +168,7 @@ function addPin()
             let imageSize = "large";
 
 
-            if(ratio<1.5)
+            if(ratio<1.3)
                 imageSize = "medium";
             
             if(ratio<1.15)
