@@ -80,8 +80,10 @@ function CreateSignUpPage()
 
 
 function addPin() {
-
+    counter=0;
+    AmountofImages=Pins.length;
     PinGrid_Main.innerHTML = '';
+    PinGrid_Main.style.display = "none";
     for (let i = 0; i < Pins.length; i++) {
 
         let Pin_id = Pins[i].Id;
@@ -93,9 +95,10 @@ function addPin() {
 
 
         PinGrid_Main.innerHTML += 
-        `<figure id= "${Pin_id}">
+        `<figure>
         <div class = "image">
-        <img class ="image__img" src="${url}" alt="A windmill" />
+        
+        <img id="${Pin_id}" class ="image__img"  alt="A windmill" />
             <div class = "image__overlay">
 
 
@@ -134,6 +137,10 @@ function addPin() {
               
         </div>
         </figure>`
+        leImg = document.getElementById(Pin_id);
+        leImg.src=url
+        leImg.style.display="none";
+        leImg.onload = incrementCounter;
     }
 
 
@@ -141,7 +148,19 @@ function addPin() {
 
    
 }
-
+function incrementCounter() {
+    counter++;
+   
+    if ( counter == AmountofImages ) {
+        PinGrid_Main.style.display = "block";
+        $(`#PinGrid1`).fadeIn(500);
+        for (let i = 0; i < Pins.length; i++) {
+            let Pin_id = Pins[i].Id;
+            $(`#${Pin_id}`).fadeIn(500);
+            StopLoading();
+        }
+    }
+}
 
 //======================================================================
 //                      Show Functions :   

@@ -44,6 +44,8 @@ let identifier;
 
 let digits = 10; // the number of digits for the ID generator
 let ID=0;
+let counter=0;
+let AmountofImages;
 let UserEmail;
 let UserComma;
 let UserName;
