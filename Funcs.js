@@ -30,10 +30,10 @@ function CreateHomePage()
   
   
    // Button_in.addEventListener("click", foo);
-    Button_upload.addEventListener("click",uploadPhoto);
-    Button_delete.addEventListener("click",deletePin);
+    //Button_upload.addEventListener("click",uploadPhoto);
+    //Button_delete.addEventListener("click",deletePin);
     Button_Sub.addEventListener("click",updatePage);
-    Button_Logout.addEventListener("click", userLogout);
+    //Button_Logout.addEventListener("click", userLogout);
 
 
     Pin_Root = firebase.database().ref('pins/');
@@ -41,8 +41,45 @@ function CreateHomePage()
 
 
     Image_Root = firebase.storage().ref('Images/');
+
+    updatePage();
     
 }
+
+
+
+function createUserPage()
+{
+    let userInfo = document.getElementById("user info");
+    Button_Sub = document.getElementById("Button_Login");
+
+
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            console.log(user.displayName);
+            let name = user.displayName;
+            UserName=name;
+            UserEmail = user.email;
+            UserComma=UserEmail.replace(".", ",");
+            if(name===undefined || name === null)
+                name = user.email.substring(0, user.email.indexOf('@'));
+            console.log(name);
+            userInfo.innerHTML=`hello my name is ${name} `
+        } else {
+            alert('Error: no user is logged in');
+        }
+      });
+    Button_add_pin=document.getElementById("add_pin");
+    Button_add_pin.addEventListener("click", goToAddPin);
+    Button_Sub.addEventListener("click",updatePage);
+
+    CollectionGrid = document.getElementById("CollectionGrid");
+    addCollection();
+    updatePage();
+}
+
+
+
 
 
 function CreateLoginPage()
@@ -123,16 +160,7 @@ function addPin2() {
 
                 
 
-            </div>
-
-
-           
-
-
-                
-                
-          
-              
+            </div>           
         </div>
         </figure>`
     }
@@ -232,6 +260,94 @@ function addPin()
 }
 
 
+
+function addCollection()
+{
+
+    let Pin_id = 'Pins[i].Id'
+    let url = 'Pins[i].URL;'
+    let title = 'Pins[i].Title;'
+    let desp = 'Pins[i].Description;'
+
+
+    const new_Collection = document.createElement('DIV');
+    const new_image = new Image();
+
+    new_image.src = './images/up-arrow.png';
+    new_Collection.style.opacity = 0;
+
+    new_image.onload = function () {
+
+
+        let iHeight = new_image.height;
+        let iWidth = new_image.width;
+        let ratio= iHeight/iWidth;
+        
+        let imageSize = "large";
+
+
+        if(ratio<1.3)
+            imageSize = "medium";
+        
+        if(ratio<1.15)
+            imageSize = "small";
+
+        new_Collection.classList.add('Collection');
+        //new_pin.classList.add(`card_${pin_details.pin_size}`);
+        new_Collection.classList.add(`Collection_${imageSize}`);        
+        new_image.classList.add('Collection_max_width');
+       
+
+
+    
+
+        new_Collection.innerHTML = `
+        <div class="Cel_title">${title}</div>
+
+        <div class="Cel_modal">
+            <div class="modal_head">
+                <div class="save_Collection">Save</div>
+            </div>
+
+            <div class="modal_foot">
+                <div class="destination">
+                    <div class="pint_mock_icon_container">
+                        <img src="./images/upper-right-arrow.png" alt="destination" class="pint_mock_icon">
+                    </div>
+                    <span>${desp}</span>
+                </div>
+
+                <div class="pint_mock_icon_container">
+                    <img src="./images/send.png" alt="send" class="pint_mock_icon">
+                </div>
+
+                <div class="pint_mock_icon_container">
+                    <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
+                </div>
+            </div>
+        </div>
+
+        <div class="Cel_image">
+        </div>`;
+
+        CollectionGrid.appendChild(new_Collection);
+        new_Collection.children[2].appendChild(new_image);
+
+        if (
+            new_image.getBoundingClientRect().width < new_image.parentElement.getBoundingClientRect().width ||
+            new_image.getBoundingClientRect().height < new_image.parentElement.getBoundingClientRect().height
+        ) {
+            new_image.classList.remove('Cel_max_width');
+            new_image.classList.add('Cel_max_height');
+        }
+
+        new_Collection.style.opacity = 1;
+
+    }
+
+}
+
+
 //======================================================================
 //                      Show Functions :   
 //======================================================================
@@ -255,7 +371,8 @@ function goToSignUp()
 function userLogout(){
     
     firebase.auth().signOut().then(() => {
-       
+
+        window.location="Sub.html";
         // Sign-out successful.
       }).catch((error) => {
         alert('Error on logging out');
@@ -454,15 +571,23 @@ function StopLoading()
 function updatePage()
 {
     Page = "SubPage";
+    Button_Sub.style.opacity = 0;
     firebase.auth().onAuthStateChanged(function(user){
         if(user){ // user is signed in
-            window.location="UserScreen.html";
+            //window.location="UserScreen.html";
+            Button_Sub.addEventListener('click',userLogout);
+            Button_Sub.innerHTML= 'logout';
+            Button_Sub.style.opacity = 1;
+            
         }
         else // user isn't signed in, launch login page
         {
-            window.location='Sub.html';
+            Button_Sub.href = "Sub.html";
+            Button_Sub.innerHTML= 'log in';
+            Button_Sub.style.opacity = 1;
         }
     });
+   
 }
 
 
