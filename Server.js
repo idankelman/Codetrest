@@ -32,6 +32,8 @@ let Text_delete;
 let Email_txt;
 let Password_txt;
 let PinGrid_Main;
+let CollectionGrid;
+
 let User_sign_up_name;
 let User_sign_up_email;
 let User_sign_up_pass;
@@ -113,28 +115,10 @@ document.addEventListener("DOMContentLoaded", function () {
     {
             CreateSignUpPage();
     }
+    
     else if(identifier.innerHTML=="User Screen")
     {
-        let userInfo = document.getElementById("user info");
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                console.log(user.displayName);
-                let name = user.displayName;
-                UserName=name;
-                UserEmail = user.email;
-                UserComma=UserEmail.replace(".", ",");
-                if(name===undefined || name === null)
-                    name = user.email.substring(0, user.email.indexOf('@'));
-                console.log(name);
-                userInfo.innerHTML=`hello my name is ${name} `
-            } else {
-                alert('Error: no user is logged in');
-            }
-          });
-        Button_add_pin=document.getElementById("add_pin");
-    
-
-        Button_add_pin.addEventListener("click", goToAddPin);
+       createUserPage();
     }
     else if(identifier.innerHTML=="Add Pin Page")
     {
@@ -224,30 +208,6 @@ function goToSignUp()
 {
     window.location="SignUp.html";
 }
-function CreateHomePage()
-{
-    Button_in = document.getElementById("Btn_in");
-    Button_delete = document.getElementById("Btn_delete");
-    Button_Sub = document.getElementById("Button_Login");
-    Button_Logout=document.getElementById("Button_Logout");
-
-    Text_in = document.getElementById("Txt_in");
-    Text_delete = document.getElementById("Txt_delete");
-    Par = document.getElementById("Text");
-    Button_upload =document.getElementById("Btn_up");
-    PinGrid_Main = document.getElementById("PinGrid1");
-  
-  
-   // Button_in.addEventListener("click", foo);
-    Button_upload.addEventListener("click",uploadPhoto);
-    Button_delete.addEventListener("click",deletePin);
-    Button_Sub.addEventListener("click",updatePage);
-    Button_Logout.addEventListener("click", userLogout);
-
-    
-    
-    
-}
 
 function updatePage()
 {
@@ -262,3 +222,5 @@ function updatePage()
         }
     });
 }
+
+
