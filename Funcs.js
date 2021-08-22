@@ -78,8 +78,9 @@ function CreateSignUpPage()
 }
 
 
+//old add pin function
 
-function addPin() {
+function addPin2() {
 
     PinGrid_Main.innerHTML = '';
     for (let i = 0; i < Pins.length; i++) {
@@ -135,11 +136,99 @@ function addPin() {
         </div>
         </figure>`
     }
+ 
+}
 
 
+function addPin()
+{
+
+    //PinGrid_Main.innerHTML = '';
+    for (let i = 0; i < Pins.length; i++) {
+
+        let Pin_id = Pins[i].Id;
+        let url = Pins[i].URL;
+        let title = Pins[i].Title;
+        let desp = Pins[i].Description;
 
 
-   
+        const new_pin = document.createElement('DIV');
+        const new_image = new Image();
+
+        new_image.src = url;
+        new_pin.style.opacity = 0;
+
+        new_image.onload = function () {
+
+
+            let iHeight = new_image.height;
+            let iWidth = new_image.width;
+            let ratio= iHeight/iWidth;
+            
+            let imageSize = "large";
+
+
+            if(ratio<1.5)
+                imageSize = "medium";
+            
+            if(ratio<1.15)
+                imageSize = "small";
+
+            new_pin.classList.add('card');
+            //new_pin.classList.add(`card_${pin_details.pin_size}`);
+            new_pin.classList.add(`card_${imageSize}`);        
+            new_image.classList.add('pin_max_width');
+           
+
+
+        
+
+            new_pin.innerHTML = `
+            <div class="pin_title">${title}</div>
+
+            <div class="pin_modal">
+                <div class="modal_head">
+                    <div class="save_card">Save</div>
+                </div>
+
+                <div class="modal_foot">
+                    <div class="destination">
+                        <div class="pint_mock_icon_container">
+                            <img src="./images/upper-right-arrow.png" alt="destination" class="pint_mock_icon">
+                        </div>
+                        <span>${desp}</span>
+                    </div>
+
+                    <div class="pint_mock_icon_container">
+                        <img src="./images/send.png" alt="send" class="pint_mock_icon">
+                    </div>
+
+                    <div class="pint_mock_icon_container">
+                        <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pin_image">
+            </div>`;
+
+            PinGrid_Main.appendChild(new_pin);
+            new_pin.children[2].appendChild(new_image);
+
+            if (
+                new_image.getBoundingClientRect().width < new_image.parentElement.getBoundingClientRect().width ||
+                new_image.getBoundingClientRect().height < new_image.parentElement.getBoundingClientRect().height
+            ) {
+                new_image.classList.remove('pin_max_width');
+                new_image.classList.add('pin_max_height');
+            }
+
+            new_pin.style.opacity = 1;
+
+        }
+    }
+    
+    StopLoading();
 }
 
 
