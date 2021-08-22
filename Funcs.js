@@ -161,7 +161,7 @@ function addPin()
         new_image.onload = function () {
             new_pin.classList.add('card');
             //new_pin.classList.add(`card_${pin_details.pin_size}`);
-            new_pin.classList.add(`card_small`);        
+            new_pin.classList.add(`card_large`);        
             new_image.classList.add('pin_max_width');
         
 

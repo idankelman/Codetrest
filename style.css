@@ -211,8 +211,9 @@ body {
 }
  .card {
    
-	width: 236px;
-	height: 472px;
+	/*width: 236px;
+	height: 472px;*/
+  
 	border-radius: 16px;
 	position: relative;
 
@@ -254,7 +255,7 @@ body {
 	transform: translate(-50%, -50%);
 
 	z-index: 9999;
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: rgba(0, 0, 0, 0.4);
 	opacity: 0;
 	transition-duration: 0.3s;
 }
@@ -350,17 +351,35 @@ body {
 }
 
 .pin_image {
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pin_max_width {
+  max-width: 100%;
+}
+
+.pin_max_height {
+  max-height: 100%;
 }
 
 /* .pin_image img {
 	max-height: 100%;
 } */
 
+.modals_pin {
+  width: 252px;
+  height: 512px;
+  border-radius: 16px;
+  position: relative;
+  display: none;
+  opacity: 0;
+
+  overflow: hidden;
+}
 
 
 
