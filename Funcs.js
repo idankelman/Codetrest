@@ -627,6 +627,13 @@ function SavePin(ImageUrl, UserComma) {
         Id: ID,
         URL: ImageUrl
     });
+    let pin = firebase.database().ref('pins/');
+    pin.child('Pin_'+ID).set({
+        Title: Title,
+        Description: Description,
+        Id: ID,
+        URL: ImageUrl
+    });
 
 
 }
