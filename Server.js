@@ -80,7 +80,7 @@ let Page="Home"
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    Pin_Root = firebase.database().ref('users/pins');
+    Pin_Root = firebase.database().ref('pins/');
     User_Root = firebase.database().ref('users/');
     
 

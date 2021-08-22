@@ -438,21 +438,12 @@ function updatePins()
 {
     
    
-    User_Root.on("value", (snapshot) => { // all users
+    Pin_Root.on("value", (snapshot) => { // all users
         Pins = [];
         snapshot.forEach((childSnapshot)=> { // one user
-          childSnapshot.forEach((childrenSnapshot)=>{ // one pin
-            if(typeof childrenSnapshot.val() === 'string' || childrenSnapshot.val() instanceof String)
-            {
-                console.log(childrenSnapshot.val());
-                
-            }
-            else
-            {
-                var pinVal = childrenSnapshot.val();
-                Pins.push(pinVal);
-            }
-          });
+            var pinVal = childSnapshot.val();
+            Pins.push(pinVal);
+        
       })
       addPin();
     }); 
@@ -620,7 +611,7 @@ function SavePin(ImageUrl, UserComma) {
     let Title = Pin_title.value;
     window.location = "UserScreen.html";
     
-    let user = firebase.database().ref('users/'+UserComma+'/');
+    let user = firebase.database().ref('users/'+UserComma+'/AllPins');
     user.child('Pin_'+ID).set({
         Title: Title,
         Description: Description,
