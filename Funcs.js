@@ -166,7 +166,7 @@ function addPin()
             let ratio= iHeight/iWidth;
             
             let imageSize = "large";
-
+            
 
             if(ratio<1.5)
                 imageSize = "medium";
@@ -364,6 +364,7 @@ function submitPin(){
             //console.log(user.email);
             ID = parseInt(Math.random()*Math.pow(10,digits));
             UserComma = user.email.replace(".", ",");
+            
             let metadata = { contentType: Images[0].type }
             let uploadTask = Image_Root.child('Pin_'+ID).put(Images[0], metadata);
             let ImageUrl;
@@ -409,8 +410,23 @@ function selectTheImage(){
         Images = e.target.files;
         reader=new FileReader();
         reader.onload = function(){
-            document.getElementById("my_img").src = reader.result;
+            let my_img = document.getElementById("my_img")
+            my_img.src = reader.result;
+            
+            my_img.onload = function(){
+                console.log(my_img.naturalWidth);
+                console.log(my_img.naturalHeight);
+                if(my_img.naturalWidth<400 || my_img.naturalHeight <400)
+                {
+                    alert('please insert a bigger image');
+                    my_img.removeAttribute('src');
+                }
+                
+                
+            }
+
         }
+
         reader.readAsDataURL(Images[0]);
     }
     input.click();
