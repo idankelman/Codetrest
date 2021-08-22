@@ -159,10 +159,28 @@ function addPin()
         new_pin.style.opacity = 0;
 
         new_image.onload = function () {
+
+
+            let iHeight = new_image.height;
+            let iWidth = new_image.width;
+            let ratio= iHeight/iWidth;
+            
+            let imageSize = "large";
+
+
+            if(ratio<1.5)
+                imageSize = "medium";
+            
+            if(ratio<1.15)
+                imageSize = "small";
+
             new_pin.classList.add('card');
             //new_pin.classList.add(`card_${pin_details.pin_size}`);
-            new_pin.classList.add(`card_large`);        
+            new_pin.classList.add(`card_${imageSize}`);        
             new_image.classList.add('pin_max_width');
+           
+
+
         
 
             new_pin.innerHTML = `
@@ -209,6 +227,7 @@ function addPin()
 
         }
     }
+    
     StopLoading();
 }
 
