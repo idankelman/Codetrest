@@ -11,6 +11,11 @@
 //                  Variable Declerations : 
 //======================================================================
 
+
+let add_pin_modal;
+let pin_image_blob;
+
+
 let Loader_Anim;
 
 
@@ -122,14 +127,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     else if(identifier.innerHTML=="Add Pin Page")
     {
-       Pin_title=document.getElementById("Pin_title");
-       Pin_Desc = document.getElementById("Pin_Desc");
-       
-       Button_Upload_photo=document.getElementById("Btn_upload");
-       Button_submit_pin = document.getElementById("submit_pin");
 
-       Button_Upload_photo.addEventListener("click", selectTheImage);
-       Button_submit_pin.addEventListener("click", submitPin);
+        CreateAddPinPage();
+
     }
 
 
@@ -176,51 +176,3 @@ document.addEventListener("DOMContentLoaded", function () {
 //======================================================================
 //                  input Declerations : 
 //======================================================================
-
-function goToAddPin()
-{
-    window.location="AddUserPin.html";
-}  
-
-
-
-
-function updatePins()
-{
-  
-    User_Root.once('value',function(users) { // all users
-        Pins = [];
-        
-        users.forEach(function(user) { // for each user
-            user.once('value', function(pin){
-                
-                var pinVal = pin.val();
-                Pins.push(pinVal);
-            })
-            
-        });
-        
-        //addPin();
-    });
-
-}
-function goToSignUp()
-{
-    window.location="SignUp.html";
-}
-
-function updatePage()
-{
-    Page = "SubPage";
-    firebase.auth().onAuthStateChanged(function(user){
-        if(user){ // user is signed in
-            window.location="UserScreen.html";
-        }
-        else // user isn't signed in, launch login page
-        {
-            window.location='Sub.html';
-        }
-    });
-}
-
-
