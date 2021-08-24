@@ -230,7 +230,7 @@ body {
   /*colors*/
 
   --main_color: #282C34;
-  --second_color: #E06B62;
+  --second_color: #D56C75;
 
 }
  .card {
@@ -1025,12 +1025,59 @@ body {
     color: rgb(40, 44, 52);
   }
 
+
+  
+  .LogoCta{
+
+
+    font-family: font !important;
+    color: #edf0f1;
+    text-decoration: none;
+    margin-right: 5px;
+    margin: 50px ;
+    
+    padding: 200px 200px;
+    background-color:#C6C6C6 ;
+    color: rgb(40, 44, 52);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.6s ease 0s;
+    position: flex;
+  
+    
+  }
+
+  .LogoCta i{
+    padding: 40px 40px;
+  }
+
+
+
+
+
   .cta3:hover{
     background-color:white ;
     color: rgb(0, 0, 0);
     padding: 30px 30px;
     transform: translateY(10px);
+   
   }
+
+  .LogoCta:hover{
+    background-color:#f3f3f3 ;
+    color: rgb(0, 0, 0);
+    /*
+    padding: 300px 300px;
+    transform: translateY(-100px);
+    */
+
+  }
+
+
+
+
+  
   
   /* Mobile Nav */
   
@@ -1323,6 +1370,16 @@ transition: all 0.3s cubic-bezier(.25,.8,.25,1);
     justify-content: center;
     align-items: center;
     transition: all 0.3s ease 0s;
+}
+
+.loader2{
+  
+  flex-direction: column;
+  display: flex;
+  height: 300px;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease 0s;
 }
 
 .circle{
