@@ -67,8 +67,12 @@ function createUserPage() {
             alert('Error: no user is logged in');
         }
     });
-    Button_add_pin = document.getElementById("add_pin");
-    Button_add_pin.addEventListener("click", goToAddPin);
+
+
+    CreateAddPinPage();
+
+    //Button_add_pin = document.getElementById("add_pin");
+    //Button_add_pin.addEventListener("click", goToAddPin);
     Button_Sub.addEventListener("click", updatePage);
 
     CollectionGrid = document.getElementById("CollectionGrid");
@@ -124,13 +128,8 @@ function CreateAddPinPage() {
     Button_Upload_photo.addEventListener("click", selectTheImage);
     Button_submit_pin.addEventListener("click", submitPin);
 
-    */
-    PinGrid_Main = document.getElementById("PinGrid1");
-    add_pin_modal = document.querySelector('.add_pin_modal');
 
-
-    
-    firebase.auth().onAuthStateChanged(function (user) {
+      firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             console.log(user.displayName);
             let name = user.displayName;
@@ -145,6 +144,14 @@ function CreateAddPinPage() {
         }
     });
 
+
+    */
+    PinGrid_Main = document.getElementById("PinGrid1");
+    add_pin_modal = document.querySelector('.add_pin_modal');
+
+
+    
+  
 
 
     document.querySelector('.add_pin').addEventListener('click', () => {
@@ -932,7 +939,7 @@ function SavePin2(ImageUrl, userInfo, UserComma) {
     let Description = userInfo.description;
     let Title = userInfo.title;
 
-    window.location = "UserScreen.html";
+    //window.location = "UserScreen.html";
 
     let user = firebase.database().ref('users/' + UserComma + '/');
     user.child('Pin_' + ID).set({
