@@ -4,14 +4,13 @@
 		<title>CODETREST</title>
 
 
-        <script src="Server.js"></script>
-        
+       <script src="Server.js"></script>
+       <link rel="stylesheet" href="style.css">
        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
         
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 		<style type="text/css">
 			pre {
 				background-color: "#282C34";
@@ -49,9 +48,11 @@
 		
 	</head>
 
-	<body bgcolor= "#282C34">
+	<body >
+
+      <script src="Funcs.js"></script>
         
-        <script src="Funcs.js"></script>
+        
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script> 
 
         <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
@@ -81,33 +82,120 @@
             
         </script>
 
-        <header>
-            
-            <!--
-            <a class="cta2" href="#">C </a>
-           
-            <nav>
-                <ul class="nav__links">
-                    <li><a href="Sub.html">Sub</a></li>
-                    <li><a href="#">Projects</a></li>
-                    <li><a href="#">About</a></li>
-                </ul>
-            </nav>
-            !-->
-             
 
 
-            
-
-            
-
-        </header>
         <div id = "identify">Add Pin Page</div>
+
+
+        <div class = "sticky-header-wrapper">
+      
+          <div class = "sticky-header">
+
+          <a href="index.html" class="cta2">
+              <i class="fas fa-project-diagram"></i>
+          </a>
+
+          <div class = "search-box">
+              <input class = "search-txt" type = "text" name = "" placeholder="Type to search">
+              <a class = "search-btn" href = "#">
+              <i class="fas fa-search"></i> 
+  
+              </a>
+          </div>
+
+          <a class="cta" id="Button_Login"></a>
+
+          <a href="UserScreen.html" class="cta2">
+              <i class="fas fa-user"></i>
+          </a>
+
+
+
+           </div>
+
+      </div>
+
+
+
+        <div class="navigation_bar">
+          <div class="pint_mock_icon_container add_pin">
+              <img src="./images/add.png" alt="add_pin" class="pint_mock_icon">
+          </div>
+      </div>
+
+
+        <div class="add_pin_modal">
+          <div class="add_pin_container" id = "PinGrid1">
+              <div class="side" id="left_side">
+                  <div class="section1">
+                      <div class="pint_mock_icon_container">
+                          <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
+                      </div>
+                  </div>
+  
+                  <div class="section2">
+                      <label for="upload_img" id="upload_img_label">
+                          <div class="upload_img_container">
+                              <div id="dotted_border">
+                                  <div class="pint_mock_icon_container">
+                                      <img src="./images/up-arrow.png" alt="upload_img" class="pint_mock_icon">
+                                  </div>
+                                  <div>Click to upload</div>
+                                  <div>Recommendation: Use high-quality .jpg files less than 20MB</div>
+                              </div>
+                          </div>
+                          <input type="file" name="upload_img" id="upload_img">
+                      </label>
+  
+                      <div class="modals_pin">
+                          <div class="pin_image">
+                              <!-- <img src="" alt="pin_image"> -->
+                          </div>
+                      </div>
+                  </div>
+  
+                  <div class="section3">
+                      <div class="save_from_site">Save From Site</div>
+                  </div>
+              </div>
+  
+              <div class="side" id="right_side">
+                  <div class="section1">
+                      <div class="select_size">
+                          <select name="pin_size" id="pin_size">
+                              <option value="" disabled selected>Select</option>
+                              <option value="small">small</option>
+                              <option value="medium">medium</option>
+                              <option value="large">large</option>
+                          </select>
+                          <div class="save_pin">Save</div>
+                      </div>
+                  </div>
+  
+                  <div class="section2">
+                      <input placeholder="Add your title" type="text" class="new_pin_input" id="pin_title">
+                      <input placeholder="Tell everyone what your Pin is about" type="text" class="new_pin_input" id="pin_description">
+                      <input placeholder="Add a destination link" type="text" class="new_pin_input" id="pin_destination">
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
+
+
+
+
+      
+
+
+        <!--
+        
         <style> img{height: 25%; width: 100%; border: 2px solid black}</style>
         <div class="container" style="padding-top: 60px;">
             <h1 class="page-header">Edit Profile</h1>
             <div class="row">
-              <!-- left column -->
+             
               <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="text-center">
                     <img id="my_img"><label id="upProgress"></label>
@@ -116,7 +204,7 @@
 
                 </div>
               </div>
-              <!-- edit form column -->
+              
               <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
                 <div class="alert alert-info alert-dismissable">
                   <a class="panel-close close" data-dismiss="alert">×</a> 
@@ -147,7 +235,11 @@
             </div>
           </div>
         
+        -->
 
+        
 
-	</body>
+      </body>
+
+	
 </html>
