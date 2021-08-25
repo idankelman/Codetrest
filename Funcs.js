@@ -238,6 +238,8 @@ function CreateAddPinPage() {
 }
 
 function CreateCollectionPage(){
+    Loader_Anim = document.getElementById("loading_Anim");
+    PinGrid_Main = document.getElementById("PinGrid1");
     CollectionName = localStorage.getItem("CollectionName");
     console.log(CollectionName);
     showTheCollection();
@@ -246,33 +248,22 @@ function CreateCollectionPage(){
 function showTheCollection()
 {
     CollectionName = localStorage.getItem("CollectionName");
+    console.log(CollectionName);
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {     
             UserComma = user.email.replace(".", ",");
             let user_ro = firebase.database().ref('users/' + UserComma+`/${CollectionName}/`);
-            user_ro.on("value", (snapshot) => { // all users
-                Pins = [];
-                if(user_ro.key==UserComma)
-                {
-                    snapshot.forEach((childSnapshot) => { // one user
-                        if(childSnapshot.key==CollectionName)
-                        {
-                            childSnapshot.forEach((childrenSnapshot) => { // one pin
-                                if (typeof childrenSnapshot.val() === 'string' || childrenSnapshot.val() instanceof String) {
-                                    console.log(childrenSnapshot.val());
-                
-                                }
-                                else {
-                                    var pinVal = childrenSnapshot.val();
-                                    Pins.push(pinVal);
-                                }
-                            });
-                        }
-                    })
-                
-                }
-                showCollectionPins();
-            });
+            user_ro.once("value", (snapshot) => { // The collection
+                Pins = [];               
+                snapshot.forEach((childSnapshot) => { // one user
+                        var pinVal = childSnapshot.val();
+                        if(!Number.isInteger(pinVal))                            
+                            Pins.push(pinVal);
+                        });
+                    showCollectionPins();
+                });
+               
+            
         } 
         else {
             
@@ -325,29 +316,32 @@ function showCollectionPins()
             
             new_pin.innerHTML = `
             <div class="pin_title">${title}</div>
-
             
-
-                <div class="modal_foot">
-                    <div class="destination">
-                        <div class="pint_mock_icon_container">
-                            <img src="./images/upper-right-arrow.png" alt="destination" class="pint_mock_icon">
+                        <div class="pin_modal">
+                            <div class="modal_head">
+                                
+                            </div>
+            
+                            <div class="modal_foot">
+                                <div class="destination">
+                                    <div class="pint_mock_icon_container">
+                                        <img src="./images/upper-right-arrow.png" alt="destination" class="pint_mock_icon">
+                                    </div>
+                                    <span>${desp}</span>
+                                </div>
+            
+                                <div class="pint_mock_icon_container">
+                                    <img src="./images/send.png" alt="send" class="pint_mock_icon">
+                                </div>
+            
+                                <div class="pint_mock_icon_container">
+                                    <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
+                                </div>
+                            </div>
                         </div>
-                        <span>${desp}</span>
-                    </div>
-
-                    <div class="pint_mock_icon_container">
-                        <img src="./images/send.png" alt="send" class="pint_mock_icon">
-                    </div>
-
-                    <div class="pint_mock_icon_container">
-                        <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
-                    </div>
-                </div>
-            </div>
-
-            <div class="pin_image">
-            </div>`;
+            
+                        <div class="pin_image">
+                        </div>`;
             
             
                
@@ -371,7 +365,9 @@ function showCollectionPins()
         
         
     }
+    StopLoading();
 }
+    
 //old add pin function
 /*
 function create_pin(pin_details) {
@@ -432,11 +428,14 @@ function create_pin(pin_details) {
 
 function addPin() {
     //first we need to get all of the collections
+    console.log(updated);
+    if(updated==0)
+    {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) { // user is signed in
             UserComma = user.email.replace(".", ",")
             cur_user_root = firebase.database().ref('users/'+UserComma);
-            cur_user_root.on("value", (snapshot) => { // all collections
+            cur_user_root.once("value", (snapshot) => { // all collections
                 Collections = [];
                 snapshot.forEach((childSnapshot) => { // a collection
                     if (typeof childSnapshot.val() === 'string' || childSnapshot.val() instanceof String) {
@@ -455,11 +454,12 @@ function addPin() {
                 console.log(Collections);
                 
                    
-                //PinGrid_Main.innerHTML = '';
+                PinGrid_Main.innerHTML = ``;
+                
                 for (let i = 0; i < Pins.length; i++) {
                    
                     let Pin_id = Pins[i].Id;
-                    console.log(Pin_id);
+                    
                     let url = Pins[i].URL;
                     let title = Pins[i].Title;
                     let desp = Pins[i].Description;
@@ -467,7 +467,7 @@ function addPin() {
                     for(let j=0; j<Collections.length; j++)
                     {
                         dropdownHTML+=`<button class = "save_card" id="${Collections[j]}_${Pin_id}">${Collections[j]}</button>`;
-                        console.log(`${Collections[j]}_${Pin_id}`);
+                        
                     }
             
                     const new_pin = document.createElement('DIV');
@@ -559,6 +559,7 @@ function addPin() {
                                 btnCollection.addEventListener("click", function(){
                                     emailForChild = user.email.replace(".", ",")
                                     let user_ro = firebase.database().ref('users/' + emailForChild+`/${this.collect}/`);
+                                    updated=1;
                                     
                                     user_ro.child('Pin_'+this.pin).set({
                                         Title: this.title,
@@ -609,6 +610,7 @@ function addPin() {
             Button_Sub.style.opacity = 1;
         }
     });
+    }   
     
 }
 
@@ -621,7 +623,7 @@ function addCollection() {
         if (user) {
             UserComma = user.email.replace(".", ",")
             cur_user_root = firebase.database().ref('users/'+UserComma);
-            cur_user_root.on("value", (snapshot) => { // all collections
+            cur_user_root.once("value", (snapshot) => { // all collections
                 Collections = [];
                 snapshot.forEach((childSnapshot) => { // a collection
                     if (typeof childSnapshot.val() === 'string' || childSnapshot.val() instanceof String) {
@@ -773,7 +775,7 @@ function signInUser() {
         .then((result) => {
             // Signed in
             let done = 0;
-            User_Root.on('value', function (snap) {
+            User_Root.once('value', function (snap) {
                 snap.forEach(function (item) {
                     if (item.val().email == result.user.email) // email already exists, go to user screen
                     {
@@ -822,7 +824,7 @@ function signInUserWithGoogle() {
         .then((result) => {
             // Success.
             emailForChild = result.user.email.replace(".", ",");
-            User_Root.on('value', function (snap) {
+            User_Root.once('value', function (snap) {
                 snap.forEach(function (item) {
                     if (item.val().email == result.user.email) // email already exists, go to user screen
                     {
@@ -964,23 +966,34 @@ function selectTheImage() {
 
 function updatePins() {
 
-
-    User_Root.on("value", (snapshot) => { // all users
+    
+    
+    User_Root.once("value", (snapshot) => { // snapshot = all users
+        
         Pins = [];
-        snapshot.forEach((childSnapshot) => { // one user
-            childSnapshot.forEach((childrenSnapshot) => { // one pin
-                if (typeof childrenSnapshot.val() === 'string' || childrenSnapshot.val() instanceof String) {
-                    console.log(childrenSnapshot.val());
-
-                }
-                else {
-                    var pinVal = childrenSnapshot.val();
+        snapshot.forEach((childSnapshot) => { // snapshot = one user
+            childSnapshot.forEach((childrenSnapshot) => { // snapshot = one collection
+                console.log(childrenSnapshot.key)
+                if(childrenSnapshot.key != "SavedPins" && childrenSnapshot.key != "email"){
+                    console.log(childrenSnapshot.key)
+                    childrenSnapshot.forEach((childrenenSnapshot)=>{
+                    var pinVal = childrenenSnapshot.val();
+                    if(!Number.isInteger(pinVal))
+                    {
+                    
                     Pins.push(pinVal);
+                    }
+                    }) 
+                    
                 }
+            
             });
         })
+        console.log(Pins);
         addPin();
+        
     });
+    
     //StopLoading();
 
 }

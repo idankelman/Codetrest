@@ -55,6 +55,7 @@ let UserEmail;
 let UserComma;
 let UserName;
 let CollectionName;
+let updated=0;
 
 let Pin_Root;
 
