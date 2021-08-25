@@ -1303,6 +1303,11 @@ body {
    width: 100%;
   }
 
+  .navigation_bar .add_pin
+  {
+    left: 90%;
+  }
+
 }
 
 
@@ -1319,6 +1324,10 @@ body {
     
   }
 
+  .navigation_bar .add_pin
+  {
+    left: 85%;
+  }
 }
 
 
@@ -1331,7 +1340,10 @@ body {
     width: 60%;
   }
  
-
+  .navigation_bar .add_pin
+  {
+    left: 80%;
+  }
 
 }
 
@@ -1353,8 +1365,9 @@ body {
     margin: 0 ;
   }
 
-  .cta{
-    
+  .navigation_bar .add_pin
+  {
+    left: 75%;
   }
   
 }
