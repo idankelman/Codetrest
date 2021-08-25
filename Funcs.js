@@ -240,9 +240,138 @@ function CreateAddPinPage() {
 function CreateCollectionPage(){
     CollectionName = localStorage.getItem("CollectionName");
     console.log(CollectionName);
+    showTheCollection();
+    
+}
+function showTheCollection()
+{
+    CollectionName = localStorage.getItem("CollectionName");
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {     
+            UserComma = user.email.replace(".", ",");
+            let user_ro = firebase.database().ref('users/' + UserComma+`/${CollectionName}/`);
+            user_ro.on("value", (snapshot) => { // all users
+                Pins = [];
+                if(user_ro.key==UserComma)
+                {
+                    snapshot.forEach((childSnapshot) => { // one user
+                        if(childSnapshot.key==CollectionName)
+                        {
+                            childSnapshot.forEach((childrenSnapshot) => { // one pin
+                                if (typeof childrenSnapshot.val() === 'string' || childrenSnapshot.val() instanceof String) {
+                                    console.log(childrenSnapshot.val());
+                
+                                }
+                                else {
+                                    var pinVal = childrenSnapshot.val();
+                                    Pins.push(pinVal);
+                                }
+                            });
+                        }
+                    })
+                
+                }
+                showCollectionPins();
+            });
+        } 
+        else {
+            
+        }
+    });
 
 }
+function showCollectionPins()
+{
+    console.log(Pins);
+    for (let i = 0; i < Pins.length; i++) {
+                   
+        let Pin_id = Pins[i].Id;
+       
+        let url = Pins[i].URL;
+        let title = Pins[i].Title;
+        let desp = Pins[i].Description;
+       
 
+        const new_pin = document.createElement('DIV');
+        const new_image = new Image();
+
+        new_image.src = url;
+        new_pin.style.opacity = 0;
+        
+        new_image.onload = function () {
+
+
+            let iHeight = new_image.height;
+            let iWidth = new_image.width;
+            let ratio = iHeight / iWidth;
+
+            let imageSize = "large";
+
+
+            if (ratio < 1.3)
+                imageSize = "medium";
+
+            if (ratio < 1.15)
+                imageSize = "small";
+
+            new_pin.classList.add('card');
+            //new_pin.classList.add(`card_${pin_details.pin_size}`);
+            new_pin.classList.add(`card_${imageSize}`);
+            new_image.classList.add('pin_max_width');
+
+
+
+            
+            
+            new_pin.innerHTML = `
+            <div class="pin_title">${title}</div>
+
+            
+
+                <div class="modal_foot">
+                    <div class="destination">
+                        <div class="pint_mock_icon_container">
+                            <img src="./images/upper-right-arrow.png" alt="destination" class="pint_mock_icon">
+                        </div>
+                        <span>${desp}</span>
+                    </div>
+
+                    <div class="pint_mock_icon_container">
+                        <img src="./images/send.png" alt="send" class="pint_mock_icon">
+                    </div>
+
+                    <div class="pint_mock_icon_container">
+                        <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pin_image">
+            </div>`;
+            
+            
+               
+                
+            
+            PinGrid_Main.appendChild(new_pin);
+            new_pin.children[2].appendChild(new_image);
+            
+            
+            if (
+                new_image.getBoundingClientRect().width < new_image.parentElement.getBoundingClientRect().width ||
+                new_image.getBoundingClientRect().height < new_image.parentElement.getBoundingClientRect().height
+            ) {
+                new_image.classList.remove('pin_max_width');
+                new_image.classList.add('pin_max_height');
+            }
+
+            new_pin.style.opacity = 1;
+            
+        }
+        
+        
+    }
+}
 //old add pin function
 /*
 function create_pin(pin_details) {
@@ -316,8 +445,8 @@ function addPin() {
                     }
                     else {
                         var collectionVal = childSnapshot.key;
-                        
-                        Collections.push(collectionVal);
+                        if(collectionVal != "PostedPins")
+                            Collections.push(collectionVal);
                     }                
                 })
                 
@@ -424,9 +553,19 @@ function addPin() {
                                 btnCollection.id = `${Collections[j]}_${Pin_id}`;
                                 btnCollection.collect = Collections[j];
                                 btnCollection.pin = Pin_id;
+                                btnCollection.description = desp;
+                                btnCollection.title=title;
+                                btnCollection.imgurl=url
                                 btnCollection.addEventListener("click", function(){
-                                    localStorage.setItem("SavedPin", this.pin);
-                                    localStorage.setItem("SavedCollection", this.collect);
+                                    emailForChild = user.email.replace(".", ",")
+                                    let user_ro = firebase.database().ref('users/' + emailForChild+`/${this.collect}/`);
+                                    
+                                    user_ro.child('Pin_'+this.pin).set({
+                                        Title: this.title,
+                                        Description:this.description,
+                                        Id: this.pin,
+                                        URL: this.imgurl
+                                    })
                                     console.log(this.collect);
                                     console.log(this.pin);
                                     //savePinToCollection();
@@ -478,81 +617,110 @@ function savePinToCollection(){
 }
 
 function addCollection() {
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            UserComma = user.email.replace(".", ",")
+            cur_user_root = firebase.database().ref('users/'+UserComma);
+            cur_user_root.on("value", (snapshot) => { // all collections
+                Collections = [];
+                snapshot.forEach((childSnapshot) => { // a collection
+                    if (typeof childSnapshot.val() === 'string' || childSnapshot.val() instanceof String) {
+                                console.log(childSnapshot.val());
 
-    let Pin_id = 'Pins[i].Id'
-    let url = 'Pins[i].URL;'
-    let title = 'Pins[i].Title;'
-    let desp = 'Pins[i].Description;'
-
-
-    const new_Collection = document.createElement('DIV');
-    const new_image = new Image();
-
-    new_image.src = './images/up-arrow.png';
-    new_Collection.style.opacity = 0;  
-    nameOfCurCollection = "Saved Pins";
-    new_Collection.id = nameOfCurCollection;
-    new_image.onload = function () {
-
-
-        let iHeight = new_image.height;
-        let iWidth = new_image.width;
-        let ratio = iHeight / iWidth;
-
-        let imageSize = "large";
-
-
-        if (ratio < 1.3)
-            imageSize = "medium";
-
-        if (ratio < 1.15)
-            imageSize = "small";
-
-        new_Collection.classList.add('Collection');
-        //new_pin.classList.add(`card_${pin_details.pin_size}`);
-        new_Collection.classList.add(`Collection_${imageSize}`);
-        new_image.classList.add('Collection_max_width');
-
-
-
-
-
-        new_Collection.innerHTML = `
-        <div class="Cel_title">${title}</div>
-
-        <div class="Cel_modal">
-            <div class = "image__overlay">
-                <div class="image__title">${nameOfCurCollection}</div>
+                    }
+                    else {
+                        var collectionVal = childSnapshot.key;
+                        
+                        if(collectionVal != "PostedPins")
+                            Collections.push(collectionVal);
+                        
+                    }                
+                });
                 
-            </div>
-        </div>
-
+                for(let i=0; i<Collections.length; i++)
+                {
+                    
+                
+                
+                    const new_Collection = document.createElement('DIV');
+                    const new_image = new Image();
+                
+                    new_image.src = './images/up-arrow.png';
+                    new_Collection.style.opacity = 0;  
+                    nameOfCurCollection = Collections[i];
+                    new_Collection.id = nameOfCurCollection;
+                    new_image.onload = function () {
+                
+                
+                        let iHeight = new_image.height;
+                        let iWidth = new_image.width;
+                        let ratio = iHeight / iWidth;
+                
+                        let imageSize = "large";
+                
+                
+                        if (ratio < 1.3)
+                            imageSize = "medium";
+                
+                        if (ratio < 1.15)
+                            imageSize = "small";
+                
+                        new_Collection.classList.add('Collection');
+                        //new_pin.classList.add(`card_${pin_details.pin_size}`);
+                        new_Collection.classList.add(`Collection_${imageSize}`);
+                        new_image.classList.add('Collection_max_width');
+                
+                
+                
+                
+                
+                        new_Collection.innerHTML = `
+                        
+                
+                        <div class="Cel_modal">
+                            <div class = "image__overlay">
+                                <div class="image__title">${nameOfCurCollection}</div>
+                                
+                            </div>
+                        </div>
+                
+                            
+                        </div>
+                
+                        <div class="Cel_image">
+                        </div>`;
+                        new_Collection.addEventListener("click", function(){
+                            localStorage.setItem("CollectionName",this.id);
+                            
+                            
+                            window.location="ShowCollection.html";
+                        });
+                        new_Collection.appendChild(new_image);
+                        CollectionGrid.appendChild(new_Collection);
+                        
+                
+                        if (
+                            new_image.getBoundingClientRect().width < new_image.parentElement.getBoundingClientRect().width ||
+                            new_image.getBoundingClientRect().height < new_image.parentElement.getBoundingClientRect().height
+                        ) {
+                            new_image.classList.remove('Cel_max_width');
+                            new_image.classList.add('Cel_max_height');
+                        }
+                
+                        new_Collection.style.opacity = 1;
+                
+                    }
+                }
+            });
+           
             
-        </div>
+        
 
-        <div class="Cel_image">
-        </div>`;
-        new_Collection.addEventListener("click", function(){
-            localStorage.setItem("CollectionName",this.id);
+        } else {
             
-            
-            window.location="ShowCollection.html";
-        });
-        CollectionGrid.appendChild(new_Collection);
-        new_Collection.children[2].appendChild(new_image);
-
-        if (
-            new_image.getBoundingClientRect().width < new_image.parentElement.getBoundingClientRect().width ||
-            new_image.getBoundingClientRect().height < new_image.parentElement.getBoundingClientRect().height
-        ) {
-            new_image.classList.remove('Cel_max_width');
-            new_image.classList.add('Cel_max_height');
         }
-
-        new_Collection.style.opacity = 1;
-
-    }
-
+    });
+    
 }
 
 
@@ -621,7 +789,18 @@ function signInUser() {
                     User_Root.child(emailForChild).set({
                         email: result.user.email
                     })
-                    window.location = "UserScreen.html";
+                    .then()
+                    {
+                        let user = firebase.database().ref('users/' + emailForChild+'/');
+                        user.child('PostedPins/').set({
+                        amount: 0
+                        })
+                        user.child('SavedPins/').set({
+                            amount: 0
+                        })
+                        window.location = "UserScreen.html";
+                    }
+                   
                 }
             });
 
@@ -658,8 +837,18 @@ function signInUserWithGoogle() {
                 if (dont == 0) {
                     User_Root.child(emailForChild).set({
                         email: result.user.email
-                    })
-                    window.location = "UserScreen.html";
+                    }).then()
+                    {
+                        let user = firebase.database().ref('users/' + emailForChild+'/');
+                        user.child('PostedPins/').set({
+                        amount: 0
+                        })
+                        user.child('SavedPins/').set({
+                            amount: 0
+                        })
+                        window.location = "UserScreen.html";
+                    }
+                    
                 }
             });
 
@@ -889,10 +1078,19 @@ function signUpUser() {
 
             // if we reached here then the user doesnt exists
 
-
+           
             User_Root.child(emailForChild).set({
                 email: email
-            })
+            }).then()
+            {
+                let user = firebase.database().ref('users/' + emailForChild+'/');
+                user.child('PostedPins/').set({
+                    amount: 0
+                })
+                user.child('SavedPins').set({
+                    amount: 0
+                })
+            }
             window.location = "UserScreen.html";
         })
 
@@ -1022,8 +1220,8 @@ function SavePin2(ImageUrl, userInfo, UserComma) {
     let Title = userInfo.title;
 
     //window.location = "UserScreen.html";
-
-    let user = firebase.database().ref('users/' + UserComma + '/');
+   
+    let user = firebase.database().ref('users/' + UserComma + '/PostedPins/');
     user.child('Pin_' + ID).set({
         Title: Title,
         Description: Description,
