@@ -68,6 +68,7 @@ let key;
 let Par;
 let CurrPhoto;
 
+let Collections=[];
 let Files = [];
 let Pins = [];
 let Images=[];
