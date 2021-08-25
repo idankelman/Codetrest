@@ -54,7 +54,7 @@ let ID=0;
 let UserEmail;
 let UserComma;
 let UserName;
-
+let CollectionName;
 
 let Pin_Root;
 
@@ -68,6 +68,7 @@ let key;
 let Par;
 let CurrPhoto;
 
+let Collections=[];
 let Files = [];
 let Pins = [];
 let Images=[];
@@ -131,7 +132,10 @@ document.addEventListener("DOMContentLoaded", function () {
         CreateAddPinPage();
 
     }
-
+    else if(identifier.innerHTML=="Showing Collection")
+    {
+        CreateCollectionPage();
+    }
 
     //let temp = Pin_Root.child('Pin_'+ID);
     //temp.on('value',snap=>  Par.innerHTML = snap.val().Description);

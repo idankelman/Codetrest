@@ -237,6 +237,11 @@ function CreateAddPinPage() {
 
 }
 
+function CreateCollectionPage(){
+    CollectionName = localStorage.getItem("CollectionName");
+    console.log(CollectionName);
+
+}
 
 //old add pin function
 /*
@@ -297,96 +302,180 @@ function create_pin(pin_details) {
 */
 
 function addPin() {
+    //first we need to get all of the collections
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) { // user is signed in
+            UserComma = user.email.replace(".", ",")
+            cur_user_root = firebase.database().ref('users/'+UserComma);
+            cur_user_root.on("value", (snapshot) => { // all collections
+                Collections = [];
+                snapshot.forEach((childSnapshot) => { // a collection
+                    if (typeof childSnapshot.val() === 'string' || childSnapshot.val() instanceof String) {
+                                console.log(childSnapshot.val());
 
-    //PinGrid_Main.innerHTML = '';
-    for (let i = 0; i < Pins.length; i++) {
-
-        let Pin_id = Pins[i].Id;
-        let url = Pins[i].URL;
-        let title = Pins[i].Title;
-        let desp = Pins[i].Description;
-
-
-        const new_pin = document.createElement('DIV');
-        const new_image = new Image();
-
-        new_image.src = url;
-        new_pin.style.opacity = 0;
-
-        new_image.onload = function () {
-
-
-            let iHeight = new_image.height;
-            let iWidth = new_image.width;
-            let ratio = iHeight / iWidth;
-
-            let imageSize = "large";
-
-
-            if (ratio < 1.3)
-                imageSize = "medium";
-
-            if (ratio < 1.15)
-                imageSize = "small";
-
-            new_pin.classList.add('card');
-            //new_pin.classList.add(`card_${pin_details.pin_size}`);
-            new_pin.classList.add(`card_${imageSize}`);
-            new_image.classList.add('pin_max_width');
-
-
-
-
-
-            new_pin.innerHTML = `
-            <div class="pin_title">${title}</div>
-
-            <div class="pin_modal">
-                <div class="modal_head">
-                    <div class="save_card">Save</div>
-                </div>
-
-                <div class="modal_foot">
-                    <div class="destination">
-                        <div class="pint_mock_icon_container">
-                            <img src="./images/upper-right-arrow.png" alt="destination" class="pint_mock_icon">
+                    }
+                    else {
+                        var collectionVal = childSnapshot.key;
+                        
+                        Collections.push(collectionVal);
+                    }                
+                })
+                
+                
+                
+                console.log(Collections);
+                
+                   
+                //PinGrid_Main.innerHTML = '';
+                for (let i = 0; i < Pins.length; i++) {
+                   
+                    let Pin_id = Pins[i].Id;
+                    console.log(Pin_id);
+                    let url = Pins[i].URL;
+                    let title = Pins[i].Title;
+                    let desp = Pins[i].Description;
+                    dropdownHTML=``;
+                    for(let j=0; j<Collections.length; j++)
+                    {
+                        dropdownHTML+=`<button class = "save_card" id="${Collections[j]}_${Pin_id}">${Collections[j]}</button>`;
+                        console.log(`${Collections[j]}_${Pin_id}`);
+                    }
+            
+                    const new_pin = document.createElement('DIV');
+                    const new_image = new Image();
+            
+                    new_image.src = url;
+                    new_pin.style.opacity = 0;
+                    
+                    new_image.onload = function () {
+            
+            
+                        let iHeight = new_image.height;
+                        let iWidth = new_image.width;
+                        let ratio = iHeight / iWidth;
+            
+                        let imageSize = "large";
+            
+            
+                        if (ratio < 1.3)
+                            imageSize = "medium";
+            
+                        if (ratio < 1.15)
+                            imageSize = "small";
+            
+                        new_pin.classList.add('card');
+                        //new_pin.classList.add(`card_${pin_details.pin_size}`);
+                        new_pin.classList.add(`card_${imageSize}`);
+                        new_image.classList.add('pin_max_width');
+            
+            
+            
+                        
+                        
+                        new_pin.innerHTML = `
+                        <div class="pin_title">${title}</div>
+            
+                        <div class="pin_modal">
+                            <div class="modal_head">
+                                <div class = "dropdown">
+                                    <div class="save_card" id = "${Pin_id}_Load">
+                                        
+                                    </div>
+                                    
+                                </div>
+                            </div>
+            
+                            <div class="modal_foot">
+                                <div class="destination">
+                                    <div class="pint_mock_icon_container">
+                                        <img src="./images/upper-right-arrow.png" alt="destination" class="pint_mock_icon">
+                                    </div>
+                                    <span>${desp}</span>
+                                </div>
+            
+                                <div class="pint_mock_icon_container">
+                                    <img src="./images/send.png" alt="send" class="pint_mock_icon">
+                                </div>
+            
+                                <div class="pint_mock_icon_container">
+                                    <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
+                                </div>
+                            </div>
                         </div>
-                        <span>${desp}</span>
-                    </div>
-
-                    <div class="pint_mock_icon_container">
-                        <img src="./images/send.png" alt="send" class="pint_mock_icon">
-                    </div>
-
-                    <div class="pint_mock_icon_container">
-                        <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
-                    </div>
-                </div>
-            </div>
-
-            <div class="pin_image">
-            </div>`;
-
-            PinGrid_Main.appendChild(new_pin);
-            new_pin.children[2].appendChild(new_image);
-
-            if (
-                new_image.getBoundingClientRect().width < new_image.parentElement.getBoundingClientRect().width ||
-                new_image.getBoundingClientRect().height < new_image.parentElement.getBoundingClientRect().height
-            ) {
-                new_image.classList.remove('pin_max_width');
-                new_image.classList.add('pin_max_height');
-            }
-
-            new_pin.style.opacity = 1;
-
+            
+                        <div class="pin_image">
+                        </div>`;
+                        
+                        $(`#${Pin_id}_Load`).ready(function(){
+                        
+                            const new_dropdown = document.createElement('DIV');
+                            new_dropdown.classList = "dropdown";
+                            const dropbtn = document.createElement('BUTTON');
+                            dropbtn.classList = "dropbtn";
+                            dropbtn.textContent ="Save To";
+                            new_dropdown.appendChild(dropbtn);
+                            const dropContent = document.createElement('DIV');
+                            dropContent.classList = "dropdown-content";
+                            for(let j=0; j<Collections.length; j++)
+                            {
+                                const btnCollection = document.createElement('BUTTON');
+                                btnCollection.classList = "save_card";
+                                btnCollection.textContent = Collections[j];
+                                btnCollection.id = `${Collections[j]}_${Pin_id}`;
+                                btnCollection.collect = Collections[j];
+                                btnCollection.pin = Pin_id;
+                                btnCollection.addEventListener("click", function(){
+                                    localStorage.setItem("SavedPin", this.pin);
+                                    localStorage.setItem("SavedCollection", this.collect);
+                                    console.log(this.collect);
+                                    console.log(this.pin);
+                                    //savePinToCollection();
+                                });
+                                   
+                                dropContent.appendChild(btnCollection);
+                            }
+                            new_dropdown.appendChild(dropContent);
+                            
+                            $(`#${Pin_id}_Load`).append(new_dropdown);
+                        });
+                           
+                            
+                        
+                        PinGrid_Main.appendChild(new_pin);
+                        new_pin.children[2].appendChild(new_image);
+                        
+                        
+                        if (
+                            new_image.getBoundingClientRect().width < new_image.parentElement.getBoundingClientRect().width ||
+                            new_image.getBoundingClientRect().height < new_image.parentElement.getBoundingClientRect().height
+                        ) {
+                            new_image.classList.remove('pin_max_width');
+                            new_image.classList.add('pin_max_height');
+                        }
+            
+                        new_pin.style.opacity = 1;
+                        
+                    }
+                    
+                    
+                }
+            
+                StopLoading();    
+        });
         }
-    }
-
-    StopLoading();
+        else // user isn't signed in, launch login page
+        {
+            Button_Sub.href = "Sub.html";
+            Button_Sub.innerHTML = 'log in';
+            Button_Sub.style.opacity = 1;
+        }
+    });
+    
 }
 
+function savePinToCollection(){
 
+}
 
 function addCollection() {
 
@@ -400,8 +489,9 @@ function addCollection() {
     const new_image = new Image();
 
     new_image.src = './images/up-arrow.png';
-    new_Collection.style.opacity = 0;
-
+    new_Collection.style.opacity = 0;  
+    nameOfCurCollection = "Saved Pins";
+    new_Collection.id = nameOfCurCollection;
     new_image.onload = function () {
 
 
@@ -431,31 +521,23 @@ function addCollection() {
         <div class="Cel_title">${title}</div>
 
         <div class="Cel_modal">
-            <div class="modal_head">
-                <div class="save_Collection">Save</div>
+            <div class = "image__overlay">
+                <div class="image__title">${nameOfCurCollection}</div>
+                
             </div>
+        </div>
 
-            <div class="modal_foot">
-                <div class="destination">
-                    <div class="pint_mock_icon_container">
-                        <img src="./images/upper-right-arrow.png" alt="destination" class="pint_mock_icon">
-                    </div>
-                    <span>${desp}</span>
-                </div>
-
-                <div class="pint_mock_icon_container">
-                    <img src="./images/send.png" alt="send" class="pint_mock_icon">
-                </div>
-
-                <div class="pint_mock_icon_container">
-                    <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
-                </div>
-            </div>
+            
         </div>
 
         <div class="Cel_image">
         </div>`;
-
+        new_Collection.addEventListener("click", function(){
+            localStorage.setItem("CollectionName",this.id);
+            
+            
+            window.location="ShowCollection.html";
+        });
         CollectionGrid.appendChild(new_Collection);
         new_Collection.children[2].appendChild(new_image);
 
