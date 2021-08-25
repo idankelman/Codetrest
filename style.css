@@ -972,6 +972,7 @@ body {
     
     font-family: font !important;
     color: #edf0f1;
+    font-weight: 400;
     text-decoration: none;
     margin-right: 40px;
     padding: 20px 20px;
@@ -980,7 +981,7 @@ body {
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease 0s;
-    position: flex;
+  
     
   }
 
@@ -1000,13 +1001,13 @@ body {
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease 0s;
-    position: flex;
+   
     
   }
 
   .cta {
     
-    margin-left: 20px;
+ 
     margin: 0 30px;
     padding : 20px 20px;
     background-color: rgb(224, 108, 117);
@@ -1016,6 +1017,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease 0s;
     font-family: font !important;
+    display: flex;
     
   }
   
@@ -1036,7 +1038,7 @@ body {
     margin-right: 5px;
     margin: 50px ;
     
-    padding: 200px 200px;
+    padding: 100px 100px;
     background-color:#C6C6C6 ;
     color: rgb(40, 44, 52);
     border: none;
@@ -1044,6 +1046,7 @@ body {
     cursor: pointer;
     transition: all 0.6s ease 0s;
     position: flex;
+    font-size: 200px;
   
     
   }
@@ -1151,6 +1154,30 @@ body {
   }
   
 
+  
+/* ===================================================================================
+                                    NavBar_ header (V2)
+====================================================================================== */
+
+.left {
+  display: flex;
+  align-items: flex-start;
+  justify-self: flex-start;
+  width: 5%;
+  padding: 0 0;
+}
+
+.right {
+  width: 15%;
+  display: flex;
+  justify-self: flex-end;
+  align-items: flex-end;
+
+  /*min - 1280*/
+  
+}
+
+
 
 
 
@@ -1160,6 +1187,8 @@ body {
 
 
   .search-box{
+
+    /*
     display: flex;
     background-color: rgb(224, 108, 117,1);
     border: none;
@@ -1170,8 +1199,23 @@ body {
     width: 10000000px;
     transition: 0.4s;
     padding: 0px;
-    max-width: 91%;
+    max-width: 90%;
     line-height: 3.2rem;
+    justify-self: start;
+    */
+
+    border: none;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    
+    height: 3rem;
+    border-radius: 25px;
+    overflow: hidden;
+    background-color: rgb(224, 108, 117,1);
+    line-height: 3.2rem;
+
+    
    
   }
 
@@ -1192,6 +1236,7 @@ body {
 
 
   .search-btn{
+    
       float: right;
       line-height: 40px;
       border-radius: 50%;
@@ -1203,6 +1248,7 @@ body {
       display: flex;
       justify-content: center;
       align-items: center;
+      
     
       
 
@@ -1213,16 +1259,17 @@ body {
       border: none;
       background: none;
       background-color: none;
+      float: left;
       outline: none;
       padding: 0;
       font-size: 16px;
       transition: 0.9s  ease 0s;
       line-height: 40px;
-      width: 1000000px;
-      padding: 0 10px;
-      max-width: 99%;
+      width: 99%;
+      padding: 0 20px;
+     
       color: #edf0f1;
-      margin-left: 16px;
+     
       font-family: font !important;
       
 
@@ -1239,6 +1286,81 @@ body {
         opacity: 0.8; /* Firefox */
 }
 
+
+
+
+
+
+@media only screen and (max-width: 3060px) {
+
+  .search-box{
+    width: 85%;
+ 
+  }
+ 
+   .search-txt
+  {
+   width: 100%;
+  }
+
+}
+
+
+
+@media only screen and (max-width: 2080px) {
+
+  .search-box{
+    width: 70%;
+  }
+ 
+   .search-txt
+  {
+    
+    
+  }
+
+}
+
+
+
+
+
+@media only screen and (max-width: 1280px) {
+
+  .search-box{
+    width: 60%;
+  }
+ 
+
+
+}
+
+
+
+@media only screen and (max-width: 800px) {
+
+  .search-box{
+    width: auto;
+  }
+ 
+   .search-txt
+  {
+   width:0px;
+   padding: 0;
+   
+  }
+  .cta2{
+    margin: 0 ;
+  }
+
+  .cta{
+    
+  }
+  
+}
+
+
+/*
 
   
 /* ===================================================================================
