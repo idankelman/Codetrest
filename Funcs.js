@@ -237,6 +237,11 @@ function CreateAddPinPage() {
 
 }
 
+function CreateCollectionPage(){
+    CollectionName = localStorage.getItem("CollectionName");
+    console.log(CollectionName);
+    
+}
 
 //old add pin function
 /*
@@ -400,8 +405,9 @@ function addCollection() {
     const new_image = new Image();
 
     new_image.src = './images/up-arrow.png';
-    new_Collection.style.opacity = 0;
-
+    new_Collection.style.opacity = 0;  
+    nameOfCurCollection = "Saved Pins";
+    new_Collection.id = nameOfCurCollection;
     new_image.onload = function () {
 
 
@@ -431,31 +437,23 @@ function addCollection() {
         <div class="Cel_title">${title}</div>
 
         <div class="Cel_modal">
-            <div class="modal_head">
-                <div class="save_Collection">Save</div>
+            <div class = "image__overlay">
+                <div class="image__title">${nameOfCurCollection}</div>
+                
             </div>
+        </div>
 
-            <div class="modal_foot">
-                <div class="destination">
-                    <div class="pint_mock_icon_container">
-                        <img src="./images/upper-right-arrow.png" alt="destination" class="pint_mock_icon">
-                    </div>
-                    <span>${desp}</span>
-                </div>
-
-                <div class="pint_mock_icon_container">
-                    <img src="./images/send.png" alt="send" class="pint_mock_icon">
-                </div>
-
-                <div class="pint_mock_icon_container">
-                    <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
-                </div>
-            </div>
+            
         </div>
 
         <div class="Cel_image">
         </div>`;
-
+        new_Collection.addEventListener("click", function(){
+            localStorage.setItem("CollectionName",this.id);
+            
+            
+            window.location="ShowCollection.html";
+        });
         CollectionGrid.appendChild(new_Collection);
         new_Collection.children[2].appendChild(new_image);
 
