@@ -31,6 +31,7 @@ let Button_Sign_in_Google;
 let Button_add_pin;
 let Button_Upload_photo;
 let Button_submit_pin;
+let btnAddCollection;
 
 let Text_in;
 let Text_delete;
@@ -38,6 +39,7 @@ let Email_txt;
 let Password_txt;
 let PinGrid_Main;
 let CollectionGrid;
+let NewCollectionName;
 
 let User_sign_up_name;
 let User_sign_up_email;

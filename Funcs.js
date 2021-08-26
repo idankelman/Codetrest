@@ -45,12 +45,44 @@ function CreateHomePage() {
 
 }
 
+function insertCollection()
+{
+    let txt = NewCollectionName.value;
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) { 
+            isExist=0;
+            
+            UserComma = user.email.replace(".", ",");
+            let user_ro = firebase.database().ref('users/' + UserComma);
+            user_ro.once("value", (snapshot) => { // all collections
+                snapshot.forEach((collection) => { // one user
+                    if(collection.key == txt)
+                        isExist=1;
+                    });
+                
+               if(isExist==0)
+               {
+                
+                    user_ro.child(`/${txt}/`).set({
+                    amount: 0
+                    })
+               }  
+                
+                
+            });
 
+           
+        } else {
+            alert('Error: no user is logged in');
+        }
+    });
+}
 
 function createUserPage() {
+    NewCollectionName=document.getElementById("CollectionToAdd");
+    btnAddCollection=document.getElementById("addCollection");
     let userInfo = document.getElementById("user info");
     Button_Sub = document.getElementById("Button_Login");
-
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
@@ -63,6 +95,7 @@ function createUserPage() {
                 name = user.email.substring(0, user.email.indexOf('@'));
             console.log(name);
             userInfo.innerHTML = `hello my name is ${name} `
+            btnAddCollection.addEventListener("click", insertCollection);
         } else {
             alert('Error: no user is logged in');
         }
@@ -253,7 +286,7 @@ function showTheCollection()
         if (user) {     
             UserComma = user.email.replace(".", ",");
             let user_ro = firebase.database().ref('users/' + UserComma+`/${CollectionName}/`);
-            user_ro.once("value", (snapshot) => { // The collection
+            user_ro.on("value", (snapshot) => { // The collection
                 Pins = [];               
                 snapshot.forEach((childSnapshot) => { // one user
                         var pinVal = childSnapshot.val();
@@ -623,7 +656,7 @@ function addCollection() {
         if (user) {
             UserComma = user.email.replace(".", ",")
             cur_user_root = firebase.database().ref('users/'+UserComma);
-            cur_user_root.once("value", (snapshot) => { // all collections
+            cur_user_root.on("value", (snapshot) => { // all collections
                 Collections = [];
                 snapshot.forEach((childSnapshot) => { // a collection
                     if (typeof childSnapshot.val() === 'string' || childSnapshot.val() instanceof String) {
@@ -638,11 +671,12 @@ function addCollection() {
                         
                     }                
                 });
-                
+                console.log(Collections);
+                CollectionGrid.innerHTML = ``;
                 for(let i=0; i<Collections.length; i++)
                 {
                     
-                
+                    
                 
                     const new_Collection = document.createElement('DIV');
                     const new_image = new Image();
@@ -650,6 +684,7 @@ function addCollection() {
                     new_image.src = './images/up-arrow.png';
                     new_Collection.style.opacity = 0;  
                     nameOfCurCollection = Collections[i];
+                    
                     new_Collection.id = nameOfCurCollection;
                     new_image.onload = function () {
                 
@@ -681,7 +716,7 @@ function addCollection() {
                 
                         <div class="Cel_modal">
                             <div class = "image__overlay">
-                                <div class="image__title">${nameOfCurCollection}</div>
+                                <div class="image__title">${new_Collection.id}</div>
                                 
                             </div>
                         </div>
@@ -691,6 +726,7 @@ function addCollection() {
                 
                         <div class="Cel_image">
                         </div>`;
+                        console.log(new_Collection);
                         new_Collection.addEventListener("click", function(){
                             localStorage.setItem("CollectionName",this.id);
                             
