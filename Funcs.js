@@ -1010,7 +1010,7 @@ function updatePins() {
         snapshot.forEach((childSnapshot) => { // snapshot = one user
             childSnapshot.forEach((childrenSnapshot) => { // snapshot = one collection
                 console.log(childrenSnapshot.key)
-                if(childrenSnapshot.key != "SavedPins" && childrenSnapshot.key != "email"){
+                if(childrenSnapshot.key == "PostedPins"){
                     console.log(childrenSnapshot.key)
                     childrenSnapshot.forEach((childrenenSnapshot)=>{
                     var pinVal = childrenenSnapshot.val();
