@@ -58,6 +58,8 @@ let UserComma;
 let UserName;
 let CollectionName;
 let updated=0;
+let counter=0;
+let ImagesToHide;
 
 let Pin_Root;
 

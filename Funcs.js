@@ -466,6 +466,7 @@ function addPin() {
     {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) { // user is signed in
+            counter=0;
             UserComma = user.email.replace(".", ",")
             cur_user_root = firebase.database().ref('users/'+UserComma);
             cur_user_root.once("value", (snapshot) => { // all collections
@@ -488,7 +489,7 @@ function addPin() {
                 
                    
                 PinGrid_Main.innerHTML = ``;
-                
+                $("#PinGrid1").css('visibility', 'hidden');
                 for (let i = 0; i < Pins.length; i++) {
                    
                     let Pin_id = Pins[i].Id;
@@ -627,13 +628,14 @@ function addPin() {
                         }
             
                         new_pin.style.opacity = 1;
-                        
+                        counter++;
+                        checkIfRetriveDone();
                     }
                     
                     
                 }
             
-                StopLoading();    
+                  
         });
         }
         else // user isn't signed in, launch login page
@@ -646,7 +648,18 @@ function addPin() {
     }   
     
 }
-
+function checkIfRetriveDone()
+{
+    console.log(counter);
+    if(counter==Pins.length)
+    {
+        StopLoading();
+        $("#PinGrid1").fadeIn(50);
+        PinGrid_Main.classList="container";
+        $("#PinGrid1").css('visibility', 'visible');
+        
+    }
+}
 function savePinToCollection(){
 
 }
