@@ -77,8 +77,13 @@ function insertCollection()
         }
     });
 }
-
+function stopLoader3()
+{
+    loader3.style.visibility="hidden";
+}
 function createUserPage() {
+    loader3 = document.getElementById("loader3");
+    loader3.style.visibility="hidden";
     NewCollectionName=document.getElementById("CollectionToAdd");
     btnAddCollection=document.getElementById("addCollection");
     let userInfo = document.getElementById("user info");
@@ -960,10 +965,11 @@ function submitPin() {
             //console.log(user.email);
             ID = parseInt(Math.random() * Math.pow(10, digits));
             UserComma = user.email.replace(".", ",");
+            
             let metadata = { contentType: Images[0].type }
             let uploadTask = Image_Root.child('Pin_' + ID).put(Images[0], metadata);
             let ImageUrl;
-
+            
 
 
             uploadTask.on('state_changed',
@@ -971,6 +977,9 @@ function submitPin() {
                 function progress(snapshot) {
                     let precentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                     console.log(precentage);
+                   
+                    
+                    
                 },
                 function error(err) {
                     console.log("error accured");
@@ -982,7 +991,7 @@ function submitPin() {
                         ImageUrl = url;
 
                         SavePin(ImageUrl, UserComma);
-
+                        stopLoader3();
                     });
 
                 });
@@ -1230,6 +1239,7 @@ function uploadPhoto2(userInfo) {
             uploadTask.on('state_changed',
 
                 function progress(snapshot) {
+                    document.getElementById("loader3").style.visibility="visible";
                     let precentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                     console.log(precentage);
                 },
@@ -1243,7 +1253,7 @@ function uploadPhoto2(userInfo) {
                         ImageUrl = url;
                         //SavePin(ImageUrl, UserComma);
                         SavePin2(ImageUrl, userInfo,UserComma);
-
+                        stopLoader3();
                     });
 
                 });

@@ -17,7 +17,7 @@ let pin_image_blob;
 
 
 let Loader_Anim;
-
+let loader3;
 
 let Button_in;  
 let Button_upload;
