@@ -84,6 +84,7 @@ function stopLoader3()
 function createUserPage() {
     loader3 = document.getElementById("loader3");
     loader3.style.visibility="hidden";
+    Loader_Anim = document.getElementById("loading_Anim");
     NewCollectionName=document.getElementById("CollectionToAdd");
     btnAddCollection=document.getElementById("addCollection");
     let userInfo = document.getElementById("user info");
@@ -767,6 +768,7 @@ function addCollection() {
                 
                     }
                 }
+                StopLoading();
             });
            
             
