@@ -657,7 +657,7 @@ function addPin() {
 function checkIfRetriveDone()
 {
     console.log(counter);
-    if(counter==Pins.length)
+    if(counter==18 || counter==Pins.length)
     {
         StopLoading();
         $("#PinGrid1").fadeIn(50);
