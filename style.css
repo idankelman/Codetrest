@@ -1214,6 +1214,7 @@ body {
     overflow: hidden;
     background-color: rgb(224, 108, 117,1);
     line-height: 3.2rem;
+    transition: all 0.3s ease 0s;
 
     
    
