@@ -237,7 +237,7 @@ body {
    
 	/*width: 236px;
 	height: 472px;*/
-
+  
 	border-radius: 16px;
 	position: relative;
 
@@ -298,6 +298,7 @@ body {
 	position: fixed;
 	top: 0;
 	display: flex;
+
 	justify-content: flex-end;
 	align-items: center;
 }
