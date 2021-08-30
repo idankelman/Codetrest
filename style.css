@@ -237,7 +237,7 @@ body {
    
 	/*width: 236px;
 	height: 472px;*/
-
+  
 	border-radius: 16px;
 	position: relative;
 
@@ -274,6 +274,7 @@ body {
 }
 
 .pin_modal {
+  
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -293,16 +294,19 @@ body {
 }
 
 .pin_modal .modal_head {
+  
 	width: 100%;
 	height: 15%;
 	position: fixed;
 	top: 0;
 	display: flex;
+
 	justify-content: flex-end;
 	align-items: center;
 }
 
 .pin_modal .modal_head .save_card {
+  
 	margin-right: 20px;
 	width: 53px;
 	height: 40px;
@@ -343,6 +347,7 @@ body {
 }
 
 .pint_mock_icon_container {
+  
 	width: 32px;
 	height: 32px;
 	border-radius: 50%;
@@ -381,9 +386,11 @@ body {
 
 
 .pin_image {
+  
   width: 100%;
   height: 100%;
   display: flex;
+  
   justify-content: center;
   align-items: center;
 }

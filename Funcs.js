@@ -15,6 +15,7 @@
 
 
 function CreateHomePage() {
+   
     Button_in = document.getElementById("Btn_in");
     Button_delete = document.getElementById("Btn_delete");
     Button_Sub = document.getElementById("Button_Login");
@@ -27,7 +28,8 @@ function CreateHomePage() {
     PinGrid_Main = document.getElementById("PinGrid1");
     Loader_Anim = document.getElementById("loading_Anim");
 
-
+    
+       
     // Button_in.addEventListener("click", foo);
     //Button_upload.addEventListener("click",uploadPhoto);
     //Button_delete.addEventListener("click",deletePin);
@@ -40,7 +42,7 @@ function CreateHomePage() {
 
 
     Image_Root = firebase.storage().ref('Images/');
-
+    
     updatePage();
 
 }
@@ -216,33 +218,119 @@ function CreateAddPinPage() {
                 reader.onload = function () {
                     const new_image = new Image();
 
+                    
+                    let fileSize = dataURItoBlob(reader.result).size;
                     new_image.src = reader.result;
                     pin_image_blob = reader.result;
-                   
+                    
                     //console.log(Images.length);
 
                     new_image.onload = function () {
 
-                        Images = event.target.files;
+                       
+                        /*
+                        var cvs = document.createElement('canvas');
+                        cvs.width = this.width;
+                        cvs.height = this.height;
+                        var ctx = cvs.getContext("2d").drawImage(this, 0, 0);
+                        var newImageData = cvs.toDataURL("image/jpeg", 2/100);
+                        Images = dataURItoBlob(newImageData);
+                        console.log(Images);
+                        var result_image_obj = new Image();
+                        result_image_obj.src = newImageData;
+                        
+                        pin_image_blob = result_image_obj.src;
+                        this.src=result_image_obj.src;
+                        */
 
-                        const modals_pin = document.querySelector('.add_pin_modal .modals_pin');
+                        const inputWidth = this.naturalWidth;
+                        const inputHeight = this.naturalHeight;
 
-                        new_image.classList.add('pin_max_width');
-
-                        document.querySelector('.add_pin_modal .pin_image').appendChild(new_image);
-                        document.querySelector('#upload_img_label').style.display = 'none';
-
-                        modals_pin.style.display = 'block';
-
-                        if (
-                            new_image.getBoundingClientRect().width < new_image.parentElement.getBoundingClientRect().width ||
-                            new_image.getBoundingClientRect().height < new_image.parentElement.getBoundingClientRect().height
-                        ) {
-                            new_image.classList.remove('pin_max_width');
-                            new_image.classList.add('pin_max_height');
+                        
+                        // the desired aspect ratio of our output image (width / height)
+                        console.log("file size before compression: " + fileSize);
+                        let outputResolutionMulti = 1; // times how much to decrease the resultion
+                        let compression = 100; // precenteges of quality
+                        if(fileSize>100000)
+                        {
+                            outputResolutionMulti = 0.8;
+                            compression = 80;
+                        }
+                        if(fileSize>500000) 
+                        {
+                            outputResolutionMulti = 0.6;
+                            compression = 70;
+                        }
+                        if(fileSize>1000000) 
+                        {
+                            outputResolutionMulti = 0.5;
+                            compression = 60;
+                        }
+                        if(fileSize>2000000) 
+                        {
+                            outputResolutionMulti = 0.5;
+                            compression = 60;
+                        }
+                        if(fileSize>4000000)
+                        {
+                            outputResolutionMulti = 0.3;
+                            compression = 30;
+                        }
+                        if(fileSize>8000000)
+                        {
+                            outputResolutionMulti = 0.2;
+                            compression = 15;
                         }
 
-                        modals_pin.style.opacity = 1;
+                        
+                       
+                        // calculate the position to draw the image at
+                        
+                      
+                        // create a canvas that will present the output image
+                        var cvs = document.createElement('canvas');
+                        let outputWidth = Math.round(inputWidth * outputResolutionMulti);
+                        let outputHeight = Math.round(inputHeight *outputResolutionMulti);
+                        // set it to the same size as the image
+                        cvs.width = outputWidth;
+                        cvs.height = outputHeight;
+
+                        // draw our image at position 0, 0 on the canvas
+                        var ctx = cvs.getContext("2d").drawImage(this, 0,0, outputWidth  , outputHeight);
+                        var newImageData = cvs.toDataURL("image/jpeg", compression/100);
+                        
+                                               
+                        Images = dataURItoBlob(newImageData);
+                        
+                        console.log("file size after compression: " + Images.size);
+                        console.log("ratio: " + fileSize/Images.size);
+                        var result_image_obj = new Image();
+                        result_image_obj.src = newImageData;
+                        
+                        pin_image_blob = result_image_obj.src;
+                        this.src=result_image_obj.src;
+
+
+                        new_image.onload = function(){
+                            const modals_pin = document.querySelector('.add_pin_modal .modals_pin');
+            
+                            new_image.classList.add('pin_max_width');
+
+                            document.querySelector('.add_pin_modal .pin_image').appendChild(new_image);
+                            document.querySelector('#upload_img_label').style.display = 'none';
+
+                            modals_pin.style.display = 'block';
+
+                            if (
+                                new_image.getBoundingClientRect().width < new_image.parentElement.getBoundingClientRect().width ||
+                                new_image.getBoundingClientRect().height < new_image.parentElement.getBoundingClientRect().height
+                            ) {
+                                new_image.classList.remove('pin_max_width');
+                                new_image.classList.add('pin_max_height');
+                            }
+
+                            modals_pin.style.opacity = 1;
+                        }
                     }
                 }
 
@@ -256,6 +344,9 @@ function CreateAddPinPage() {
     });
 
     document.querySelector('.save_pin').addEventListener('click', () => {
+        
+        
+        
         const users_data = {
             author: 'Jack',
             board: 'default',
@@ -275,7 +366,22 @@ function CreateAddPinPage() {
     });
 
 }
-
+function dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ia], {type:mimeString});
+    }
 function CreateCollectionPage(){
     Loader_Anim = document.getElementById("loading_Anim");
     PinGrid_Main = document.getElementById("PinGrid1");
@@ -518,7 +624,7 @@ function addPin() {
                     
                     new_image.onload = function () {
             
-            
+                        
                         let iHeight = new_image.height;
                         let iWidth = new_image.width;
                         let ratio = iHeight / iWidth;
@@ -632,7 +738,7 @@ function addPin() {
                             new_image.classList.remove('pin_max_width');
                             new_image.classList.add('pin_max_height');
                         }
-            
+                        
                         new_pin.style.opacity = 1;
                         counter++;
                         checkIfRetriveDone();
@@ -656,8 +762,9 @@ function addPin() {
 }
 function checkIfRetriveDone()
 {
+
     console.log(counter);
-    if(counter==18 || counter==Pins.length)
+    if(counter==PinsToWait || counter==Pins.length)
     {
         StopLoading();
         $("#PinGrid1").fadeIn(50);
@@ -707,7 +814,7 @@ function addCollection() {
                     new_Collection.id = nameOfCurCollection;
                     new_image.onload = function () {
                 
-                
+                        
                         let iHeight = new_image.height;
                         let iWidth = new_image.width;
                         let ratio = iHeight / iWidth;
@@ -1232,8 +1339,8 @@ function uploadPhoto2(userInfo) {
 
             
             ID = parseInt(Math.random() * Math.pow(10, digits));
-            let metadata = { contentType: Images[0].type }
-            let uploadTask = Image_Root.child('Pin_' + ID).put(Images[0], metadata);
+            let metadata = { contentType: Images.type }
+            let uploadTask = Image_Root.child('Pin_' + ID).put(Images, metadata);
             let ImageUrl;
 
 
