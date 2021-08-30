@@ -219,16 +219,16 @@ function CreateAddPinPage() {
                     const new_image = new Image();
 
                     
-                    
+                    let fileSize = dataURItoBlob(reader.result).size;
                     new_image.src = reader.result;
                     pin_image_blob = reader.result;
-                   
+                    
                     //console.log(Images.length);
 
                     new_image.onload = function () {
 
                        
-                        
+                        /*
                         var cvs = document.createElement('canvas');
                         cvs.width = this.width;
                         cvs.height = this.height;
@@ -241,7 +241,76 @@ function CreateAddPinPage() {
                         
                         pin_image_blob = result_image_obj.src;
                         this.src=result_image_obj.src;
+                        */
+
+                        const inputWidth = this.naturalWidth;
+                        const inputHeight = this.naturalHeight;
+
+                        
+                        // the desired aspect ratio of our output image (width / height)
+                        console.log("file size before compression: " + fileSize);
+                        let outputResolutionMulti = 1; // times how much to decrease the resultion
+                        let compression = 100; // precenteges of quality
+                        if(fileSize>100000)
+                        {
+                            outputResolutionMulti = 0.8;
+                            compression = 80;
+                        }
+                        if(fileSize>500000) 
+                        {
+                            outputResolutionMulti = 0.6;
+                            compression = 70;
+                        }
+                        if(fileSize>1000000) 
+                        {
+                            outputResolutionMulti = 0.5;
+                            compression = 60;
+                        }
+                        if(fileSize>2000000) 
+                        {
+                            outputResolutionMulti = 0.5;
+                            compression = 60;
+                        }
+                        if(fileSize>4000000)
+                        {
+                            outputResolutionMulti = 0.3;
+                            compression = 30;
+                        }
+                        if(fileSize>8000000)
+                        {
+                            outputResolutionMulti = 0.2;
+                            compression = 15;
+                        }
+
+                        
                        
+                        // calculate the position to draw the image at
+                        
+                      
+                        // create a canvas that will present the output image
+                        var cvs = document.createElement('canvas');
+                        let outputWidth = Math.round(inputWidth * outputResolutionMulti);
+                        let outputHeight = Math.round(inputHeight *outputResolutionMulti);
+                        // set it to the same size as the image
+                        cvs.width = outputWidth;
+                        cvs.height = outputHeight;
+
+                        // draw our image at position 0, 0 on the canvas
+                        var ctx = cvs.getContext("2d").drawImage(this, 0,0, outputWidth  , outputHeight);
+                        var newImageData = cvs.toDataURL("image/jpeg", compression/100);
+                        
+                                               
+                        Images = dataURItoBlob(newImageData);
+                        
+                        console.log("file size after compression: " + Images.size);
+                        console.log("ratio: " + fileSize/Images.size);
+                        var result_image_obj = new Image();
+                        result_image_obj.src = newImageData;
+                        
+                        pin_image_blob = result_image_obj.src;
+                        this.src=result_image_obj.src;
+
+
                         new_image.onload = function(){
                             const modals_pin = document.querySelector('.add_pin_modal .modals_pin');
             
@@ -693,8 +762,9 @@ function addPin() {
 }
 function checkIfRetriveDone()
 {
+
     console.log(counter);
-    if(counter==18 || counter==Pins.length)
+    if(counter==PinsToWait || counter==Pins.length)
     {
         StopLoading();
         $("#PinGrid1").fadeIn(50);
