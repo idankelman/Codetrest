@@ -405,7 +405,7 @@ function showTheCollection()
                         if(!Number.isInteger(pinVal))                            
                             Pins.push(pinVal);
                         });
-                    showCollectionPins();
+                    showCollectionPins(UserComma);
                 });
                
             
@@ -416,9 +416,13 @@ function showTheCollection()
     });
 
 }
-function showCollectionPins()
+function showCollectionPins(email)
 {
     console.log(Pins);
+    CollectionName = localStorage.getItem("CollectionName");
+    $("#PinGrid1").css('visibility', 'hidden');
+    PinGrid_Main.innerHTML=``;
+    counter=0;
     for (let i = 0; i < Pins.length; i++) {
                    
         let Pin_id = Pins[i].Id;
@@ -463,7 +467,7 @@ function showCollectionPins()
             <div class="pin_title">${title}</div>
             
                         <div class="pin_modal">
-                            <div class="modal_head">
+                            <div class="modal_head" id=${Pin_id}_remove>
                                 
                             </div>
             
@@ -487,7 +491,15 @@ function showCollectionPins()
             
                         <div class="pin_image">
                         </div>`;
-            
+            $(`#${Pin_id}_remove`).ready(function(){
+                let removeBtn = document.createElement("button");
+                removeBtn.textContent="Remove";
+                removeBtn.classList.add('save_card');
+                removeBtn.addEventListener("click", function(){
+                    firebase.database().ref('users/'+email+'/'+CollectionName+'/Pin_'+Pin_id).remove();
+                })
+                $(`#${Pin_id}_remove`).append(removeBtn);
+            })
             
                
                 
@@ -505,6 +517,8 @@ function showCollectionPins()
             }
 
             new_pin.style.opacity = 1;
+            counter++;
+            checkIfRetriveDone();
             
         }
         
