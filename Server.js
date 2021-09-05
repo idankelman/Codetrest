@@ -57,6 +57,7 @@ let UserEmail;
 let UserComma;
 let UserName;
 let CollectionName;
+let PinsToWait=12;
 let updated=0;
 let counter=0;
 let ImagesToHide;
