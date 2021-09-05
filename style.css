@@ -1568,28 +1568,37 @@ transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 /* drop down*/
 .dropbtn {
-  background-color: #d12923;
+  background-color: var(--second_color);
   color: white;
-  padding: 16px;
+  
+  height: 30px;
+  width: 30px;
   font-size: 16px;
+  border-radius: 14px;
   border: none;
+  transition: 0.9s  ease 0s;
 }
 
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
   position: relative;
   display: inline-block;
+ 
+  transition: 0.9s  ease 0s;
 }
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #131212;
+  background-color: none;
+  border: none;
   min-width: 160px;
   height: 120px;
-  overflow: auto;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  overflow: hidden;
+  
+  transition: 0.9s  ease 0s;
+
   z-index: 1;
 }
 
@@ -1599,6 +1608,8 @@ transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   padding: 12px 16px;
   text-decoration: none;
   display: block;
+  
+  overflow: hidden;
 }
 
 /* Change color of dropdown links on hover */
