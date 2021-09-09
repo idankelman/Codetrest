@@ -92,13 +92,21 @@ function searchBarInit()
     searchInput.addEventListener('keyup', (e) => {
         if (e.key === 'Enter') {
           if(e.target.value!=''){
-          e.target.value.split(',').forEach(tag => {
-            searchTags.push(tag);  
-          });
-          
-          addTags();
-          searchInput.value = '';
+            let array = e.target.value.split(',');
+            array = array.map(function (el) {
+                return el.trim();
+              });
+           
+            array.forEach(tag => {
+                if(tag!=null && tag !='')
+                    searchTags.push(tag);  
+            });
+            console.log(searchTags);
+            addTags();
+            
+         
          }
+         searchInput.value = '';
         }
     });
     document.addEventListener('click', (e) => {
