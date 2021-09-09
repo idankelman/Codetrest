@@ -1635,3 +1635,49 @@ transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 } 
 .inputHolder {float:left; margin-right:10px;}
 #menu {margin-left:7.5em}
+
+
+ .tag {
+  height: 30px;
+  margin: 5px;
+  padding: 5px 6px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  color: #333;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 1px 1px #fff;
+  cursor: default;
+}
+.tag i {
+  font-size: 16px;
+  color: #666;
+  margin-left: 5px;
+}
+
+.close {
+  position: absolute;
+  padding-right: 20px;
+  
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+}
+.close:hover {
+  opacity: 1;
+}
+.close:before, .close:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 33px;
+  width: 2px;
+  background-color: #333;
+}
+.close:before {
+  transform: rotate(45deg);
+}
+.close:after {
+  transform: rotate(-45deg);
+}

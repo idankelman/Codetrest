@@ -24,6 +24,9 @@ let list;
 let chosenTags=[];
 let finalTags=[];
 let searchedPins=[];
+let searchTags = [];
+let tagContainer;
+let searchInput;
 
 let add_pin_modal;
 let pin_image_blob;

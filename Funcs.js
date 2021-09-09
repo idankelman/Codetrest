@@ -36,27 +36,29 @@ function CreateHomePage() {
     PinGrid_Main = document.getElementById("PinGrid1");
     Loader_Anim = document.getElementById("loading_Anim");
 
-    
-    document.querySelector('#search').addEventListener('input', function(event){
-        let value = event.target.value;
-        console.log(value);
-        if(value && value.trim().length >0){
-            value = value.trim().toLowerCase();
+    tagContainer = document.querySelector('#search-box');
+    searchInput = document.querySelector('#search');
+    searchTags=[];
+
+    document.querySelector('#search-btn').addEventListener('click', function(event){
+        if(searchTags.length!=0){
+            console.log(searchTags);
             searchedPins=[];
             for(let i=0; i<Pins.length; i++)
             {
                 curTags = Pins[i].Tags;
                 curJsonTags =[];
-                console.log(Pins[i]);
-                curTags.forEach(element => {
-                    curJsonTags.push({tag: element})
-                });
-                curJsonTags = curJsonTags.filter(val=>{
-                    return val.tag.includes(value);
-                })
-                if(curJsonTags.length!=0)
+                
+                let dontInsert = 0;
+                console.log(curTags);
+                for(let j=0; j<searchTags.length; j++)
                 {
-                    finalTags.push(curJsonTags); 
+                    if(curTags.includes(searchTags[j])==false)                     
+                        dontInsert = 1;
+                }
+               
+                if(dontInsert==0)
+                {
                     searchedPins.push(Pins[i]);
                 }
                 
@@ -67,7 +69,27 @@ function CreateHomePage() {
         else
             addPin(Pins);
     });
-
+    searchInput.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+          if(e.target.value!=''){
+          e.target.value.split(',').forEach(tag => {
+            searchTags.push(tag);  
+          });
+          
+          addTags();
+          searchInput.value = '';
+         }
+        }
+    });
+    document.addEventListener('click', (e) => {
+        console.log(e.target.tagName);
+        if (e.target.tagName === 'I') {
+          const tagLabel = e.target.getAttribute('data-item');
+          const index = searchTags.indexOf(tagLabel);
+          searchTags = [...searchTags.slice(0, index), ...searchTags.slice(index+1)];
+          addTags();    
+        }
+      })
        
     // Button_in.addEventListener("click", foo);
     //Button_upload.addEventListener("click",uploadPhoto);
@@ -85,6 +107,30 @@ function CreateHomePage() {
     updatePage();
 
 }
+function clearTags() {
+    document.querySelectorAll('.tag').forEach(tag => {
+      tag.parentElement.removeChild(tag);
+    });
+}
+function addTags() {
+    clearTags();
+    searchTags.slice().reverse().forEach(tag => {
+      tagContainer.prepend(createTag(tag));
+    });
+}
+function createTag(label) {
+    const div = document.createElement('div');
+    div.classList.add('tag');
+    const span = document.createElement('span');
+    span.innerHTML = label;
+    const closeIcon = document.createElement('i');
+    
+    closeIcon.classList.add('close');
+    closeIcon.setAttribute('data-item', label);
+    div.appendChild(span);
+    div.appendChild(closeIcon);
+    return div;
+  }
 
 function insertCollection()
 {
