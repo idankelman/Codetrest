@@ -36,6 +36,25 @@ function CreateHomePage() {
     PinGrid_Main = document.getElementById("PinGrid1");
     Loader_Anim = document.getElementById("loading_Anim");
 
+    searchBarInit();
+    // Button_in.addEventListener("click", foo);
+    //Button_upload.addEventListener("click",uploadPhoto);
+    //Button_delete.addEventListener("click",deletePin);
+    Button_Sub.addEventListener("click", updatePage);
+    //Button_Logout.addEventListener("click", userLogout);
+
+
+    Pin_Root = firebase.database().ref('pins/');
+    User_Root = firebase.database().ref('users/');
+
+
+    Image_Root = firebase.storage().ref('Images/');
+    
+    updatePage();
+
+}
+function searchBarInit()
+{
     tagContainer = document.querySelector('#search-box');
     searchInput = document.querySelector('#search');
     searchTags=[];
@@ -44,6 +63,7 @@ function CreateHomePage() {
         if(searchTags.length!=0){
             console.log(searchTags);
             searchedPins=[];
+            console.log(Pins);
             for(let i=0; i<Pins.length; i++)
             {
                 curTags = Pins[i].Tags;
@@ -90,22 +110,6 @@ function CreateHomePage() {
           addTags();    
         }
       })
-       
-    // Button_in.addEventListener("click", foo);
-    //Button_upload.addEventListener("click",uploadPhoto);
-    //Button_delete.addEventListener("click",deletePin);
-    Button_Sub.addEventListener("click", updatePage);
-    //Button_Logout.addEventListener("click", userLogout);
-
-
-    Pin_Root = firebase.database().ref('pins/');
-    User_Root = firebase.database().ref('users/');
-
-
-    Image_Root = firebase.storage().ref('Images/');
-    
-    updatePage();
-
 }
 function clearTags() {
     document.querySelectorAll('.tag').forEach(tag => {
@@ -524,6 +528,7 @@ function CreateCollectionPage(){
     PinGrid_Main = document.getElementById("PinGrid1");
     CollectionName = localStorage.getItem("CollectionName");
     console.log(CollectionName);
+    searchBarInit();
     showTheCollection();
     
 }
@@ -758,7 +763,7 @@ function addPin(searched) {
                 for (let i = 0; i < CurPins.length; i++) {
                    
                     let Pin_id = CurPins[i].Id;
-                    
+                    let pin_tags = CurPins[i].Tags;
                     let url = CurPins[i].URL;
                     let title = CurPins[i].Title;
                     let desp = CurPins[i].Description;
@@ -855,6 +860,7 @@ function addPin(searched) {
                                 btnCollection.description = desp;
                                 btnCollection.title=title;
                                 btnCollection.imgurl=url
+                                btnCollection.Tags=pin_tags;
                                 btnCollection.addEventListener("click", function(){
                                     emailForChild = user.email.replace(".", ",")
                                     let user_ro = firebase.database().ref('users/' + emailForChild+`/${this.collect}/`);
@@ -864,7 +870,8 @@ function addPin(searched) {
                                         Title: this.title,
                                         Description:this.description,
                                         Id: this.pin,
-                                        URL: this.imgurl
+                                        URL: this.imgurl,
+                                        Tags: this.Tags
                                     })
                                     console.log(this.collect);
                                     console.log(this.pin);
