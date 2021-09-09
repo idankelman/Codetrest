@@ -1633,8 +1633,8 @@ transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 } 
-.inputHolder {float:left; margin-right:10px;}
-#menu {margin-left:7.5em}
+
+
 
 
  .tag {
