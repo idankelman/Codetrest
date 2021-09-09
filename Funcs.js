@@ -11,7 +11,15 @@
 //======================================================================
 //                      Create functions :  
 //======================================================================
+function setSearchedPins(){
 
+}
+function clearPins(){
+
+}
+function noResults(){
+
+}
 
 
 function CreateHomePage() {
@@ -28,8 +36,7 @@ function CreateHomePage() {
     PinGrid_Main = document.getElementById("PinGrid1");
     Loader_Anim = document.getElementById("loading_Anim");
 
-    
-       
+    searchBarInit();
     // Button_in.addEventListener("click", foo);
     //Button_upload.addEventListener("click",uploadPhoto);
     //Button_delete.addEventListener("click",deletePin);
@@ -46,6 +53,96 @@ function CreateHomePage() {
     updatePage();
 
 }
+function searchBarInit()
+{
+    tagContainer = document.querySelector('#search-box');
+    searchInput = document.querySelector('#search');
+    searchTags=[];
+
+    document.querySelector('#search-btn').addEventListener('click', function(event){
+        if(searchTags.length!=0){
+            console.log(searchTags);
+            searchedPins=[];
+            console.log(Pins);
+            for(let i=0; i<Pins.length; i++)
+            {
+                curTags = Pins[i].Tags;
+                curJsonTags =[];
+                
+                let dontInsert = 0;
+                console.log(curTags);
+                for(let j=0; j<searchTags.length; j++)
+                {
+                    if(curTags.includes(searchTags[j])==false)                     
+                        dontInsert = 1;
+                }
+               
+                if(dontInsert==0)
+                {
+                    searchedPins.push(Pins[i]);
+                }
+                
+            }
+            console.log("the length is " + searchedPins.length);
+            addPin(searchedPins);
+        }
+        else
+            addPin(Pins);
+    });
+    searchInput.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+          if(e.target.value!=''){
+            let array = e.target.value.split(',');
+            array = array.map(function (el) {
+                return el.trim();
+              });
+           
+            array.forEach(tag => {
+                if(tag!=null && tag !='')
+                    searchTags.push(tag);  
+            });
+            console.log(searchTags);
+            addTags();
+            
+         
+         }
+         searchInput.value = '';
+        }
+    });
+    document.addEventListener('click', (e) => {
+        console.log(e.target.tagName);
+        if (e.target.tagName === 'I') {
+          const tagLabel = e.target.getAttribute('data-item');
+          const index = searchTags.indexOf(tagLabel);
+          searchTags = [...searchTags.slice(0, index), ...searchTags.slice(index+1)];
+          addTags();    
+        }
+      })
+}
+function clearTags() {
+    document.querySelectorAll('.tag').forEach(tag => {
+      tag.parentElement.removeChild(tag);
+    });
+}
+function addTags() {
+    clearTags();
+    searchTags.slice().reverse().forEach(tag => {
+      tagContainer.prepend(createTag(tag));
+    });
+}
+function createTag(label) {
+    const div = document.createElement('div');
+    div.classList.add('tag');
+    const span = document.createElement('span');
+    span.innerHTML = label;
+    const closeIcon = document.createElement('i');
+    
+    closeIcon.classList.add('close');
+    closeIcon.setAttribute('data-item', label);
+    div.appendChild(span);
+    div.appendChild(closeIcon);
+    return div;
+  }
 
 function insertCollection()
 {
@@ -91,6 +188,7 @@ function createUserPage() {
     btnAddCollection=document.getElementById("addCollection");
     let userInfo = document.getElementById("user info");
     Button_Sub = document.getElementById("Button_Login");
+
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
@@ -155,8 +253,44 @@ function CreateSignUpPage() {
     });
 }
 
-
-
+function setList(group){
+    clearList();
+    for(const tag of group){
+        const item = document.createElement('button');
+        item.classList.add('list-group-item');
+        const text = document.createTextNode(tag.tag);
+        item.appendChild(text); 
+        item.addEventListener("click", function(){
+            chosenTags.push(this.textContent);
+            console.log(chosenTags);
+        });
+        list.appendChild(item);
+        const br = document.createElement('br');
+        list.appendChild(br);
+    }
+    if(group.length==0)
+        setNoResult();
+}
+function clearList(){
+    while(list.firstChild){
+        list.removeChild(list.firstChild);
+    }
+}
+function setNoResult(){
+    const item = document.createElement('li');
+    item.classList.add('list-group-item');
+    const text = document.createTextNode("No Result");
+    item.appendChild(text); 
+    list.appendChild(item);
+}
+function getRelevancy(value, searchTerm){
+    if(value ===searchTerm)
+        return 2;
+    else if(value.startsWith(searchTerm))
+        return 1;
+    else
+        return 0;
+}
 function CreateAddPinPage() {
 
     /*
@@ -187,11 +321,12 @@ function CreateAddPinPage() {
 
 
     */
+    
     PinGrid_Main = document.getElementById("PinGrid1");
     add_pin_modal = document.querySelector('.add_pin_modal');
 
-
-    
+    list = document.getElementById('list');
+    chosenTags=[];
   
 
 
@@ -208,7 +343,20 @@ function CreateAddPinPage() {
     });
 
 
-    
+    document.querySelector('#search').addEventListener('input', function(event){
+        let value = event.target.value;
+        console.log(value);
+        if(value && value.trim().length >0){
+            value = value.trim().toLowerCase();
+            setList(tags.filter(val =>{
+                return val.tag.includes(value);
+            }).sort((tagA, tagB)=> {
+                return getRelevancy(tagB.tag, value) - getRelevancy(tagA.tag, value);
+            }));
+        }
+        else
+            clearList();
+    })
 
     document.querySelector('#upload_img').addEventListener('change', event => {
         if (event.target.files && event.target.files[0]) {
@@ -354,7 +502,8 @@ function CreateAddPinPage() {
             description: document.querySelector('#pin_description').value,
             destination: document.querySelector('#pin_destination').value,
             img_blob: pin_image_blob,
-            pin_size: document.querySelector('#pin_size').value
+            pin_size: document.querySelector('#pin_size').value,
+            tags: chosenTags
         }
 
         console.log(users_data);
@@ -387,6 +536,7 @@ function CreateCollectionPage(){
     PinGrid_Main = document.getElementById("PinGrid1");
     CollectionName = localStorage.getItem("CollectionName");
     console.log(CollectionName);
+    searchBarInit();
     showTheCollection();
     
 }
@@ -518,7 +668,7 @@ function showCollectionPins(email)
 
             new_pin.style.opacity = 1;
             counter++;
-            checkIfRetriveDone();
+            checkIfRetriveDone(Pins);
             
         }
         
@@ -585,11 +735,10 @@ function create_pin(pin_details) {
 
 */
 
-function addPin() {
+function addPin(searched) {
     //first we need to get all of the collections
-    console.log(updated);
-    if(updated==0)
-    {
+    
+    
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) { // user is signed in
             counter=0;
@@ -611,18 +760,21 @@ function addPin() {
                 
                 
                 
-                console.log(Collections);
                 
-                   
+                CurPins = Pins;   
+                if(searched!==undefined)
+                    CurPins = searched;
+                console.log("the pins are: ");
+                console.log(CurPins);
                 PinGrid_Main.innerHTML = ``;
                 $("#PinGrid1").css('visibility', 'hidden');
-                for (let i = 0; i < Pins.length; i++) {
+                for (let i = 0; i < CurPins.length; i++) {
                    
-                    let Pin_id = Pins[i].Id;
-                    
-                    let url = Pins[i].URL;
-                    let title = Pins[i].Title;
-                    let desp = Pins[i].Description;
+                    let Pin_id = CurPins[i].Id;
+                    let pin_tags = CurPins[i].Tags;
+                    let url = CurPins[i].URL;
+                    let title = CurPins[i].Title;
+                    let desp = CurPins[i].Description;
                     dropdownHTML=``;
                     for(let j=0; j<Collections.length; j++)
                     {
@@ -651,7 +803,7 @@ function addPin() {
             
                         if (ratio < 1.15)
                             imageSize = "small";
-            
+                        
                         new_pin.classList.add('card');
                         //new_pin.classList.add(`card_${pin_details.pin_size}`);
                         new_pin.classList.add(`card_${imageSize}`);
@@ -716,6 +868,7 @@ function addPin() {
                                 btnCollection.description = desp;
                                 btnCollection.title=title;
                                 btnCollection.imgurl=url
+                                btnCollection.Tags=pin_tags;
                                 btnCollection.addEventListener("click", function(){
                                     emailForChild = user.email.replace(".", ",")
                                     let user_ro = firebase.database().ref('users/' + emailForChild+`/${this.collect}/`);
@@ -725,7 +878,8 @@ function addPin() {
                                         Title: this.title,
                                         Description:this.description,
                                         Id: this.pin,
-                                        URL: this.imgurl
+                                        URL: this.imgurl,
+                                        Tags: this.Tags
                                     })
                                     console.log(this.collect);
                                     console.log(this.pin);
@@ -755,7 +909,7 @@ function addPin() {
                         
                         new_pin.style.opacity = 1;
                         counter++;
-                        checkIfRetriveDone();
+                        checkIfRetriveDone(CurPins);
                     }
                     
                     
@@ -771,14 +925,14 @@ function addPin() {
             Button_Sub.style.opacity = 1;
         }
     });
-    }   
+       
     
 }
-function checkIfRetriveDone()
+function checkIfRetriveDone(newPins)
 {
 
     console.log(counter);
-    if(counter==PinsToWait || counter==Pins.length)
+    if(counter==PinsToWait || counter==newPins.length)
     {
         StopLoading();
         $("#PinGrid1").fadeIn(50);
@@ -1413,15 +1567,16 @@ function SavePin2(ImageUrl, userInfo, UserComma) {
 
     let Description = userInfo.description;
     let Title = userInfo.title;
-
+    let Tags = userInfo.tags;
     //window.location = "UserScreen.html";
-   
+    console.log(Tags);
     let user = firebase.database().ref('users/' + UserComma + '/PostedPins/');
     user.child('Pin_' + ID).set({
         Title: Title,
         Description: Description,
         Id: ID,
-        URL: ImageUrl
+        URL: ImageUrl,
+        Tags: Tags
     });
 
 }

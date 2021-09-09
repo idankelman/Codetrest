@@ -10,7 +10,23 @@
 //======================================================================
 //                  Variable Declerations : 
 //======================================================================
-
+let tags = [
+    {tag: 'android'},
+    {tag: 'ios'},
+    {tag: 'automation'},
+    {tag: 'games'},
+    {tag: 'c'},
+    {tag: 'c#'},
+    {tag: 'c++'},
+    {tag: 'java'},
+];
+let list;
+let chosenTags=[];
+let finalTags=[];
+let searchedPins=[];
+let searchTags = [];
+let tagContainer;
+let searchInput;
 
 let add_pin_modal;
 let pin_image_blob;
@@ -40,6 +56,7 @@ let Password_txt;
 let PinGrid_Main;
 let CollectionGrid;
 let NewCollectionName;
+let tagSearch;
 
 let User_sign_up_name;
 let User_sign_up_email;
