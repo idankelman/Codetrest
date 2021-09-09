@@ -216,7 +216,7 @@ body {
   --card_border_radius: 16px;
   --card_small: 26;
   --card_medium: 33;
-  --card_large: 45;
+  --card_large: 45  ;
 
 
   /*& Collections variables */
@@ -1221,7 +1221,6 @@ body {
     overflow: hidden;
     background-color: rgb(224, 108, 117,1);
     line-height: 3.2rem;
-    transition: all 0.3s ease 0s;
 
     
    
@@ -1634,3 +1633,5 @@ transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 } 
+.inputHolder {float:left; margin-right:10px;}
+#menu {margin-left:7.5em}
