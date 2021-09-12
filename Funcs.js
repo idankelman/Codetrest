@@ -58,39 +58,17 @@ function searchBarInit()
     tagContainer = document.querySelector('#search-box');
     searchInput = document.querySelector('#search');
     searchTags=[];
-
+    curAvailTags=tags;
+    list = document.getElementById('list2');
+    clearList();
     document.querySelector('#search-btn').addEventListener('click', function(event){
-        if(searchTags.length!=0){
-            console.log(searchTags);
-            searchedPins=[];
-            console.log(Pins);
-            for(let i=0; i<Pins.length; i++)
-            {
-                curTags = Pins[i].Tags;
-                curJsonTags =[];
-                
-                let dontInsert = 0;
-                console.log(curTags);
-                for(let j=0; j<searchTags.length; j++)
-                {
-                    if(curTags.includes(searchTags[j])==false)                     
-                        dontInsert = 1;
-                }
-               
-                if(dontInsert==0)
-                {
-                    searchedPins.push(Pins[i]);
-                }
-                
-            }
-            console.log("the length is " + searchedPins.length);
-            addPin(searchedPins);
-        }
-        else
-            addPin(Pins);
+        addPinsByTag();
+        
     });
     searchInput.addEventListener('keyup', (e) => {
+         /*
         if (e.key === 'Enter') {
+           
           if(e.target.value!=''){
             let array = e.target.value.split(',');
             array = array.map(function (el) {
@@ -106,19 +84,96 @@ function searchBarInit()
             
          
          }
+         
+         
          searchInput.value = '';
         }
+        */
+        let value = e.target.value;
+        console.log(value);
+        if(value && value.trim().length >0){
+            value = value.trim().toLowerCase();
+            setList2(curAvailTags.filter(val =>{
+                return val.tag.includes(value);
+            }).sort((tagA, tagB)=> {
+                return getRelevancy(tagB.tag, value) - getRelevancy(tagA.tag, value);
+            }));
+        }
+        else
+            clearList();
     });
     document.addEventListener('click', (e) => {
         console.log(e.target.tagName);
         if (e.target.tagName === 'I') {
           const tagLabel = e.target.getAttribute('data-item');
+          curAvailTags.push({tag: tagLabel});
           const index = searchTags.indexOf(tagLabel);
           searchTags = [...searchTags.slice(0, index), ...searchTags.slice(index+1)];
-          addTags();    
+          addTags();
+          if(searchTags.length!=0)
+            addPinsByTag();
+          else
+            addPin();    
         }
       })
 }
+function addPinsByTag()
+{
+    if(searchTags.length!=0){
+        console.log(searchTags);
+        searchedPins=[];
+        for(let i=0; i<Pins.length; i++)
+        {
+            curTags = Pins[i].Tags;
+            curJsonTags =[];
+            
+            let dontInsert = 0;
+            console.log(curTags);
+            for(let j=0; j<searchTags.length; j++)
+            {
+                if(curTags.includes(searchTags[j])==false)                     
+                    dontInsert = 1;
+            }
+           
+            if(dontInsert==0)
+            {
+                searchedPins.push(Pins[i]);
+            }
+            
+        }
+        searchInput.value = '';
+        clearList();
+        addPin(searchedPins);
+    }
+}
+function setList2(group){
+    clearList();
+    for(const tag of group){
+        const item = document.createElement('li');
+       
+        const item2 = document.createElement('a');
+        item2.innerHTML=tag.tag;
+        item2.addEventListener("click", function(){
+            searchTags.push(this.textContent);
+            curAvailTags = curAvailTags.filter((el) => {
+                return el.tag !== this.textContent;
+            }); 
+            group = group.filter((el) => {
+                return el.tag !== this.textContent;
+            });
+            if(group.length==0) 
+                searchInput.value = '';
+            this.parentElement.removeChild(this);
+            addTags();
+        });
+        item.appendChild(item2); 
+        
+        
+        list.appendChild(item);
+    }
+        
+}
+
 function clearTags() {
     document.querySelectorAll('.tag').forEach(tag => {
       tag.parentElement.removeChild(tag);
@@ -256,17 +311,23 @@ function CreateSignUpPage() {
 function setList(group){
     clearList();
     for(const tag of group){
-        const item = document.createElement('button');
-        item.classList.add('list-group-item');
-        const text = document.createTextNode(tag.tag);
-        item.appendChild(text); 
-        item.addEventListener("click", function(){
+        const item = document.createElement('li');
+       
+        const item2 = document.createElement('a');
+        item2.innerHTML=tag.tag;
+        item2.addEventListener("click", function(){
             chosenTags.push(this.textContent);
+            curAvailTags = curAvailTags.filter((el) => {
+                return el.tag !== this.textContent;
+            });
+            console.log(curAvailTags)
+            this.parentElement.removeChild(this);
             console.log(chosenTags);
         });
+        item.appendChild(item2); 
+        
+        
         list.appendChild(item);
-        const br = document.createElement('br');
-        list.appendChild(br);
     }
     if(group.length==0)
         setNoResult();
@@ -326,8 +387,9 @@ function CreateAddPinPage() {
     add_pin_modal = document.querySelector('.add_pin_modal');
 
     list = document.getElementById('list');
+    clearList();
     chosenTags=[];
-  
+    curAvailTags=tags;
 
 
     document.querySelector('.add_pin').addEventListener('click', () => {
@@ -348,7 +410,7 @@ function CreateAddPinPage() {
         console.log(value);
         if(value && value.trim().length >0){
             value = value.trim().toLowerCase();
-            setList(tags.filter(val =>{
+            setList(curAvailTags.filter(val =>{
                 return val.tag.includes(value);
             }).sort((tagA, tagB)=> {
                 return getRelevancy(tagB.tag, value) - getRelevancy(tagA.tag, value);
@@ -1209,7 +1271,8 @@ function signInUserWithGoogle() {
 function reset_modal() {
 
     const modals_pin = document.querySelector('.add_pin_modal .modals_pin');
-
+    clearList();
+    curAvailTags=tags;
     add_pin_modal.style.opacity = 0;
     add_pin_modal.style.pointerEvents = 'none';
     document.querySelector('#upload_img_label').style.display = 'block';
@@ -1221,6 +1284,8 @@ function reset_modal() {
     document.querySelector('#pin_description').value = '';
     document.querySelector('#pin_destination').value = '';
     document.querySelector('#pin_size').value = '';
+    document.querySelector('#search').value = '';
+    chosenTags=[];
     pin_image_blob = null;
 }
 

@@ -19,6 +19,16 @@ let tags = [
     {tag: 'c#'},
     {tag: 'c++'},
     {tag: 'java'},
+    {tag: 'math'},
+    {tag: 'complexity'},
+    {tag: 'intermediate'},
+    {tag: 'beginner'},
+    {tag: 'advanced'},
+    {tag: 'python'},
+    {tag: 'javascript'},
+    {tag: 'html'},
+    {tag: 'css'},
+    {tag: 'assembly'},
 ];
 let list;
 let chosenTags=[];
@@ -27,6 +37,7 @@ let searchedPins=[];
 let searchTags = [];
 let tagContainer;
 let searchInput;
+let curAvailTags=[];
 
 let add_pin_modal;
 let pin_image_blob;
