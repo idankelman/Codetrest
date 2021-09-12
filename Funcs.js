@@ -55,11 +55,13 @@ function CreateHomePage() {
 }
 function searchBarInit()
 {
+    
     tagContainer = document.querySelector('#search-box');
     searchInput = document.querySelector('#search');
     searchTags=[];
     curAvailTags=tags;
     list = document.getElementById('list2');
+    
     clearList();
     document.querySelector('#search-btn').addEventListener('click', function(event){
         addPinsByTag();
@@ -113,7 +115,8 @@ function searchBarInit()
           if(searchTags.length!=0)
             addPinsByTag();
           else
-            addPin();    
+            addPin(); 
+          searchInput.value='';   
         }
       })
 }
