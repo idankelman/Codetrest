@@ -11,17 +11,6 @@
 //======================================================================
 //                      Create functions :  
 //======================================================================
-function setSearchedPins(){
-
-}
-function clearPins(){
-
-}
-function noResults(){
-
-}
-
-
 function CreateHomePage() {
    
     Button_in = document.getElementById("Btn_in");
@@ -53,6 +42,8 @@ function CreateHomePage() {
     updatePage();
 
 }
+
+
 function searchBarInit()
 {
     
@@ -276,11 +267,6 @@ function createUserPage() {
     addCollection();
     updatePage();
 }
-
-
-
-
-
 function CreateLoginPage() {
     Email_txt = document.getElementById("inputEmail");
     Password_txt = document.getElementById("inputPassword");
@@ -291,8 +277,6 @@ function CreateLoginPage() {
     Button_sign_up.addEventListener("click", goToSignUp);
     Button_Sign_in_Google.addEventListener("click", signInUserWithGoogle);
 }
-
-
 
 function CreateSignUpPage() {
     User_sign_up_name = document.getElementById("user-name");
@@ -357,34 +341,6 @@ function getRelevancy(value, searchTerm){
 }
 function CreateAddPinPage() {
 
-    /*
-    Pin_title=document.getElementById("Pin_title");
-    Pin_Desc = document.getElementById("Pin_Desc");
-    
-    Button_Upload_photo=document.getElementById("Btn_upload");
-    Button_submit_pin = document.getElementById("submit_pin");
-
-    Button_Upload_photo.addEventListener("click", selectTheImage);
-    Button_submit_pin.addEventListener("click", submitPin);
-
-
-      firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            console.log(user.displayName);
-            let name = user.displayName;
-            UserName = name;
-            UserEmail = user.email;
-            UserComma = UserEmail.replace(".", ",");
-            if (name === undefined || name === null)
-                name = user.email.substring(0, user.email.indexOf('@'));
-            console.log(name);
-        } else {
-            alert('Error: no user is logged in');
-        }
-    });
-
-
-    */
     
     PinGrid_Main = document.getElementById("PinGrid1");
     add_pin_modal = document.querySelector('.add_pin_modal');
@@ -600,6 +556,8 @@ function CreateCollectionPage(){
     Loader_Anim = document.getElementById("loading_Anim");
     PinGrid_Main = document.getElementById("PinGrid1");
     CollectionName = localStorage.getItem("CollectionName");
+    Button_Sub = document.getElementById("Button_Login");
+    updatePage();
     console.log(CollectionName);
     searchBarInit();
     showTheCollection();
@@ -742,63 +700,6 @@ function showCollectionPins(email)
     StopLoading();
 }
     
-//old add pin function
-/*
-function create_pin(pin_details) {
-            const new_pin = document.createElement('DIV');
-            const new_image = new Image();
-
-            new_image.src = pin_details.img_blob;
-            new_pin.style.opacity = 0;
-
-            new_image.onload = function () {
-                new_pin.classList.add('card');
-                new_pin.classList.add(`card_${pin_details.pin_size}`);
-                new_image.classList.add('pin_max_width');
-
-                new_pin.innerHTML = `<div class="pin_title">${pin_details.title}</div>
-        <div class="pin_modal">
-            <div class="modal_head">
-                <div class="save_card">Save</div>
-            </div>
-
-            <div class="modal_foot">
-                <div class="destination">
-                    <div class="pint_mock_icon_container">
-                        <img src="./images/upper-right-arrow.png" alt="destination" class="pint_mock_icon">
-                    </div>
-                    <span>${pin_details.destination}</span>
-                </div>
-
-                <div class="pint_mock_icon_container">
-                    <img src="./images/send.png" alt="send" class="pint_mock_icon">
-                </div>
-
-                <div class="pint_mock_icon_container">
-                    <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
-                </div>
-            </div>
-        </div>
-
-        <div class="pin_image">
-        </div>`;
-
-                document.getElementById("PinGrid1").appendChild(new_pin);
-                new_pin.children[2].appendChild(new_image);
-
-                if (
-                    new_image.getBoundingClientRect().width < new_image.parentElement.getBoundingClientRect().width ||
-                    new_image.getBoundingClientRect().height < new_image.parentElement.getBoundingClientRect().height
-                ) {
-                    new_image.classList.remove('pin_max_width');
-                    new_image.classList.add('pin_max_height');
-                }
-
-                new_pin.style.opacity = 1;
-            }
-     }
-
-*/
 
 function addPin(searched) {
     //first we need to get all of the collections
@@ -1006,9 +907,7 @@ function checkIfRetriveDone(newPins)
         
     }
 }
-function savePinToCollection(){
 
-}
 
 function addCollection() {
     firebase.auth().onAuthStateChanged(function (user) {
@@ -1126,9 +1025,7 @@ function addCollection() {
 //                      Show Functions :   
 //======================================================================
 
-function goToSignUp() {
-    window.location = "SignUp.html";
-}
+
 
 
 function goToAddPin() {
@@ -1148,115 +1045,11 @@ function goToAddPin() {
 
 
 
-function userLogout() {
-
-    firebase.auth().signOut().then(() => {
-
-        window.location = "Sub.html";
-        // Sign-out successful.
-    }).catch((error) => {
-        alert('Error on logging out');
-    });
-
-}
 
 
 
-function signInUser() {
-    //var email = "test@example.com";
-    //var password = "hunter2";
-    var email = Email_txt.value;
-    var password = Password_txt.value;
-    firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((result) => {
-            // Signed in
-            let done = 0;
-            User_Root.once('value', function (snap) {
-                snap.forEach(function (item) {
-                    if (item.val().email == result.user.email) // email already exists, go to user screen
-                    {
-                        done = 1;
-                        window.location = "UserScreen.html";
-                        return;
-                    }
-                });
-                // if we reached here then the user doesnt exists
-                console.log(result.user.displayName);
-                if (done == 0) {
-                    emailForChild = result.user.email.replace(".", ",");
-                    User_Root.child(emailForChild).set({
-                        email: result.user.email
-                    })
-                    .then()
-                    {
-                        let user = firebase.database().ref('users/' + emailForChild+'/');
-                        user.child('PostedPins/').set({
-                        amount: 0
-                        })
-                        user.child('SavedPins/').set({
-                            amount: 0
-                        })
-                        window.location = "UserScreen.html";
-                    }
-                   
-                }
-            });
-
-            // ...
-        })
-        .catch((error) => {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            alert(errorMessage);
-        });
-}
 
 
-
-function signInUserWithGoogle() {
-    var provider = new firebase.auth.GoogleAuthProvider();
-    let dont = 0;
-    firebase.auth().signInWithPopup(provider)
-        .then((result) => {
-            // Success.
-            emailForChild = result.user.email.replace(".", ",");
-            User_Root.once('value', function (snap) {
-                snap.forEach(function (item) {
-                    if (item.val().email == result.user.email) // email already exists, go to user screen
-                    {
-                        dont = 1;
-                        window.location = "UserScreen.html";
-                        return;
-                    }
-                });
-                // if we reached here then the user doesnt exists
-                console.log(result.user.displayName);
-
-                if (dont == 0) {
-                    User_Root.child(emailForChild).set({
-                        email: result.user.email
-                    }).then()
-                    {
-                        let user = firebase.database().ref('users/' + emailForChild+'/');
-                        user.child('PostedPins/').set({
-                        amount: 0
-                        })
-                        user.child('SavedPins/').set({
-                            amount: 0
-                        })
-                        window.location = "UserScreen.html";
-                    }
-                    
-                }
-            });
-
-
-        }, (error) => {
-            alert(error);
-            // Error.
-        });
-
-}
 
 
 
@@ -1295,76 +1088,8 @@ function reset_modal() {
 
 
 
-function getUserEmail() {
-
-}
 
 
-
-function submitPin() {
-
-
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            //console.log(user.displayName);
-            //console.log(user.email);
-            ID = parseInt(Math.random() * Math.pow(10, digits));
-            UserComma = user.email.replace(".", ",");
-            
-            let metadata = { contentType: Images[0].type }
-            let uploadTask = Image_Root.child('Pin_' + ID).put(Images[0], metadata);
-            let ImageUrl;
-            
-
-
-            uploadTask.on('state_changed',
-
-                function progress(snapshot) {
-                    let precentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log(precentage);
-                   
-                    
-                    
-                },
-                function error(err) {
-                    console.log("error accured");
-                },
-
-                function complete() {
-
-                    uploadTask.snapshot.ref.getDownloadURL().then(function (url) {
-                        ImageUrl = url;
-
-                        SavePin(ImageUrl, UserComma);
-                        stopLoader3();
-                    });
-
-                });
-
-        } else {
-            alert('Error: no user is logged in');
-        }
-    });
-
-
-}
-
-function selectTheImage() {
-
-    var input = document.createElement('input');
-    input.type = 'file';
-
-    input.onchange = function (e) {
-        Images = e.target.files;
-        reader = new FileReader();
-        reader.onload = function () {
-            document.getElementById("my_img").src = reader.result;
-        }
-        reader.readAsDataURL(Images[0]);
-    }
-    input.click();
-
-}
 
 
 function updatePins() {
@@ -1460,19 +1185,94 @@ function deletePin() {
 //======================================================================
 
 
-function getData(Id) {
-
-}
-
 
 
 //======================================================================
 //                      Save functions   :  
 //======================================================================
 
+function uploadPhoto2(userInfo) {
+
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            //console.log(user.displayName);
+            //console.log(user.email);
+            console.log("uploadPhoto");
+
+            
+            ID = parseInt(Math.random() * Math.pow(10, digits));
+            let metadata = { contentType: Images.type }
+            let uploadTask = Image_Root.child('Pin_' + ID).put(Images, metadata);
+            let ImageUrl;
 
 
 
+            uploadTask.on('state_changed',
+
+                function progress(snapshot) {
+                    document.getElementById("loader3").style.visibility="visible";
+                    let precentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log(precentage);
+                },
+                function error(err) {
+                    console.log("error accured");
+                },
+
+                function complete() {
+
+                    uploadTask.snapshot.ref.getDownloadURL().then(function (url) {
+                        ImageUrl = url;
+                        //SavePin(ImageUrl, UserComma);
+                        SavePin2(ImageUrl, userInfo,UserComma);
+                        stopLoader3();
+                    });
+
+                });
+
+        } else {
+            alert('Error: no user is logged in');
+        }
+    });
+
+}
+
+function SavePin2(ImageUrl, userInfo, UserComma) {
+
+    let Description = userInfo.description;
+    let Title = userInfo.title;
+    let Tags = userInfo.tags;
+    //window.location = "UserScreen.html";
+    console.log(Tags);
+    let user = firebase.database().ref('users/' + UserComma + '/PostedPins/');
+    user.child('Pin_' + ID).set({
+        Title: Title,
+        Description: Description,
+        Id: ID,
+        URL: ImageUrl,
+        Tags: Tags
+    });
+
+}
+
+//======================================================================
+//                      Sign Out functions   :  
+//======================================================================
+
+function userLogout() {
+
+    firebase.auth().signOut().then(() => {
+
+        window.location = "Sub.html";
+        // Sign-out successful.
+    }).catch((error) => {
+        alert('Error on logging out');
+    });
+
+}
+
+//======================================================================
+//                      Sign Up functions   :  
+//======================================================================
 
 function signUpUser() {
     //=========================TODO===========================
@@ -1520,131 +1320,103 @@ function signUpUser() {
     else
         alert('please match the passwords');
 }
+function goToSignUp() {
+    window.location = "SignUp.html";
+}
 
+//======================================================================
+//                      Sign In functions   :  
+//======================================================================
 
-
-
-function uploadPhoto() {
-
-
-    console.log("uploadPhoto");
-    let temp = document.createElement('input');
-    temp.type = 'file';
-    let change = true;
-    temp.onchange = e => {
-        Files = e.target.files;
-        ID = parseInt(Math.random() * Math.pow(10, digits));
-        let metadata = { contentType: Files[0].type }
-        let uploadTask = Image_Root.child('Pin_' + ID).put(Files[0], metadata);
-        let ImageUrl;
-
-
-
-        uploadTask.on('state_changed',
-
-            function progress(snapshot) {
-                let precentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log(precentage);
-            },
-            function error(err) {
-                console.log("error accured");
-            },
-
-            function complete() {
-                uploadTask.snapshot.ref.getDownloadURL().then(function (url) {
-                    ImageUrl = url;
-                    SavePin(ImageUrl);
+function signInUser() {
+    //var email = "test@example.com";
+    //var password = "hunter2";
+    var email = Email_txt.value;
+    var password = Password_txt.value;
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((result) => {
+            // Signed in
+            let done = 0;
+            User_Root.once('value', function (snap) {
+                snap.forEach(function (item) {
+                    if (item.val().email == result.user.email) // email already exists, go to user screen
+                    {
+                        done = 1;
+                        window.location = "UserScreen.html";
+                        return;
+                    }
                 });
-            }
-        );
+                // if we reached here then the user doesnt exists
+                console.log(result.user.displayName);
+                if (done == 0) {
+                    emailForChild = result.user.email.replace(".", ",");
+                    User_Root.child(emailForChild).set({
+                        email: result.user.email
+                    })
+                    .then()
+                    {
+                        let user = firebase.database().ref('users/' + emailForChild+'/');
+                        user.child('PostedPins/').set({
+                        amount: 0
+                        })
+                        user.child('SavedPins/').set({
+                            amount: 0
+                        })
+                        window.location = "UserScreen.html";
+                    }
+                   
+                }
+            });
 
-    }
-
-    temp.click();
-
+            // ...
+        })
+        .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            alert(errorMessage);
+        });
 }
-
-
-function uploadPhoto2(userInfo) {
-
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            //console.log(user.displayName);
-            //console.log(user.email);
-            console.log("uploadPhoto");
-
-            
-            ID = parseInt(Math.random() * Math.pow(10, digits));
-            let metadata = { contentType: Images.type }
-            let uploadTask = Image_Root.child('Pin_' + ID).put(Images, metadata);
-            let ImageUrl;
-
-
-
-            uploadTask.on('state_changed',
-
-                function progress(snapshot) {
-                    document.getElementById("loader3").style.visibility="visible";
-                    let precentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log(precentage);
-                },
-                function error(err) {
-                    console.log("error accured");
-                },
-
-                function complete() {
-
-                    uploadTask.snapshot.ref.getDownloadURL().then(function (url) {
-                        ImageUrl = url;
-                        //SavePin(ImageUrl, UserComma);
-                        SavePin2(ImageUrl, userInfo,UserComma);
-                        stopLoader3();
-                    });
-
+function signInUserWithGoogle() {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    let dont = 0;
+    firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+            // Success.
+            emailForChild = result.user.email.replace(".", ",");
+            User_Root.once('value', function (snap) {
+                snap.forEach(function (item) {
+                    if (item.val().email == result.user.email) // email already exists, go to user screen
+                    {
+                        dont = 1;
+                        window.location = "UserScreen.html";
+                        return;
+                    }
                 });
+                // if we reached here then the user doesnt exists
+                console.log(result.user.displayName);
 
-        } else {
-            alert('Error: no user is logged in');
-        }
-    });
-
-}
-
-
-
-
-
-function SavePin(ImageUrl, UserComma) {
-
-    let Description = Pin_Desc.value;
-    let Title = Pin_title.value;
-    window.location = "UserScreen.html";
-
-    let user = firebase.database().ref('users/' + UserComma + '/');
-    user.child('Pin_' + ID).set({
-        Title: Title,
-        Description: Description,
-        Id: ID,
-        URL: ImageUrl
-    });
-}
+                if (dont == 0) {
+                    User_Root.child(emailForChild).set({
+                        email: result.user.email
+                    }).then()
+                    {
+                        let user = firebase.database().ref('users/' + emailForChild+'/');
+                        user.child('PostedPins/').set({
+                        amount: 0
+                        })
+                        user.child('SavedPins/').set({
+                            amount: 0
+                        })
+                        window.location = "UserScreen.html";
+                    }
+                    
+                }
+            });
 
 
-
-function SavePin2(ImageUrl, userInfo, UserComma) {
-
-    let Description = userInfo.description;
-    let Title = userInfo.title;
-    let Tags = userInfo.tags;
-    //window.location = "UserScreen.html";
-    console.log(Tags);
-    let user = firebase.database().ref('users/' + UserComma + '/PostedPins/');
-    user.child('Pin_' + ID).set({
-        Title: Title,
-        Description: Description,
-        Id: ID,
-        URL: ImageUrl,
-        Tags: Tags
-    });
+        }, (error) => {
+            alert(error);
+            // Error.
+        });
 
 }
