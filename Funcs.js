@@ -267,6 +267,58 @@ function createUserPage() {
     addCollection();
     updatePage();
 }
+function CreateDisplayItemPage(){
+    const new_image = new Image();
+    new_image.src = window.localStorage.getItem("ImgSrc");
+   
+    
+    new_image.onload = function(){
+        
+        new_image.style.overflow = "auto";
+        
+      
+
+        
+       
+        document.querySelector('.pin_img').appendChild(new_image);
+        //document.querySelector('#upload_img_label').style.display = 'none';
+        let title = window.localStorage.getItem("Title");
+        let desc = window.localStorage.getItem("Description");
+        let urls = window.localStorage.getItem("GitHub");
+        let tagsss =  window.localStorage.getItem("PinTags")
+        document.querySelector('.pin_explanation').innerHTML+=
+        `<h1>${title}</h1>
+        <h3>${desc}</h3>`
+        console.log(urls);
+        console.log(urls==="undefined");
+        if(urls!=="undefined")
+            document.querySelector('.pin_explanation').innerHTML+=`<h3><a id="git" href="${urls}">Github Link</a></h3>`
+        //new_image.height = new_image.naturalHeight;
+        //new_image.width = new_image.naturalWidth;
+        //document.querySelector('.section2').classList.add('card');
+        //new_pin.classList.add(`card_${pin_details.pin_size}`);
+        //new_image.classList.add(`card_${imageSize}`);
+        //new_image.classList.add('pin_max_width');
+        let iHeight = new_image.naturalHeight;
+        let iWidth = new_image.naturalWidth;
+        let ratio = iHeight / iWidth;
+        new_image.style.borderRadius= "16px";        
+        new_image.height=400;
+                
+                
+        if (ratio < 1.3)
+            new_image.height=300;
+                
+        if (ratio < 1.15)
+            new_image.height=200;
+        
+       
+    }
+    searchBarInit();
+    Button_Sub = document.getElementById("Button_Login");
+    Button_Logout = document.getElementById("Button_Logout");
+    updatePage();
+}
 function CreateLoginPage() {
     Email_txt = document.getElementById("inputEmail");
     Password_txt = document.getElementById("inputPassword");
@@ -599,10 +651,11 @@ function showCollectionPins(email)
     for (let i = 0; i < Pins.length; i++) {
                    
         let Pin_id = Pins[i].Id;
-       
+        let pin_tags = Pins[i].Tags;
         let url = Pins[i].URL;
         let title = Pins[i].Title;
         let desp = Pins[i].Description;
+        let destination = Pins[i].Destination;
        
 
         const new_pin = document.createElement('DIV');
@@ -633,7 +686,15 @@ function showCollectionPins(email)
             new_image.classList.add('pin_max_width');
 
 
-
+            new_pin.addEventListener("click", function(){
+                window.localStorage.setItem("PinTags", pin_tags);
+                window.localStorage.setItem("GitHub", destination);
+                window.localStorage.setItem("Title", title);
+                window.localStorage.setItem("Description", desp);
+                window.localStorage.setItem("ImgSrc", new_image.src);
+                console.log(new_image.src);
+                window.location="DisplayItem.html";
+            });
             
             
             new_pin.innerHTML = `
@@ -741,6 +802,7 @@ function addPin(searched) {
                     let url = CurPins[i].URL;
                     let title = CurPins[i].Title;
                     let desp = CurPins[i].Description;
+                    let destination = CurPins[i].Destination;
                     dropdownHTML=``;
                     for(let j=0; j<Collections.length; j++)
                     {
@@ -775,7 +837,15 @@ function addPin(searched) {
                         new_pin.classList.add(`card_${imageSize}`);
                         new_image.classList.add('pin_max_width');
             
-            
+                        new_pin.addEventListener("click", function(){
+                            window.localStorage.setItem("PinTags", pin_tags);
+                            window.localStorage.setItem("GitHub", destination);
+                            window.localStorage.setItem("Title", title);
+                            window.localStorage.setItem("Description", desp);
+                            window.localStorage.setItem("ImgSrc", new_image.src);
+                            console.log(new_image.src);
+                            window.location="DisplayItem.html";
+                        });
             
                         
                         
@@ -1247,6 +1317,7 @@ function SavePin2(ImageUrl, userInfo, UserComma) {
     user.child('Pin_' + ID).set({
         Title: Title,
         Description: Description,
+        Destination: userInfo.destination,
         Id: ID,
         URL: ImageUrl,
         Tags: Tags

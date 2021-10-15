@@ -170,7 +170,10 @@ document.addEventListener("DOMContentLoaded", function () {
     {
         CreateCollectionPage();
     }
-
+    else if(identifier.innerHTML=="Display Item")
+    {
+        CreateDisplayItemPage();
+    }
     //let temp = Pin_Root.child('Pin_'+ID);
     //temp.on('value',snap=>  Par.innerHTML = snap.val().Description);
 
