@@ -12,7 +12,7 @@
 //                      Create functions :  
 //======================================================================
 function CreateHomePage() {
-   
+    
     Button_in = document.getElementById("Btn_in");
     Button_delete = document.getElementById("Btn_delete");
     Button_Sub = document.getElementById("Button_Login");
@@ -31,7 +31,8 @@ function CreateHomePage() {
     //Button_delete.addEventListener("click",deletePin);
     Button_Sub.addEventListener("click", updatePage);
     //Button_Logout.addEventListener("click", userLogout);
-
+    user_button = document.getElementById("user_button");
+    user_button.addEventListener("click", checkIfLogged);
 
     Pin_Root = firebase.database().ref('pins/');
     User_Root = firebase.database().ref('users/');
@@ -42,7 +43,21 @@ function CreateHomePage() {
     updatePage();
 
 }
+function checkIfLogged(){
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) { // user is signed in
+            //window.location="UserScreen.html";
+            window.location="UserScreen.html";
 
+        }
+        else // user isn't signed in, launch login page
+        {
+            window.location="Sub.html";
+        }
+    });
+
+
+}
 
 function searchBarInit()
 {
@@ -230,6 +245,8 @@ function stopLoader3()
     loader3.style.visibility="hidden";
 }
 function createUserPage() {
+    user_button = document.getElementById("user_button");
+    user_button.addEventListener("click", checkIfLogged);
     loader3 = document.getElementById("loader3");
     loader3.style.visibility="hidden";
     Loader_Anim = document.getElementById("loading_Anim");
@@ -268,6 +285,8 @@ function createUserPage() {
     updatePage();
 }
 function CreateDisplayItemPage(){
+    user_button = document.getElementById("user_button");
+    user_button.addEventListener("click", checkIfLogged);
     const new_image = new Image();
     new_image.src = window.localStorage.getItem("ImgSrc");
    
@@ -725,6 +744,7 @@ function showCollectionPins(email)
             
                         <div class="pin_image">
                         </div>`;
+                        
             $(`#${Pin_id}_remove`).ready(function(){
                 let removeBtn = document.createElement("button");
                 removeBtn.textContent="Remove";
@@ -767,8 +787,10 @@ function addPin(searched) {
     
     
     firebase.auth().onAuthStateChanged(function (user) {
+        islogged=0;
         if (user) { // user is signed in
             counter=0;
+            islogged=1;
             UserComma = user.email.replace(".", ",")
             cur_user_root = firebase.database().ref('users/'+UserComma);
             cur_user_root.once("value", (snapshot) => { // all collections
@@ -783,8 +805,16 @@ function addPin(searched) {
                         if(collectionVal != "PostedPins")
                             Collections.push(collectionVal);
                     }                
-                })
-                
+                });
+            })
+            }
+            else{
+                islogged=0;
+            }
+            Button_Sub.href = "Sub.html";
+            Button_Sub.innerHTML = 'log in';
+            Button_Sub.style.opacity = 1;
+        
                 
                 
                 
@@ -803,13 +833,15 @@ function addPin(searched) {
                     let title = CurPins[i].Title;
                     let desp = CurPins[i].Description;
                     let destination = CurPins[i].Destination;
+                    if(islogged==1)
+                    {
                     dropdownHTML=``;
                     for(let j=0; j<Collections.length; j++)
                     {
                         dropdownHTML+=`<button class = "save_card" id="${Collections[j]}_${Pin_id}">${Collections[j]}</button>`;
                         
                     }
-            
+                    }
                     const new_pin = document.createElement('DIV');
                     const new_image = new Image();
             
@@ -882,7 +914,7 @@ function addPin(searched) {
             
                         <div class="pin_image">
                         </div>`;
-                        
+                        if(islogged==1){
                         $(`#${Pin_id}_Load`).ready(function(){
                         
                             const new_dropdown = document.createElement('DIV');
@@ -928,7 +960,11 @@ function addPin(searched) {
                             
                             $(`#${Pin_id}_Load`).append(new_dropdown);
                         });
-                           
+                        } 
+                        else
+                        {
+                            $(`.save_card`).css("display", "none");
+                        }  
                             
                         
                         PinGrid_Main.appendChild(new_pin);
@@ -950,20 +986,13 @@ function addPin(searched) {
                     
                     
                 }
-            
+                
                   
         });
-        }
-        else // user isn't signed in, launch login page
-        {
-            Button_Sub.href = "Sub.html";
-            Button_Sub.innerHTML = 'log in';
-            Button_Sub.style.opacity = 1;
-        }
-    });
+}
+        
        
     
-}
 function checkIfRetriveDone(newPins)
 {
 

@@ -46,6 +46,7 @@ let pin_image_blob;
 let Loader_Anim;
 let loader3;
 
+let user_button;
 let Button_in;  
 let Button_upload;
 let Button_delete;
@@ -131,6 +132,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if(identifier.innerHTML=="Home")
         {
+            user_button = document.getElementById("user_button");
+        user_button.addEventListener("click", checkIfLogged);
             CreateHomePage();
             updatePins();
             
@@ -158,20 +161,27 @@ document.addEventListener("DOMContentLoaded", function () {
     
     else if(identifier.innerHTML=="User Screen")
     {
+        user_button = document.getElementById("user_button");
+    user_button.addEventListener("click", checkIfLogged);
        createUserPage();
     }
     else if(identifier.innerHTML=="Add Pin Page")
     {
-
+        user_button = document.getElementById("user_button");
+        user_button.addEventListener("click", checkIfLogged);
         CreateAddPinPage();
 
     }
     else if(identifier.innerHTML=="Showing Collection")
     {
+        user_button = document.getElementById("user_button");
+    user_button.addEventListener("click", checkIfLogged);
         CreateCollectionPage();
     }
     else if(identifier.innerHTML=="Display Item")
     {
+        user_button = document.getElementById("user_button");
+    user_button.addEventListener("click", checkIfLogged);
         CreateDisplayItemPage();
     }
     //let temp = Pin_Root.child('Pin_'+ID);
