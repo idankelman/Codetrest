@@ -811,9 +811,7 @@ function addPin(searched) {
             else{
                 islogged=0;
             }
-            Button_Sub.href = "Sub.html";
-            Button_Sub.innerHTML = 'log in';
-            Button_Sub.style.opacity = 1;
+            
         
                 
                 
@@ -916,7 +914,7 @@ function addPin(searched) {
                         </div>`;
                         if(islogged==1){
                         $(`#${Pin_id}_Load`).ready(function(){
-                        
+                            console.log(Collections);
                             const new_dropdown = document.createElement('DIV');
                             new_dropdown.classList = "dropdown";
                             const dropbtn = document.createElement('BUTTON');
