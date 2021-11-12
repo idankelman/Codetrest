@@ -717,41 +717,36 @@ function showCollectionPins(email)
             
             
             new_pin.innerHTML = `
+             
             <div class="pin_title">${title}</div>
-            
-                        <div class="pin_modal">
-                            <div class="modal_head" id=${Pin_id}_remove>
-                                
-                            </div>
-            
-                            <div class="modal_foot">
-                                <div class="destination">
-                                    <div class="pint_mock_icon_container">
-                                        <img src="./images/upper-right-arrow.png" alt="destination" class="pint_mock_icon">
-                                    </div>
-                                    <span>${desp}</span>
-                                </div>
-            
-                                <div class="pint_mock_icon_container">
-                                    <img src="./images/send.png" alt="send" class="pint_mock_icon">
-                                </div>
-            
-                                <div class="pint_mock_icon_container">
-                                    <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
-                                </div>
-                            </div>
-                        </div>
-            
-                        <div class="pin_image">
-                        </div>`;
+                        
+            <div class="pin_modal">
+                    
+
+                <div class="wrap">
+                
+                    <div class="pin_image" id = "${Pin_id}-image"></div>
+                    <div class="text">${title}</div>
+                    <div class="modal_head"  id=${Pin_id}_remove>
+                            
+                    
+                       
+                        
+                    
+                </div>    
+                </div>
+            </div> `;
                         
             $(`#${Pin_id}_remove`).ready(function(){
                 let removeBtn = document.createElement("button");
+               
                 removeBtn.textContent="Remove";
                 removeBtn.classList.add('save_card');
-                removeBtn.addEventListener("click", function(){
+                removeBtn.addEventListener("click", function(event){
+                    event.stopPropagation();
                     firebase.database().ref('users/'+email+'/'+CollectionName+'/Pin_'+Pin_id).remove();
                 })
+                
                 $(`#${Pin_id}_remove`).append(removeBtn);
             })
             
@@ -759,7 +754,7 @@ function showCollectionPins(email)
                 
             
             PinGrid_Main.appendChild(new_pin);
-            new_pin.children[2].appendChild(new_image);
+            $(`#${Pin_id}-image`).prepend(new_image)
             
             
             if (
@@ -880,38 +875,30 @@ function addPin(searched) {
                         
                         
                         new_pin.innerHTML = `
+                        
                         <div class="pin_title">${title}</div>
-            
+                        
                         <div class="pin_modal">
-                            <div class="modal_head">
+                                
+            
+                            <div class="wrap">
+                            
+                                <div class="pin_image" id = "${Pin_id}-image"></div>
+                                <div class="text">${title}</div>
+                                <div class="modal_head">
+                                        
                                 <div class = "dropdown">
-                                    <div class="save_card" id = "${Pin_id}_Load">
+                                    <div class="save_card"  id = ${Pin_id}_Load>
                                         
                                     </div>
                                     
                                 </div>
-                            </div>
-            
-                            <div class="modal_foot">
-                                <div class="destination">
-                                    <div class="pint_mock_icon_container">
-                                        <img src="./images/upper-right-arrow.png" alt="destination" class="pint_mock_icon">
-                                    </div>
-                                    <span>${desp}</span>
-                                </div>
-            
-                                <div class="pint_mock_icon_container">
-                                    <img src="./images/send.png" alt="send" class="pint_mock_icon">
-                                </div>
-            
-                                <div class="pint_mock_icon_container">
-                                    <img src="./images/ellipse.png" alt="edit" class="pint_mock_icon">
-                                </div>
+                            </div>    
                             </div>
                         </div>
             
-                        <div class="pin_image">
-                        </div>`;
+                        
+                        `;
                         if(islogged==1){
                         $(`#${Pin_id}_Load`).ready(function(){
                             console.log(Collections);
@@ -919,6 +906,7 @@ function addPin(searched) {
                             new_dropdown.classList = "dropdown";
                             const dropbtn = document.createElement('BUTTON');
                             dropbtn.classList = "dropbtn";
+                            new_dropdown.style.paddingTop="0px";
                             dropbtn.textContent ="Save To";
                             new_dropdown.appendChild(dropbtn);
                             const dropContent = document.createElement('DIV');
@@ -935,7 +923,9 @@ function addPin(searched) {
                                 btnCollection.title=title;
                                 btnCollection.imgurl=url
                                 btnCollection.Tags=pin_tags;
-                                btnCollection.addEventListener("click", function(){
+                                
+                                btnCollection.addEventListener("click", function(event){
+                                    event.stopPropagation();
                                     emailForChild = user.email.replace(".", ",")
                                     let user_ro = firebase.database().ref('users/' + emailForChild+`/${this.collect}/`);
                                     updated=1;
@@ -966,9 +956,9 @@ function addPin(searched) {
                             
                         
                         PinGrid_Main.appendChild(new_pin);
-                        new_pin.children[2].appendChild(new_image);
+                        //$(`#${Pin_id}-image`).append(new_image)
                         
-                        
+                        $(`#${Pin_id}-image`).prepend(new_image)
                         if (
                             new_image.getBoundingClientRect().width < new_image.parentElement.getBoundingClientRect().width ||
                             new_image.getBoundingClientRect().height < new_image.parentElement.getBoundingClientRect().height
