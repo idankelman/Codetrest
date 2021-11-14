@@ -315,6 +315,7 @@ function CreateDisplayItemPage(){
         let title = window.localStorage.getItem("Title");
         let desc = window.localStorage.getItem("Description");
         let urls = window.localStorage.getItem("GitHub");
+        console.log(urls)
         let tagsss =  window.localStorage.getItem("PinTags")
         document.querySelector('.pin_explanation').innerHTML+=
         `<h1>${title}</h1>
@@ -942,7 +943,8 @@ function addPin(searched) {
                                 btnCollection.pin = Pin_id;
                                 btnCollection.description = desp;
                                 btnCollection.title=title;
-                                btnCollection.imgurl=url
+                                btnCollection.imgurl=url;
+                                btnCollection.github=destination;
                                 btnCollection.Tags=pin_tags;
                                 
                                 btnCollection.addEventListener("click", function(event){
@@ -956,7 +958,8 @@ function addPin(searched) {
                                         Description:this.description,
                                         Id: this.pin,
                                         URL: this.imgurl,
-                                        Tags: this.Tags
+                                        Tags: this.Tags,
+                                        Destination: this.github
                                     })
                                     console.log(this.collect);
                                     console.log(this.pin);
