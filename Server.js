@@ -20,7 +20,6 @@ let tags = [
     {tag: 'c++'},
     {tag: 'java'},
     {tag: 'math'},
-    {tag: 'complexity'},
     {tag: 'intermediate'},
     {tag: 'beginner'},
     {tag: 'advanced'},
@@ -29,6 +28,11 @@ let tags = [
     {tag: 'html'},
     {tag: 'css'},
     {tag: 'assembly'},
+    {tag: 'app'},
+    {tag: 'react.js'},
+    {tag: 'angular'},
+    {tag: '.net'},
+    {tag: 'web'}
 ];
 let list;
 let chosenTags=[];

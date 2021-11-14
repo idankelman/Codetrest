@@ -1244,10 +1244,44 @@ body {
     overflow: hidden;
     background-color: rgb(224, 108, 117,1);
     line-height: 3.2rem;
+    
+    position: absolute;
+    top: 7px; left: 120px;
+   
+  }
+  .search-box2{
 
+    /*
+    display: flex;
+    background-color: rgb(224, 108, 117,1);
+    border: none;
+    border-radius: 30px;
+    height: 50px;
+    line-height: 40px;
+    font-family: font !important;
+    width: 10000000px;
+    transition: 0.4s;
+    padding: 0px;
+    max-width: 90%;
+    line-height: 3.2rem;
+    justify-self: start;
+    */
+
+    border: none;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    
+    height: 3rem;
+    border-radius: 25px;
+    overflow: hidden;
+    background-color: rgb(224, 108, 117,1);
+    line-height: 3.2rem;
+    
     
    
   }
+
 
   .search-box:hover>.search-txt{
     color: black;
@@ -1673,6 +1707,7 @@ transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 
  .tag {
   height: 30px;
+  
   margin: 5px;
   padding: 5px 6px;
   border: 1px solid #ccc;
@@ -1686,6 +1721,7 @@ transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 .tag i {
   font-size: 16px;
+  
   color: #666;
   margin-left: 5px;
 }
@@ -1761,12 +1797,14 @@ ul {
   }
   #list2 {
     overflow: auto;
-    margin-left: 10.5%;
-    position: relative;
+    
+   
     width: 67%; height: 10%;
     z-index:100;
+    margin-top: 150px;
+    height: 100px;
     list-style-type: none;
-    position:absolute
+    visibility: hidden;
     -moz-border-radius: 15px;
       -webkit-border-radius: 15px;
   
@@ -1778,6 +1816,7 @@ ul {
     border: 1px solid #ddd; /* Add a border to all links */
     background-color: #f6f6f6; /* Grey background color */
     padding: 5px; /* Add some padding */
+    z-index: 100;
     text-decoration: none; /* Remove default text underline */
     font-size: 18px; /* Increase the font-size */
     color: black; /* Add a black text color */
@@ -1838,4 +1877,8 @@ ul {
     .fadeIn-bottom{
       top: 80%;
     }
-    
+textarea{
+  font-family: 'font';
+  font-weight: normal;
+	font-style: normal;
+}

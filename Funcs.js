@@ -97,6 +97,7 @@ function searchBarInit()
          searchInput.value = '';
         }
         */
+        list.style.visibility="hidden";
         let value = e.target.value;
         console.log(value);
         if(value && value.trim().length >0){
@@ -108,7 +109,13 @@ function searchBarInit()
             }));
         }
         else
+        {
+            list.style.visibility="hidden";
             clearList();
+        }
+        if(list.firstChild)
+            list.style.visibility="visible";
+
     });
     document.addEventListener('click', (e) => {
         console.log(e.target.tagName);
@@ -187,12 +194,14 @@ function clearTags() {
     document.querySelectorAll('.tag').forEach(tag => {
       tag.parentElement.removeChild(tag);
     });
+    
 }
 function addTags() {
     clearTags();
     searchTags.slice().reverse().forEach(tag => {
       tagContainer.prepend(createTag(tag));
     });
+    
 }
 function createTag(label) {
     const div = document.createElement('div');
@@ -205,7 +214,9 @@ function createTag(label) {
     closeIcon.setAttribute('data-item', label);
     div.appendChild(span);
     div.appendChild(closeIcon);
+    
     return div;
+    
   }
 
 function insertCollection()
@@ -254,7 +265,7 @@ function createUserPage() {
     btnAddCollection=document.getElementById("addCollection");
     let userInfo = document.getElementById("user info");
     Button_Sub = document.getElementById("Button_Login");
-
+    
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
@@ -266,7 +277,7 @@ function createUserPage() {
             if (name === undefined || name === null)
                 name = user.email.substring(0, user.email.indexOf('@'));
             console.log(name);
-            userInfo.innerHTML = `hello my name is ${name} `
+            userInfo.innerHTML = `${name}`
             btnAddCollection.addEventListener("click", insertCollection);
         } else {
             alert('Error: no user is logged in');
@@ -420,7 +431,13 @@ function CreateAddPinPage() {
     clearList();
     chosenTags=[];
     curAvailTags=tags;
-
+    $("textarea").each(function () {
+        this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");
+      }).on("input", function () {
+        this.style.height = "auto";
+        this.style.overflowY = "scroll";
+        this.style.height = (this.scrollHeight) + "px";
+      });
 
     document.querySelector('.add_pin').addEventListener('click', () => {
         add_pin_modal.style.opacity = 1;
@@ -447,7 +464,11 @@ function CreateAddPinPage() {
             }));
         }
         else
+        {
+            
             clearList();
+            
+        }
     })
 
     document.querySelector('#upload_img').addEventListener('change', event => {
@@ -1350,11 +1371,9 @@ function userLogout() {
 
     firebase.auth().signOut().then(() => {
 
-        window.location = "Sub.html";
+        window.location = "index.html";
         // Sign-out successful.
-    }).catch((error) => {
-        alert('Error on logging out');
-    });
+    })
 
 }
 
