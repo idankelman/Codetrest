@@ -71,7 +71,7 @@ function searchBarInit()
     clearList();
     document.querySelector('#search-btn').addEventListener('click', function(event){
         addPinsByTag();
-        
+        list.style.visibility="hidden";
     });
     searchInput.addEventListener('keyup', (e) => {
          /*
